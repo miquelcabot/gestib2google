@@ -1,0 +1,27 @@
+
+Google Directory API: Getting Started - Node.js Quickstart
+https://developers.google.com/admin-sdk/directory/v1/quickstart/nodejs
+
+Authenticating Users with Node.js
+https://cloud.google.com/nodejs/getting-started/authenticate-users
+
+Google's officially supported Node.js client library for accessing Google APIs.
+https://github.com/google/google-api-nodejs-client
+
+NextPageToken
+https://firebase.google.com/docs/auth/admin/manage-users
+
+Asynchronous Iteration Patterns In Node.js
+http://metaduck.com/01-asynchronous-iteration-patterns.html
+
+Error: Request rate higher than configured??
+https://developers.google.com/admin-sdk/directory/v1/limits#backoff
+
+Making Node.js service always alive on Ubuntu Server
+https://hackernoon.com/making-node-js-service-always-alive-on-ubuntu-server-e20c9c0808e4
+
+Start Bootstrap SB Admin theme
+https://github.com/BlackrockDigital/startbootstrap-sb-admin/
+
+Google OAuth 2.0 authentication
+https://developers.google.com/api-client-library/php/auth/web-app

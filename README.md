@@ -1,5 +1,10 @@
 # gestib2google_vuejs
 
+GestIB to Google XML conversion
+
+## Requirements
+Requirements: [Node.js](https://nodejs.org/).
+
 ## Project setup
 ```
 npm install
@@ -22,3 +27,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Credits
+Based on Start Bootstrap SB Admin theme. [Link](https://github.com/BlackrockDigital/startbootstrap-sb-admin/)

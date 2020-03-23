@@ -7,13 +7,34 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miquelcabot/gestib2google_vuejs.git"
+  },
+  "keywords": [
+    "server",
+    "webserver",
+    "node",
+    "express",
+    "gestib",
+    "google",
+    "xml"
+  ],
+  "author": "Miquel A. Cabot",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miquelcabot/gestib2google_vuejs/issues"
+  },
+  "homepage": "https://github.com/miquelcabot/gestib2google_vuejs#readme",
   "dependencies": {
     "core-js": "^3.6.4",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-router": "^3.1.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",
     "@vue/cli-plugin-eslint": "~4.2.0",
+    "@vue/cli-plugin-router": "^4.2.3",
     "@vue/cli-service": "~4.2.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.7.2",
