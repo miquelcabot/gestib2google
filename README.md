@@ -29,4 +29,4 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## Credits
-Based on Start Bootstrap SB Admin theme. [Link](https://github.com/BlackrockDigital/startbootstrap-sb-admin/)
+Based on Start Bootstrap SB Admin 2 theme. [Link](https://github.com/BlackrockDigital/startbootstrap-sb-admin-2)
