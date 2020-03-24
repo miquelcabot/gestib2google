@@ -1,0 +1,73 @@
+<template>
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/#/">
+        <div class="sidebar-brand-icon rotate-n-15">
+        <i class="fas fa-file-upload"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">GestIB to Google</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+    
+    <!-- Nav Item - Inici -->
+    <li class="nav-item active">
+        <router-link to="/" class="nav-link">
+          <i class="fas fa-fw fa-home"></i>
+          <span>Inici</span>
+        </router-link>
+    </li>
+
+    <!-- Nav Item - Usuaris -->
+    <li class="nav-item">
+        <router-link to="/usuarisdomini" class="nav-link">
+          <i class="fas fa-fw fa-users"></i>
+          <span>Usuaris del domini</span>
+        </router-link>
+    </li>
+
+    <!-- Nav Item - Full de càlcul -->
+    <li class="nav-item">
+        <router-link to="/fullcalcul" class="nav-link">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Exportar a full de càlcul</span>
+        </router-link>
+    </li>
+
+    <!-- Nav Item - Exportar CSV -->
+    <li class="nav-item">
+        <router-link to="/csv" class="nav-link">
+          <i class="fas fa-fw fa-file"></i>
+          <span>Exportar a CSV</span>
+        </router-link>
+    </li>
+
+    <!-- Nav Item - Importar XML -->
+    <li class="nav-item">
+        <router-link to="/importarxml" class="nav-link">
+          <i class="fas fa-fw fa-upload"></i>
+          <span>Importar XML</span>
+        </router-link>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+  </ul>
+</template>
+
+<script>
+export default {
+  name: 'Sidebar'
+}
+</script>
+
+<style>
+
+</style>

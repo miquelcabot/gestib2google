@@ -1,32 +1,67 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+      <Sidebar/>
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+          
+          <Topbar/>
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+
+          <!-- Content Row -->
+          <div class="row">
+            <div class="col-lg-12 mb-4">
+
+              <router-view/>
+
+            </div>
+          </div>
+
+          </div>
+          <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <Footer/>
+
+      </div>
+      <!-- End of Content Wrapper -->
+
     </div>
-    <router-view/>
+    <!-- End of Page Wrapper -->
+
+    <ScrollTopButton/>
+
+    <LogoutModal/>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+// @ is an alias to /src
+import Sidebar from '@/components/Sidebar'
+import Topbar from '@/components/Topbar'
+import Footer from '@/components/Footer'
+import ScrollTopButton from '@/components/ScrollTopButton'
+import LogoutModal from '@/components/LogoutModal'
 
-#nav {
-  padding: 30px;
+export default {
+  name: 'App',
+  components: {
+    Sidebar,
+    Topbar,
+    Footer,
+    ScrollTopButton,
+    LogoutModal
+  }
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+</script>
