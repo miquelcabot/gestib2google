@@ -4,8 +4,53 @@
         <h6 class="m-0 font-weight-bold text-primary">Mostrar usuaris del domini</h6>
     </div>
     <div class="card-body">
-        <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce CSS bloat and poor page performance. Custom CSS classes are used to create custom components and custom utility classes.</p>
-        <p class="mb-0">Before working with this theme, you should become familiar with the Bootstrap framework, especially the utility classes.</p>
+      <form action="showusers.php" method="GET">
+        <div class="form-group">
+          <label for="groupsusuarisdomini" class="col-sm-2 col-form-label">Grups</label>
+          <div class="col-sm-10">
+            <select class="form-control" id="groupsusuarisdomini" name="group">
+              <option value="">Tots</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-check">
+              <label class="form-check-label"> 
+              <input class="form-check-input" id="onlyteachers" name="onlyteachers" type="checkbox"> Només professorat</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+              <label class="form-check-label"> 
+              <input class="form-check-input" id="onlyactive" name="onlyactive" type="checkbox"> Només usuaris actius</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+              <label class="form-check-label"> 
+                <input class="form-check-input" id="onlywithoutcode" name="onlywithoutcode" type="checkbox"> Només els usuaris sense ID
+              </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" id="onlynotsession" name="onlynotsession" type="checkbox"> Només els usuaris que no han iniciat mai sessió
+              </label>
+            </div>
+        </div>  
+        <div class="form-group">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" id="onlywithoutorgunit" name="onlywithoutorgunit" type="checkbox"> Només els usuaris de la Unitat Organitzativa principal (/)
+              </label>
+            </div>
+          </div>
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary" value="Mostrar">
+        </div>
+      </form>
     </div>
   </div>
 </template>

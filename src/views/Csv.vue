@@ -4,8 +4,25 @@
         <h6 class="m-0 font-weight-bold text-primary">Exportar a CSV</h6>
     </div>
     <div class="card-body">
-        <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce CSS bloat and poor page performance. Custom CSS classes are used to create custom components and custom utility classes.</p>
-        <p class="mb-0">Before working with this theme, you should become familiar with the Bootstrap framework, especially the utility classes.</p>
+      <form action="csv.php" method="GET">
+        <div class="form-group">
+          <label for="groupsusuarisdominicsv" class="col-sm-2 col-form-label">Grups</label>
+          <div class="col-sm-10">
+            <select class="form-control" id="groupsusuarisdominicsv" name="groupcsv">
+              <option value="">Tots</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <label class="form-check-label"> 
+            <input class="form-check-input" id="onlyteacherscsv" name="onlyteacherscsv" type="checkbox"> Només professorat</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary" value="Exportar">
+        </div>
+      </form>
     </div>
   </div>
 </template>

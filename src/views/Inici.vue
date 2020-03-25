@@ -4,8 +4,11 @@
         <h6 class="m-0 font-weight-bold text-primary">Inici</h6>
     </div>
     <div class="card-body">
-        <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce CSS bloat and poor page performance. Custom CSS classes are used to create custom components and custom utility classes.</p>
-        <p class="mb-0">Before working with this theme, you should become familiar with the Bootstrap framework, especially the utility classes.</p>
+        <p>Benvingut al programa d'importació de dades del GestIB al domini de Google.</p>
+        <p>El fitxer XML amb les dades del professorat/alumnat s'ha de descarregar del <a href="https://www3.caib.es/xestib/">GestIB</a>, de l'opció de menú "Alumnat --> Exportació dades SGD".</p>
+        <p>S'actualitzaran les dades del professorat i l'alumnat del domini Google <strong>DOMAIN</strong>.</p>
+        <p>Només s'actualitzaran els usuaris del domini que estiguin a les unitats organitzatives <strong>"/"</strong>, <strong>"TEACHERS_ORGANIZATIONAL_UNIT"</strong> i <strong>"STUDENTS_ORGANIZATIONAL_UNIT"</strong> i tenguin un Employee_ID.</p>
+        <p>Els nous usuaris es crearan amb el password per defecte <strong>"DEFAULT_PASSWORD"</strong> i l'hauran de canviar el primer pic que entrin.</p>
     </div>
   </div>
 </template>

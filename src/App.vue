@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import Vue from 'vue'
+
 // @ is an alias to /src
 import Sidebar from '@/components/Sidebar'
 import Topbar from '@/components/Topbar'
@@ -62,6 +64,9 @@ export default {
     Footer,
     ScrollTopButton,
     LogoutModal
+  },
+  beforeCreate: function() {
+    console.log(Vue.$gapi);
   }
 }
 </script>
