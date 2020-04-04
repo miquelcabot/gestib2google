@@ -10,7 +10,7 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
-    
+
     <!-- Nav Item - Inici -->
     <li class="nav-item active">
         <router-link to="/" class="nav-link">

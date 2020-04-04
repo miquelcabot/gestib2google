@@ -13,22 +13,22 @@
             </select>
           </div>
         </div>
-        
+
         <div class="form-group">
             <div class="form-check">
-              <label class="form-check-label"> 
+              <label class="form-check-label">
               <input class="form-check-input" id="onlyteachers" name="onlyteachers" type="checkbox"> Només professorat</label>
             </div>
         </div>
         <div class="form-group">
             <div class="form-check">
-              <label class="form-check-label"> 
+              <label class="form-check-label">
               <input class="form-check-input" id="onlyactive" name="onlyactive" type="checkbox"> Només usuaris actius</label>
             </div>
         </div>
         <div class="form-group">
             <div class="form-check">
-              <label class="form-check-label"> 
+              <label class="form-check-label">
                 <input class="form-check-input" id="onlywithoutcode" name="onlywithoutcode" type="checkbox"> Només els usuaris sense ID
               </label>
             </div>
@@ -39,7 +39,7 @@
                 <input class="form-check-input" id="onlynotsession" name="onlynotsession" type="checkbox"> Només els usuaris que no han iniciat mai sessió
               </label>
             </div>
-        </div>  
+        </div>
         <div class="form-group">
             <div class="form-check">
               <label class="form-check-label">

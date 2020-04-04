@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -11,7 +11,7 @@
 
         <!-- Main Content -->
         <div id="content">
-          
+
           <Topbar/>
 
           <!-- Begin Page Content -->
@@ -44,21 +44,13 @@
 
     <LogoutModal/>
 
-    <!-- Bootstrap core JavaScript-->
-    <script :src="`${publicPath}vendor/jquery/jquery.min.js`" type="application/javascript"></script>
-    <script :src="`${publicPath}vendor/bootstrap/js/bootstrap.bundle.min.js`" type="application/javascript"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script :src="`${publicPath}vendor/jquery-easing/jquery.easing.min.js`" type="application/javascript"></script>
-
     <!-- Custom scripts for all pages-->
-    <script :src="`${publicPath}js/sb-admin-2.min.js`" type="application/javascript"></script>
+    <script src="./static/js/sb-admin-2.js" type="application/javascript"></script>
+
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
-
 // @ is an alias to /src
 import Sidebar from '@/components/Sidebar'
 import Topbar from '@/components/Topbar'
@@ -79,9 +71,6 @@ export default {
     return {
       publicPath: process.env.BASE_URL
     }
-  },
-  beforeCreate: function() {
-    console.log(Vue.$gapi);
   }
 }
 </script>
