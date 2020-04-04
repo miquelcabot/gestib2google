@@ -12,7 +12,7 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Inici -->
-    <li class="nav-item active">
+    <li class="nav-item">
         <router-link to="/" class="nav-link">
           <i class="fas fa-fw fa-home"></i>
           <span>Inici</span>
