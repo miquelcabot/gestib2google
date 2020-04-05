@@ -36,6 +36,9 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      // Modifiat Miquel A. Cabot 5/4/2020
+      // https://github.com/googleapis/google-api-nodejs-client/issues/1775
+      fs: path.resolve(__dirname, 'src/mock-fs.js')
     }
   },
   module: {
