@@ -25,3 +25,6 @@ https://github.com/BlackrockDigital/startbootstrap-sb-admin-2
 
 Google OAuth 2.0 authentication
 https://developers.google.com/api-client-library/php/auth/web-app
+
+How To Set Up Vue.js Authentication and Route Handling Using vue-router
+https://www.digitalocean.com/community/tutorials/how-to-set-up-vue-js-authentication-and-route-handling-using-vue-router
