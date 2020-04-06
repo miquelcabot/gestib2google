@@ -4,7 +4,9 @@
 
 ## Requirements
 
-Requirements: [Node.js](https://nodejs.org/).
+Requirements: 
+* [Node.js](https://nodejs.org/).
+* A browser with compatibility with URLSearchParams object ([reference](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams))
 
 ## Build Setup
 
