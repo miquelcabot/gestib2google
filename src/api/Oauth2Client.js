@@ -13,7 +13,7 @@ const SCOPES = [
 const {client_secret, client_id} = clientSecret.web
 const redirect_url = 'http://localhost:8080'
 
-let oauth2Client = () => {
+const oauth2Client = () => {
   const oauth2Client = new google.auth.OAuth2(
     client_id, client_secret, redirect_url)
 
@@ -24,14 +24,14 @@ let oauth2Client = () => {
   return oauth2Client
 }
 
-let oauth2ClientGenerateAuthUrl = () => {
+const oauth2ClientGenerateAuthUrl = () => {
   return oauth2Client().generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES
   })
 }
 
-let oauth2ClientService = () => {
+const oauth2ClientService = () => {
   const auth = oauth2Client()
   return google.admin({version: 'directory_v1', auth})
 }
