@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {getDomainGroupsStudents} from '../api/Oauth2Client'
+import {getDomainGroupsStudents} from '../api/DomainRead'
 
 export default {
   name: 'Csv',
