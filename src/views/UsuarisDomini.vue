@@ -56,8 +56,19 @@
 </template>
 
 <script>
+import {getDomainGroupsStudents} from '../api/Oauth2Client'
+
 export default {
-  name: 'UsuarisDomini'
+  name: 'UsuarisDomini',
+  mounted () {
+    getDomainGroupsStudents(null, null, (err, groups) => {
+      if (err) alert(err.message)
+
+      Object.keys(groups).forEach(id => {
+        console.log(groups[id].email)
+      })
+    })
+  }
 }
 </script>
 

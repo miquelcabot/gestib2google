@@ -19,7 +19,6 @@ let oauth2Client = () => {
 
   let token = JSON.parse(localStorage.getItem('token'))
   if (token != null) {
-    alert(localStorage.getItem('token'))
     oauth2Client.setCredentials(token)
   }
   return oauth2Client
@@ -38,28 +37,41 @@ let oauth2ClientService = () => {
 }
 
 /**
- * Lists the first 10 users in the domain.
+ * Lists the groups of students in the domain.
  */
-/*
-function getDomainGroups() {
-  oauth2ClientService().users.list({
+function getDomainGroupsStudents (domaingroups, nextPageToken, callback) {
+  if (!domaingroups) {
+    domaingroups = {}
+  }
+
+  // Carregam els grups 200 a 200, que és el valor màxim de maxResults, paginant la resta
+  oauth2ClientService().groups.list({
     customer: 'my_customer',
-    maxResults: 10,
-    orderBy: 'email',
-  }, (err, res) => {
-    if (err) return console.error('The API returned an error:', err.message);
+    maxResults: 200,
+    pageToken: nextPageToken,
+    orderBy: 'email'
+  }, function (err, res) {
+    if (err) return callback(err, null)
 
-    const users = res.data.users;
-    if (users.length) {
-      console.log('Users:');
-      users.forEach((user) => {
-        console.log(`${user.primaryEmail} (${user.name.fullName})`);
-      });
+    const groups = res.data.groups
+    groups.forEach((group) => {
+      // Carregam nomes grups de alumnat, equip educatiu i tutors
+      if (group.email.startsWith('alumnat.')) {
+        // console.log(`${group.email} (${group.email})`)
+        domaingroups[group.email.replace('@cifpfbmoll.eu', '')] = {
+          'email': group.email.replace('@cifpfbmoll.eu', ''),
+          'id': group.id,
+          'name': group.name
+        }
+      }
+    })
+
+    if (res.nextPageToken) {
+      getDomainGroupsStudents(domaingroups, res.nextPageToken, callback)
     } else {
-      console.log('No users found.');
+      return callback(null, domaingroups)
     }
-  });
+  })
 }
-*/
 
-export {oauth2Client, oauth2ClientGenerateAuthUrl, oauth2ClientService}
+export {oauth2Client, oauth2ClientGenerateAuthUrl, oauth2ClientService, getDomainGroupsStudents}
