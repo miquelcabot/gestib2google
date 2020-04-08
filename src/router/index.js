@@ -45,14 +45,14 @@ router.beforeEach(async (to, from, next) => {
 
   let token = localStorage.getItem('token')
 
-  if ((code != null) && (token == null)) {
+  if ((code) && (!token)) {
     // Ha fet el login amb Google, llegim 'code' retornat
     oauth2Client().getToken(code, (err, token) => {
       if (err) return alert('Error retrieving access token' + err)
       localStorage.setItem('token', JSON.stringify(token))
       next()
     })
-  } else if ((code == null) && (token == null)) {
+  } else if ((!code) && (!token)) {
     // No ha fet login amb Google, hem d'anar a la URL de login
     const authUrl = oauth2ClientGenerateAuthUrl()
     window.location = authUrl
