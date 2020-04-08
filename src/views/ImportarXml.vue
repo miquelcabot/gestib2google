@@ -76,7 +76,7 @@ export default {
   mounted () {
     getDomainGroupsStudents(null, null, (err, groups) => {
       if (err) {
-        this.error = err.message
+        this.error = 'Error emplentant el desplegable Grups "' + err.message + '"'
         this.showError = true
       }
 

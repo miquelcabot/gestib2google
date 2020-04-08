@@ -44,18 +44,26 @@ router.beforeEach(async (to, from, next) => {
   const code = (new URL(window.location.href)).searchParams.get('code')
 
   let token = localStorage.getItem('token')
+  let expiryDate = null
+  if (token) {
+    // Si ha expirat el token de Google Oauth2, eliminam el token per forçar un altre login
+    expiryDate = new Date(JSON.parse(localStorage.getItem('token')).expiry_date)
+    if (expiryDate < Date.now()) {
+      token = null
+    }
+  }
 
-  if ((code) && (!token)) {
+  if ((!code) && (!token)) {
+    // No ha fet login amb Google, hem d'anar a la URL de login
+    const authUrl = oauth2ClientGenerateAuthUrl()
+    window.location = authUrl
+  } else if ((code) && (!token)) {
     // Ha fet el login amb Google, llegim 'code' retornat
     oauth2Client().getToken(code, (err, token) => {
       if (err) return alert('Error retrieving access token' + err)
       localStorage.setItem('token', JSON.stringify(token))
       next()
     })
-  } else if ((!code) && (!token)) {
-    // No ha fet login amb Google, hem d'anar a la URL de login
-    const authUrl = oauth2ClientGenerateAuthUrl()
-    window.location = authUrl
   } else {
     // Ja ha fet login amb Google. Podem continuar
     next()
