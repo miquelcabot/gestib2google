@@ -1,4 +1,5 @@
 import {oauth2ClientService} from './Oauth2Client'
+import {DomainUser} from './DomainUser'
 
 /**
  * Retorna els grups d'usuaris "alumnat." del domini
@@ -178,34 +179,21 @@ const getDomainUsers = (callback) => {
           })
         })
 
-        /*
-        domainUsers[id] = new domainuser.DomainUser(
+        domainUsers[id] = new DomainUser(
           id,
           user.name.givenName,
           user.name.familyName,
-          null, // surname 1
-          null, // surname 2
+          null, // surname1
+          null, // surname2
           user.primaryEmail, // domainemail
           user.suspended, // suspended
           user.orgUnitPath.toLowerCase().indexOf('professor') >= 0, // teacher
           withoutcode, // withoutcode
           groupMember, // groups
-          NULL, // expedient
-          user.orgUnitPath,  // organizationalUnit
+          null, // expedient
+          user.orgUnitPath, // organizationalUnit
           user.lastLoginTime // lastLoginTime
         )
-        */
-
-        domainUsers[id] = {
-          'id': id,
-          'givenName': user.name.givenName,
-          'familyName': user.name.familyName,
-          'primaryEmail': user.primaryEmail, // domainemail
-          'suspended': user.suspended,
-          'teacher': user.orgUnitPath.toLowerCase().indexOf('professor') >= 0,
-          'withoutcode': withoutcode,
-          'member': groupMember
-        }
       })
 
       // Retornam domainUsers
