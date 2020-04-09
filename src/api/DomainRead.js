@@ -3,9 +3,9 @@ import {oauth2ClientService} from './Oauth2Client'
 /**
  * Retorna els grups d'usuaris "alumnat." del domini
  */
-const getDomainGroupsStudents = (domaingroups, nextPageToken, callback) => {
-  if (!domaingroups) {
-    domaingroups = {}
+const getDomainGroupsStudents = (domainGroups, nextPageToken, callback) => {
+  if (!domainGroups) {
+    domainGroups = {}
   }
 
   // Carregam els grups 200 a 200, que és el valor màxim de maxResults, paginant la resta
@@ -19,9 +19,9 @@ const getDomainGroupsStudents = (domaingroups, nextPageToken, callback) => {
 
     const groups = res.data.groups
     groups.forEach((group) => {
-      // Carregam nomes grups de alumnat, equip educatiu i tutors
+      // Carregam nomes grups d'alumnat
       if (group.email.startsWith('alumnat.')) {
-        domaingroups[group.email.replace('@cifpfbmoll.eu', '')] = {
+        domainGroups[group.email.replace('@cifpfbmoll.eu', '')] = {
           'email': group.email.replace('@cifpfbmoll.eu', ''),
           'id': group.id,
           'name': group.name
@@ -29,10 +29,10 @@ const getDomainGroupsStudents = (domaingroups, nextPageToken, callback) => {
       }
     })
 
-    if (res.nextPageToken) {
-      getDomainGroupsStudents(domaingroups, res.nextPageToken, callback)
+    if (res.data.nextPageToken) {
+      getDomainGroupsStudents(domainGroups, res.data.nextPageToken, callback)
     } else {
-      return callback(null, domaingroups)
+      return callback(null, domainGroups)
     }
   })
 }
@@ -40,9 +40,9 @@ const getDomainGroupsStudents = (domaingroups, nextPageToken, callback) => {
 /**
  * Retorna tots els grups d'usuaris del domini
  */
-const getDomainGroups = (domaingroups, nextPageToken, callback) => {
-  if (!domaingroups) {
-    domaingroups = {}
+const getDomainGroups = (domainGroups, nextPageToken, callback) => {
+  if (!domainGroups) {
+    domainGroups = {}
   }
 
   // Carregam els grups 200 a 200, que és el valor màxim de maxResults, paginant la resta
@@ -56,17 +56,17 @@ const getDomainGroups = (domaingroups, nextPageToken, callback) => {
 
     const groups = res.data.groups
     groups.forEach((group) => {
-      domaingroups[group.email.replace('@cifpfbmoll.eu', '')] = {
+      domainGroups[group.email.replace('@cifpfbmoll.eu', '')] = {
         'email': group.email.replace('@cifpfbmoll.eu', ''),
         'id': group.id,
         'name': group.name
       }
     })
 
-    if (res.nextPageToken) {
-      getDomainGroups(domaingroups, res.nextPageToken, callback)
+    if (res.data.nextPageToken) {
+      getDomainGroups(domainGroups, res.data.nextPageToken, callback)
     } else {
-      return callback(null, domaingroups)
+      return callback(null, domainGroups)
     }
   })
 }
@@ -75,7 +75,7 @@ const getDomainGroups = (domaingroups, nextPageToken, callback) => {
  * Retorna els membres d'un grup
  */
 const getDomainMembers = (groupId, callback) => {
-  var membersgroup = []
+  let membersgroup = []
 
   oauth2ClientService().members.list({
     customer: 'my_customer',
@@ -98,24 +98,120 @@ const getDomainMembers = (groupId, callback) => {
 /**
  * Retorna tots els grups d'usuaris del domini, amb els seus membres
  */
-const getDomainGroupsMembers = (domaingroups, nextPageToken, callback) => {
-  getDomainGroups(null, null, (err, domaingroups) => {
+const getDomainGroupsMembers = (callback) => {
+  getDomainGroups(null, null, (err, groups) => {
     if (err) return callback(err, null)
 
     let membersok = 0
-    Object.keys(domaingroups).forEach((group) => {
+    Object.keys(groups).forEach((group) => {
       // We read the members of this group
-      getDomainMembers(domaingroups[group].id, (err, res) => {
+      getDomainMembers(groups[group].id, (err, res) => {
         if (err) return callback(err, null)
 
         membersok++
-        domaingroups[group].members = res
-        if (membersok >= Object.keys(domaingroups).length) {
-          return callback(null, domaingroups)
+        groups[group].members = res
+        if (membersok >= Object.keys(groups).length) {
+          return callback(null, groups)
         }
       })
     })
   })
 }
 
-export {getDomainGroupsStudents, getDomainGroupsMembers}
+/**
+ * Retorna tots els usuaris del domini, amb inforació extra
+ */
+const getAllDomainUsers = (users, nextPageToken, callback) => {
+  if (!users) {
+    users = []
+  }
+
+  // Carregam els usuaris de 500 en 500, que és el valor màxim de maxResults, paginant la resta
+  oauth2ClientService().users.list({
+    customer: 'my_customer',
+    maxResults: 500,
+    pageToken: nextPageToken,
+    orderBy: 'email'
+  }, (err, res) => {
+    if (err) return callback(err, null)
+
+    users = users.concat(res.data.users)
+    if (res.data.nextPageToken) {
+      getAllDomainUsers(users, res.data.nextPageToken, callback)
+    } else {
+      return callback(null, users)
+    }
+  })
+}
+
+/**
+ * Retorna tots els usuaris del domini, amb informació extra
+ */
+const getDomainUsers = (callback) => {
+  let domainUsers = {}
+
+  getDomainGroupsMembers((err, groups) => {
+    if (err) return callback(err, null)
+
+    getAllDomainUsers(null, null, (err, users) => {
+      if (err) return callback(err, null)
+
+      let userWithoutCode = 0
+      users.forEach(user => {
+        let id
+        let withoutcode = false
+        if (user.externalIds && user.externalIds[0].value) {
+          id = user.externalIds[0].value
+        } else {
+          userWithoutCode++
+          id = 'WITHOUTCODE' + userWithoutCode
+          withoutcode = true
+        }
+
+        // Afegim tots els grups del que és membre
+        let groupMember = []
+        Object.keys(groups).forEach(groupname => {
+          groups[groupname].members.forEach(m => {
+            if (user.primaryEmail === m) {
+              groupMember.push(groupname)
+            }
+          })
+        })
+
+        /*
+        domainUsers[id] = new domainuser.DomainUser(
+          id,
+          user.name.givenName,
+          user.name.familyName,
+          null, // surname 1
+          null, // surname 2
+          user.primaryEmail, // domainemail
+          user.suspended, // suspended
+          user.orgUnitPath.toLowerCase().indexOf('professor') >= 0, // teacher
+          withoutcode, // withoutcode
+          groupMember, // groups
+          NULL, // expedient
+          user.orgUnitPath,  // organizationalUnit
+          user.lastLoginTime // lastLoginTime
+        )
+        */
+
+        domainUsers[id] = {
+          'id': id,
+          'givenName': user.name.givenName,
+          'familyName': user.name.familyName,
+          'primaryEmail': user.primaryEmail, // domainemail
+          'suspended': user.suspended,
+          'teacher': user.orgUnitPath.toLowerCase().indexOf('professor') >= 0,
+          'withoutcode': withoutcode,
+          'member': groupMember
+        }
+      })
+
+      // Retornam domainUsers
+      callback(null, domainUsers)
+    })
+  })
+}
+
+export {getDomainGroupsStudents, getDomainUsers}
