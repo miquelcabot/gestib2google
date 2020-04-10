@@ -10,9 +10,9 @@
       <div class="card-body">
         <form @submit.prevent>
           <div class="form-group">
-            <label for="groupsusuarisdominicsv" class="col-sm-2 col-form-label">Grups</label>
+            <label for="groupsdomainuserscsv" class="col-sm-2 col-form-label">Grups</label>
             <div class="col-sm-10">
-              <select class="form-control" id="groupsusuarisdominicsv" name="groupcsv">
+              <select class="form-control" id="groupsdomainuserscsv" name="groupcsv">
                 <option value="">Tots</option>
                 <option v-for="group in groups" v-bind:key="group.email" v-bind:value="group.email">
                   {{ group.name.replace('Alumnat', '') }}

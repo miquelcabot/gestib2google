@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'FullCalcul',
+  name: 'Spreadsheet',
   methods: {
     spreadsheet: function () {
       alert('executar')

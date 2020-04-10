@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Inici from '@/views/Inici'
+import Home from '@/views/Home'
 import {oauth2Client, oauth2ClientGenerateAuthUrl} from '../api/Oauth2Client'
 
 Vue.use(Router)
@@ -9,21 +9,21 @@ let router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Inici',
-      component: Inici
+      name: 'Home',
+      component: Home
     },
     {
-      path: '/usuarisdomini',
-      name: 'Usuarisdomini',
+      path: '/users',
+      name: 'Users',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ '@/views/UsuarisDomini')
+      component: () => import(/* webpackChunkName: "about" */ '@/views/Users')
     },
     {
-      path: '/fullcalcul',
-      name: 'FullCalcul',
-      component: () => import('@/views/FullCalcul')
+      path: '/spreadsheet',
+      name: 'Spreadsheet',
+      component: () => import('@/views/Spreadsheet')
     },
     {
       path: '/csv',
@@ -31,9 +31,9 @@ let router = new Router({
       component: () => import('@/views/Csv')
     },
     {
-      path: '/importarxml',
-      name: 'ImportarXml',
-      component: () => import('@/views/ImportarXml')
+      path: '/importxml',
+      name: 'ImportXml',
+      component: () => import('@/views/ImportXml')
     }
   ]
 })

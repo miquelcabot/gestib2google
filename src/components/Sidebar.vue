@@ -21,7 +21,7 @@
 
     <!-- Nav Item - Usuaris -->
     <li class="nav-item">
-        <router-link to="/usuarisdomini" class="nav-link">
+        <router-link to="/users" class="nav-link">
           <i class="fas fa-fw fa-users"></i>
           <span>Usuaris del domini</span>
         </router-link>
@@ -29,7 +29,7 @@
 
     <!-- Nav Item - Full de càlcul -->
     <li class="nav-item">
-        <router-link to="/fullcalcul" class="nav-link">
+        <router-link to="/spreadsheet" class="nav-link">
           <i class="fas fa-fw fa-table"></i>
           <span>Exportar a full de càlcul</span>
         </router-link>
@@ -45,7 +45,7 @@
 
     <!-- Nav Item - Importar XML -->
     <li class="nav-item">
-        <router-link to="/importarxml" class="nav-link">
+        <router-link to="/importxml" class="nav-link">
           <i class="fas fa-fw fa-upload"></i>
           <span>Importar XML</span>
         </router-link>

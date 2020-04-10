@@ -65,7 +65,7 @@
 import {getDomainGroupsStudents} from '../api/DomainRead'
 
 export default {
-  name: 'ImportarXml',
+  name: 'ImportXml',
   data () {
     return {
       showError: false,

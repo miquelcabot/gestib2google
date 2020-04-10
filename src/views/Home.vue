@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'Inici'
+  name: 'Home'
 }
 </script>
 

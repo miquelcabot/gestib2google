@@ -10,9 +10,9 @@
       <div class="card-body">
         <form @submit.prevent>
           <div class="form-group">
-            <label for="groupsusuarisdomini" class="col-sm-2 col-form-label">Grups</label>
+            <label for="groupsdomainusers" class="col-sm-2 col-form-label">Grups</label>
             <div class="col-sm-10">
-              <select class="form-control" id="groupsusuarisdomini" name="group">
+              <select class="form-control" id="groupsdomainusers" name="group">
                 <option value="">Tots</option>
                 <option v-for="group in groups" v-bind:key="group.email" v-bind:value="group.email">
                   {{ group.name.replace('Alumnat', '') }}
@@ -67,7 +67,7 @@
 import {getDomainGroupsStudents, getDomainUsers} from '../api/DomainRead'
 
 export default {
-  name: 'UsuarisDomini',
+  name: 'Users',
   data () {
     return {
       showError: false,
