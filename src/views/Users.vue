@@ -3,6 +3,9 @@
     <b-alert v-model="showError" variant="danger" dismissible>
       <strong>ERROR: </strong>{{error}}
     </b-alert>
+    <b-modal id="modal-ok" title="GestIB to Google" ok-only>
+      <p class="my-4">Procés finalitzat!</p>
+    </b-modal>
     <!-- Form mostrar usuaris -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
@@ -13,7 +16,7 @@
           <div class="form-group">
             <label for="group" class="col-sm-2 col-form-label">Grups</label>
             <div class="col-sm-10">
-              <select class="form-control" id="group" name="group">
+              <select class="form-control" id="group" name="group" v-model="group">
                 <option value="">Tots</option>
                 <option v-for="group in groups" v-bind:key="group.email" v-bind:value="group.email">
                   {{ group.name.replace('Alumnat', '') }}
@@ -25,40 +28,40 @@
           <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
-                <input class="form-check-input" id="onlyteachers" name="onlyteachers" type="checkbox"> Només professorat</label>
+                <input class="form-check-input" id="onlyteachers" name="onlyteachers" type="checkbox" v-model="onlyteachers"> Només professorat</label>
               </div>
           </div>
           <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
-                <input class="form-check-input" id="onlyactive" name="onlyactive" type="checkbox"> Només usuaris actius</label>
+                <input class="form-check-input" id="onlyactive" name="onlyactive" type="checkbox" v-model="onlyactive"> Només usuaris actius</label>
               </div>
           </div>
           <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
-                  <input class="form-check-input" id="onlywithoutcode" name="onlywithoutcode" type="checkbox"> Només els usuaris sense ID
+                  <input class="form-check-input" id="onlywithoutcode" name="onlywithoutcode" type="checkbox" v-model="onlywithoutcode"> Només els usuaris sense ID
                 </label>
               </div>
           </div>
           <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
-                  <input class="form-check-input" id="onlynotsession" name="onlynotsession" type="checkbox"> Només els usuaris que no han iniciat mai sessió
+                  <input class="form-check-input" id="onlynotsession" name="onlynotsession" type="checkbox" v-model="onlynotsession"> Només els usuaris que no han iniciat mai sessió
                 </label>
               </div>
           </div>
           <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
-                  <input class="form-check-input" id="onlywithoutorgunit" name="onlywithoutorgunit" type="checkbox"> Només els usuaris de la Unitat Organitzativa principal (/)
+                  <input class="form-check-input" id="onlywithoutorgunit" name="onlywithoutorgunit" type="checkbox" v-model="onlywithoutorgunit"> Només els usuaris de la Unitat Organitzativa principal (/)
                 </label>
               </div>
             </div>
           <div class="form-group">
             <button class="btn btn-primary" v-on:click="showUsers()" :disabled="loading">
               <span v-if="loading" class="spinner-border spinner-border-sm"></span>
-              {{ loading ? 'Carregant...' : 'Mostrar' }}
+              {{ loading ? 'Carregant ...' : 'Mostrar' }}
             </button>
           </div>
         </form>
@@ -72,10 +75,9 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <table class="table table-bordered" width="100%" cellspacing="0">
             <thead>
               <tr>
-                <th>Id</th>
                 <th>Nom</th>
                 <th>Email</th>
                 <th>Professor</th>
@@ -85,22 +87,22 @@
             </thead>
             <tfoot>
               <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
-                <th>Salary</th>
+                <th colspan="5">Total usuaris trobats: {{ users.length }}</th>
               </tr>
             </tfoot>
             <tbody>
-              <tr>
-                <td>Tiger Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
+              <tr v-if="loading">
+                <td colspan="5" v-if="loading">Carregant ...</td>
+              </tr>
+              <tr v-if="!users.length && !loading">
+                <td colspan="5">No hi ha dades carregades</td>
+              </tr>
+              <tr v-for="user in users" v-bind:key="user.id">
+                <td>{{ user.surname + ', ' + user.name }}</td>
+                <td>{{ user.domainemail }}</td>
+                <td>{{ user.teacher ? 'TEACHER' : '' }}</td>
+                <td>{{ user.groups.join(', ') }}</td>
+                <td>{{ user.organizationalUnit }}</td>
               </tr>
             </tbody>
           </table>
@@ -108,14 +110,6 @@
       </div>
     </div>
     <!-- Fi taula mostrar usuaris -->
-
-    <!-- Page level custom scripts -->
-    <script type="application/javascript">
-      // Call the dataTables jQuery plugin
-      $(document).ready(function() {
-        $('#dataTable').DataTable();
-      });
-    </script>
   </div>
 </template>
 
@@ -126,10 +120,17 @@ export default {
   name: 'Users',
   data () {
     return {
+      group: '',
+      onlyteachers: false,
+      onlyactive: false,
+      onlywithoutcode: false,
+      onlynotsession: false,
+      onlywithoutorgunit: false,
       showError: false,
       error: '',
       loading: false,
-      groups: []
+      groups: [],
+      users: []
     }
   },
   mounted () {
@@ -145,14 +146,44 @@ export default {
   methods: {
     showUsers: function () {
       this.loading = true
+      this.users = []
       getDomainUsers((err, users) => {
         if (err) {
           this.error = 'Error llegins usuaris "' + err.message + '"'
           this.showError = true
         } else {
-          console.log(users)
+          Object.keys(users).forEach(user => {
+            if (!this.onlywithoutcode || users[user].withoutcode || (users[user].id.length < 15)) {
+              if (!this.onlynotsession || (users[user].lastLoginTime.getFullYear() < 1980)) {
+                if (!this.onlywithoutorgunit || (users[user].organizationalUnit === '/')) {
+                  if (!this.onlyteachers || users[user].teacher) {
+                    if (!this.onlyactive || !users[user].suspended) {
+                      if (!this.group || users[user].groups.includes(this.group)) {
+                        this.users.push(users[user])
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            /*
+                    if (empty($selectedgroup)) {
+                      $group_ok = TRUE;
+                    } else {
+                      $group_ok = FALSE;
+                      foreach ($domainuser->groups as $group) {
+                        if ((strpos($group, $selectedgroup) !== FALSE && strpos($group, $selectedgroup) == 0)) {
+                          $group_ok = TRUE;
+                        }
+                      }
+                    }
+                    if ($group_ok) {
+            */
+          })
         }
         this.loading = false
+        this.$bvModal.show('modal-ok')
       })
     }
   }

@@ -192,7 +192,7 @@ const getDomainUsers = (callback) => {
           groupMember, // groups
           null, // expedient
           user.orgUnitPath, // organizationalUnit
-          user.lastLoginTime // lastLoginTime
+          new Date(user.lastLoginTime) // lastLoginTime
         )
       })
 
