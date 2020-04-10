@@ -46,7 +46,6 @@
 
     <!-- Custom scripts for all pages-->
     <script src="./static/js/sb-admin-2.js" type="application/javascript"></script>
-
   </div>
 </template>
 

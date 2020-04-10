@@ -3,6 +3,7 @@
     <b-alert v-model="showError" variant="danger" dismissible>
       <strong>ERROR: </strong>{{error}}
     </b-alert>
+    <!-- Form mostrar usuaris -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">Mostrar usuaris del domini</h6>
@@ -10,9 +11,9 @@
       <div class="card-body">
         <form @submit.prevent>
           <div class="form-group">
-            <label for="groupsdomainusers" class="col-sm-2 col-form-label">Grups</label>
+            <label for="group" class="col-sm-2 col-form-label">Grups</label>
             <div class="col-sm-10">
-              <select class="form-control" id="groupsdomainusers" name="group">
+              <select class="form-control" id="group" name="group">
                 <option value="">Tots</option>
                 <option v-for="group in groups" v-bind:key="group.email" v-bind:value="group.email">
                   {{ group.name.replace('Alumnat', '') }}
@@ -55,11 +56,66 @@
               </div>
             </div>
           <div class="form-group">
-            <button class="btn btn-primary" v-on:click="showUsers()">Mostrar</button>
+            <button class="btn btn-primary" v-on:click="showUsers()" :disabled="loading">
+              <span v-if="loading" class="spinner-border spinner-border-sm"></span>
+              {{ loading ? 'Carregant...' : 'Mostrar' }}
+            </button>
           </div>
         </form>
       </div>
     </div>
+    <!-- Fi form mostrar usuaris -->
+    <!-- Taula mostrar usuaris -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Usuaris</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Professor</th>
+                <th>Grups</th>
+                <th>Unitat</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <tr>
+                <td>Tiger Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011/04/25</td>
+                <td>$320,800</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- Fi taula mostrar usuaris -->
+
+    <!-- Page level custom scripts -->
+    <script type="application/javascript">
+      // Call the dataTables jQuery plugin
+      $(document).ready(function() {
+        $('#dataTable').DataTable();
+      });
+    </script>
   </div>
 </template>
 
@@ -72,6 +128,7 @@ export default {
     return {
       showError: false,
       error: '',
+      loading: false,
       groups: []
     }
   },
@@ -87,13 +144,15 @@ export default {
   },
   methods: {
     showUsers: function () {
+      this.loading = true
       getDomainUsers((err, users) => {
         if (err) {
           this.error = 'Error llegins usuaris "' + err.message + '"'
           this.showError = true
+        } else {
+          console.log(users)
         }
-
-        console.log(users)
+        this.loading = false
       })
     }
   }
