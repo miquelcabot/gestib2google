@@ -8,7 +8,7 @@
           <h6 class="m-0 font-weight-bold text-primary">Mostrar usuaris del domini</h6>
       </div>
       <div class="card-body">
-        <form action="showusers.php" method="GET">
+        <form @submit.prevent>
           <div class="form-group">
             <label for="groupsusuarisdomini" class="col-sm-2 col-form-label">Grups</label>
             <div class="col-sm-10">
@@ -55,7 +55,7 @@
               </div>
             </div>
           <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Mostrar">
+            <button class="btn btn-primary" v-on:click="showUsers()">Mostrar</button>
           </div>
         </form>
       </div>
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import {getDomainGroupsStudents} from '../api/DomainRead'
+import {getDomainGroupsStudents, getDomainUsers} from '../api/DomainRead'
 
 export default {
   name: 'UsuarisDomini',
@@ -83,12 +83,19 @@ export default {
       }
 
       this.groups = groups
-      /*
-      Object.keys(groups).forEach(id => {
-        console.log(groups[id].email)
-      })
-      */
     })
+  },
+  methods: {
+    showUsers: function () {
+      getDomainUsers((err, users) => {
+        if (err) {
+          this.error = 'Error llegins usuaris "' + err.message + '"'
+          this.showError = true
+        }
+
+        console.log(users)
+      })
+    }
   }
 }
 </script>

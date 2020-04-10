@@ -4,9 +4,9 @@
         <h6 class="m-0 font-weight-bold text-primary">Exportar a un full de càlcul</h6>
     </div>
     <div class="card-body">
-      <form action="spreadsheet.php" method="GET">
+      <form @submit.prevent>
         <div class="form-group">
-          <input type="submit" class="btn btn-primary" value="Exportar">
+          <button class="btn btn-primary" v-on:click="spreadsheet()">Exportar</button>
         </div>
       </form>
     </div>
@@ -15,7 +15,12 @@
 
 <script>
 export default {
-  name: 'FullCalcul'
+  name: 'FullCalcul',
+  methods: {
+    spreadsheet: function () {
+      alert('executar')
+    }
+  }
 }
 </script>
 

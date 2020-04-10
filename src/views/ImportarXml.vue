@@ -8,7 +8,7 @@
           <h6 class="m-0 font-weight-bold text-primary">Importar fitxer XML de GestIB</h6>
       </div>
       <div class="card-body">
-        <form action="importgestib.php" method="POST" enctype="multipart/form-data">
+        <form @submit.prevent>
           <div class="form-group">
             <div class="custom-file">
               <input type="file" id="xmlfile" name="xmlfile"  class="custom-file-input" placeholder="File" required="required">
@@ -54,7 +54,7 @@
               <input class="form-check-input" id="apply" name="apply" type="checkbox"> Aplicar canvis</label>
             </div>
           </div>
-          <input type="submit" class="btn btn-primary" value="Importar">
+          <button class="btn btn-primary" v-on:click="importGestib()">Importar</button>
         </form>
       </div>
     </div>
@@ -81,12 +81,12 @@ export default {
       }
 
       this.groups = groups
-      /*
-      Object.keys(groups).forEach(id => {
-        console.log(groups[id].email)
-      })
-      */
     })
+  },
+  methods: {
+    importGestib: function () {
+      alert('executar')
+    }
   }
 }
 </script>

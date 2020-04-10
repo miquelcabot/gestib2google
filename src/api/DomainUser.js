@@ -1,3 +1,12 @@
+const DOMAIN = '@cifpfbmoll.eu' // kkkk TODO: posar com a configuració
+
+const DEPARTMENT_GROUP_PREFIX = 'dept.'
+const TEACHERS_GROUP_PREFIX = 'professorat.'
+const STUDENTS_GROUP_PREFIX = 'alumnat.'
+const TUTORS_GROUP_PREFIX = 'tutor.'
+
+const LONG_STUDENTS_EMAIL = true
+
 const pad = (num, size) => {
   let s = num + ''
   while (s.length < size) {
@@ -9,12 +18,12 @@ const pad = (num, size) => {
 /*
  * Eliminar accents, ñ, ...
  */
-const removeaccents = (str) => {
+const removeAccents = (str) => {
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
 
 const normalizedName = (name) => {
-  let tokens = removeaccents(name.toLowerCase()).split(' ')
+  let tokens = removeAccents(name.toLowerCase()).split(' ')
   let names = []
   // Words with compound names and surnames
   const especialTokens = ['da', 'de', 'di', 'do', 'del', 'la', 'las', 'le', 'los',
@@ -58,66 +67,44 @@ class DomainUser {
   email () {
     if (this.domainemail) {
       return this.domainemail
-    } else if (this.teacher) {
+    } else if (this.teacher || LONG_STUDENTS_EMAIL) {
       let email = normalizedName(this.name.substring(0, 1)) + normalizedName(this.surname1)
-      return email + '@cifpfbmoll.eu'
+      return email + DOMAIN
     } else {
       let email = normalizedName(this.name.substring(0, 1)) +
         normalizedName(this.surname1.substring(0, 1)) +
         normalizedName(this.surname2.substring(0, 1))
-      return email + pad(0, 2) + '@cifpfbmoll.eu'
+      return email + pad(0, 2) + DOMAIN
     }
   }
 
   user () {
-    return this.email().replace('@cifpfbmoll.eu', '')
+    return this.email().replace(DOMAIN, '')
   }
 
-  groupswithdomain () {
+  groupsWithDomain () {
     let gr = []
+    // kkk TODO: substituir per forEach()
     for (let i = 0; i < this.groups.length; i++) {
       let group = this.groups[i]
-      gr.push(group + '@cifpfbmoll.eu')
+      gr.push(group + DOMAIN)
     }
     return gr
   }
 
-  groupswithprefix () {
+  groupsWithPrefix () {
     let gr = []
     for (let i = 0; i < this.groups.length; i++) {
       let group = this.groups[i]
-      if (group.startsWith('alumnat.') || group.startsWith('ee.') || group.startsWith('tutors')) {
+      if (group.startsWith(STUDENTS_GROUP_PREFIX) || group.startsWith(TEACHERS_GROUP_PREFIX) || group.startsWith(TUTORS_GROUP_PREFIX) || group.startsWith(DEPARTMENT_GROUP_PREFIX)) {
         gr.push(group)
       }
     }
     return gr
   }
 
-  groupswithprefixsimple () {
-    let gr = []
-    for (let i = 0; i < this.groups.length; i++) {
-      let group = this.groups[i]
-      if (group.startsWith('alumnat.') || group.startsWith('ee.') || group.startsWith('tutors')) {
-        gr.push(group.replace('alumnat.', '').replace('ee.', ''))
-      }
-    }
-    return gr
-  }
-
-  groupswithprefixadded () {
-    let gr = []
-    for (let i = 0; i < this.groups.length; i++) {
-      let group = this.groups[i]
-      if (this.teacher) {
-        gr.push('ee.' + group)
-      } else {
-        gr.push('alumnat.' + group)
-      }
-    }
-    if (this.teacher && this.tutor) {
-      gr.push('tutors')
-    }
-    return gr
+  groupsWithPrefixAdded () {
+    return this.groups
   }
 
   toString () {
