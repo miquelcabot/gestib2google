@@ -34,6 +34,11 @@ let router = new Router({
       path: '/importxml',
       name: 'ImportXml',
       component: () => import('@/views/ImportXml')
+    },
+    {
+      path: '/setup',
+      name: 'Setup',
+      component: () => import('@/views/Setup')
     }
   ]
 })

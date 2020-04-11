@@ -51,6 +51,14 @@
         </router-link>
     </li>
 
+    <!-- Nav Item - Configuració -->
+    <li class="nav-item">
+        <router-link to="/setup" class="nav-link">
+          <i class="fas fa-cogs"></i>
+          <span>Configuració</span>
+        </router-link>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
