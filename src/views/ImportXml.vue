@@ -53,6 +53,7 @@
 
 <script>
 import {getDomainGroupsStudents} from '../api/DomainRead'
+import {readXmlFile} from '../api/XmlFile'
 
 export default {
   name: 'ImportXml',
@@ -89,14 +90,19 @@ export default {
       // Llegim el fitxer XML com a text
       const reader = new FileReader()
       reader.onload = (evt) => {
-        this.readXmlFile(reader.result)
-        this.loading = false
-        this.$bvModal.show('modal-ok')
+        readXmlFile(reader.result, (err, data) => {
+          if (err) {
+            this.error = 'Error llegint XML "' + err.message + '"'
+            this.showError = true
+          } else {
+            console.log(data)
+          }
+
+          this.loading = false
+          this.$bvModal.show('modal-ok')
+        })
       }
       reader.readAsText(this.xmlFile)
-    },
-    readXmlFile (data) {
-      console.log(data)
     }
   }
 }

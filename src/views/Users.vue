@@ -149,7 +149,7 @@ export default {
       this.users = []
       getDomainUsers((err, users) => {
         if (err) {
-          this.error = 'Error llegins usuaris "' + err.message + '"'
+          this.error = 'Error llegint usuaris "' + err.message + '"'
           this.showError = true
         } else {
           Object.keys(users).forEach(user => {

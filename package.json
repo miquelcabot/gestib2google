@@ -36,7 +36,8 @@
     "core-js": "^3.6.4",
     "googleapis": "^48.0.0",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
