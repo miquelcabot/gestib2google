@@ -1,0 +1,12 @@
+{
+  "redirectUrl": "http://localhost:8080",
+  "domain": "cifpfbmoll.eu",
+  "defaultPassword": "Curs201920",
+  "groupPrefixDepartment": "dept.",
+  "groupPrefixTeachers": "professorat.",
+  "groupPrefixStudents": "alumnat.",
+  "groupPrefixTutors": "tutor.",
+  "organizationalUnitTeachers": "/Professorat",
+  "organizationalUnitStudents": "/Alumnat",
+  "longStudentsEmail": true
+}

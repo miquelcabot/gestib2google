@@ -16,7 +16,7 @@
           <div class="form-group">
             <label for="group" class="col-sm-2 col-form-label">Grups</label>
             <div class="col-sm-10">
-              <select class="form-control" id="group" name="group" v-model="group">
+              <select class="form-control" id="group" name="group" v-model="group" :disabled="loading">
                 <option value="">Tots</option>
                 <option v-for="group in groups" v-bind:key="group.email" v-bind:value="group.email">
                   {{ group.name.replace('Alumnat', '') }}
@@ -28,33 +28,33 @@
           <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
-                <input class="form-check-input" id="onlyteachers" name="onlyteachers" type="checkbox" v-model="onlyteachers"> Només professorat</label>
+                <input class="form-check-input" id="onlyteachers" name="onlyteachers" type="checkbox" v-model="onlyteachers" :disabled="loading"> Només professorat</label>
               </div>
           </div>
           <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
-                <input class="form-check-input" id="onlyactive" name="onlyactive" type="checkbox" v-model="onlyactive"> Només usuaris actius</label>
+                <input class="form-check-input" id="onlyactive" name="onlyactive" type="checkbox" v-model="onlyactive" :disabled="loading"> Només usuaris actius</label>
               </div>
           </div>
           <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
-                  <input class="form-check-input" id="onlywithoutcode" name="onlywithoutcode" type="checkbox" v-model="onlywithoutcode"> Només els usuaris sense ID
+                  <input class="form-check-input" id="onlywithoutcode" name="onlywithoutcode" type="checkbox" v-model="onlywithoutcode" :disabled="loading"> Només els usuaris sense ID
                 </label>
               </div>
           </div>
           <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
-                  <input class="form-check-input" id="onlynotsession" name="onlynotsession" type="checkbox" v-model="onlynotsession"> Només els usuaris que no han iniciat mai sessió
+                  <input class="form-check-input" id="onlynotsession" name="onlynotsession" type="checkbox" v-model="onlynotsession" :disabled="loading"> Només els usuaris que no han iniciat mai sessió
                 </label>
               </div>
           </div>
           <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
-                  <input class="form-check-input" id="onlywithoutorgunit" name="onlywithoutorgunit" type="checkbox" v-model="onlywithoutorgunit"> Només els usuaris de la Unitat Organitzativa principal (/)
+                  <input class="form-check-input" id="onlywithoutorgunit" name="onlywithoutorgunit" type="checkbox" v-model="onlywithoutorgunit" :disabled="loading"> Només els usuaris de la Unitat Organitzativa principal (/)
                 </label>
               </div>
             </div>

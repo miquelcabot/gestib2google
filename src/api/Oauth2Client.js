@@ -1,4 +1,5 @@
 import * as clientSecret from '../client_secret.json'
+import * as config from '../config.json'
 
 const {google} = require('googleapis')
 
@@ -11,7 +12,7 @@ const SCOPES = [
 
 /* eslint-disable camelcase */
 const {client_secret, client_id} = clientSecret.web
-const redirect_url = 'http://localhost:8080'
+const redirect_url = config.redirectUrl
 
 const oauth2Client = () => {
   const oauth2Client = new google.auth.OAuth2(

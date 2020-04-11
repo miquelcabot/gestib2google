@@ -1,11 +1,4 @@
-const DOMAIN = '@cifpfbmoll.eu' // kkkk TODO: posar com a configuració
-
-const DEPARTMENT_GROUP_PREFIX = 'dept.'
-const TEACHERS_GROUP_PREFIX = 'professorat.'
-const STUDENTS_GROUP_PREFIX = 'alumnat.'
-const TUTORS_GROUP_PREFIX = 'tutor.'
-
-const LONG_STUDENTS_EMAIL = true
+import * as config from '../config.json'
 
 const pad = (num, size) => {
   let s = num + ''
@@ -67,19 +60,19 @@ class DomainUser {
   email () {
     if (this.domainemail) {
       return this.domainemail
-    } else if (this.teacher || LONG_STUDENTS_EMAIL) {
+    } else if (this.teacher || config.longStudentsEmail) {
       let email = normalizedName(this.name.substring(0, 1)) + normalizedName(this.surname1)
-      return email + DOMAIN
+      return email + '@' + config.domain
     } else {
       let email = normalizedName(this.name.substring(0, 1)) +
         normalizedName(this.surname1.substring(0, 1)) +
         normalizedName(this.surname2.substring(0, 1))
-      return email + pad(0, 2) + DOMAIN
+      return email + pad(0, 2) + '@' + config.domain
     }
   }
 
   user () {
-    return this.email().replace(DOMAIN, '')
+    return this.email().replace('@' + config.domain, '')
   }
 
   groupsWithDomain () {
@@ -87,7 +80,7 @@ class DomainUser {
     // kkk TODO: substituir per forEach()
     for (let i = 0; i < this.groups.length; i++) {
       let group = this.groups[i]
-      gr.push(group + DOMAIN)
+      gr.push(group + '@' + config.domain)
     }
     return gr
   }
@@ -96,7 +89,7 @@ class DomainUser {
     let gr = []
     for (let i = 0; i < this.groups.length; i++) {
       let group = this.groups[i]
-      if (group.startsWith(STUDENTS_GROUP_PREFIX) || group.startsWith(TEACHERS_GROUP_PREFIX) || group.startsWith(TUTORS_GROUP_PREFIX) || group.startsWith(DEPARTMENT_GROUP_PREFIX)) {
+      if (group.startsWith(config.groupPrefixStudents) || group.startsWith(config.groupPrefixTeachers) || group.startsWith(config.groupPrefixTutors) || group.startsWith(config.groupPrefixDepartment)) {
         gr.push(group)
       }
     }
