@@ -144,7 +144,7 @@ export default {
     })
   },
   methods: {
-    showUsers: function () {
+    showUsers () {
       this.loading = true
       this.users = []
       getDomainUsers((err, users) => {
@@ -166,20 +166,6 @@ export default {
                 }
               }
             }
-
-            /*
-                    if (empty($selectedgroup)) {
-                      $group_ok = TRUE;
-                    } else {
-                      $group_ok = FALSE;
-                      foreach ($domainuser->groups as $group) {
-                        if ((strpos($group, $selectedgroup) !== FALSE && strpos($group, $selectedgroup) == 0)) {
-                          $group_ok = TRUE;
-                        }
-                      }
-                    }
-                    if ($group_ok) {
-            */
           })
         }
         this.loading = false

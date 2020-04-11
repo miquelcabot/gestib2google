@@ -17,7 +17,7 @@
 export default {
   name: 'Spreadsheet',
   methods: {
-    spreadsheet: function () {
+    spreadsheet () {
       alert('executar')
     }
   }
