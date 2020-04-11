@@ -3,7 +3,7 @@
     <b-alert v-model="showError" variant="danger" dismissible>
       <strong>ERROR: </strong>{{error}}
     </b-alert>
-    <b-modal id="modal-ok" title="GestIB to Google" ok-only>
+    <b-modal id="modal-ok" title="GestIB2Google" ok-only>
       <p class="my-4">Procés finalitzat!</p>
     </b-modal>
     <!-- Form mostrar usuaris -->

@@ -3,9 +3,9 @@
     <!-- Sidebar - Brand -->
     <router-link to="/" class="sidebar-brand d-flex align-items-center justify-content-center">
         <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-file-upload"></i>
+        <i class="fab fa-gofore"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">GestIB to Google</div>
+        <div class="sidebar-brand-text mx-3">GestIB2Google</div>
     </router-link>
 
     <!-- Divider -->
