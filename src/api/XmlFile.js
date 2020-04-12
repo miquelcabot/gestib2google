@@ -44,12 +44,35 @@ const getGroupEmails = (groupName, usertype) => {
   }
 
   if (name.includes('batx')) {
+    // Batxillerat
     email.push(groupPrefix + 'bat' + curs + grup)
   } else if (name.includes('eso')) {
+    // ESO
     email.push(groupPrefix + 'eso' + curs + grup)
   } else {
     // Formació Professional
-
+    let fpName = name.split(' ')[0]
+    if (fpName in config.groupNameConversion) {
+      if (grup in config.groupNameConversion[fpName].groups) {
+        let fpConvertedName = config.groupNameConversion[fpName].name
+        let groupNames = []
+        if (usertype === USERTYPE.student) {
+          groupNames = config.groupNameConversion[fpName].groups[grup].student
+        } else {
+          groupNames = config.groupNameConversion[fpName].groups[grup].teacher
+        }
+        groupNames.forEach(groupName => {
+          if (groupName) {
+            // Si tenim configurat el grup de destí...
+            email.push(groupPrefix + fpConvertedName + groupName)
+          }
+        })
+      } else {
+        console.log('ATENCIÓ: El grup ' + fpName + '-' + grup + ' no està configurat a "groupNameConversion" al fitxer config.json')
+      }
+    } else {
+      console.log('ATENCIÓ: El grup ' + fpName + ' no està configurat a "groupNameConversion" al fitxer config.json')
+    }
   }
   return email
 }
