@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import {getDomainGroupsStudents} from '../api/DomainRead'
+import {getDomainGroupsStudents, getDomainUsers} from '../api/DomainRead'
 import {readXmlFile} from '../api/XmlFile'
 
 export default {
@@ -90,16 +90,24 @@ export default {
       // Llegim el fitxer XML com a text
       const reader = new FileReader()
       reader.onload = (evt) => {
-        readXmlFile(reader.result, (err, data) => {
+        readXmlFile(reader.result, (err, xmlusers) => {
           if (err) {
             this.error = 'Error llegint XML "' + err.message + '"'
             this.showError = true
           } else {
-            console.log(data)
+            getDomainUsers((err, domainusers, domaingroups) => {
+              if (err) {
+                this.error = 'Error llegint XML "' + err.message + '"'
+                this.showError = true
+              } else {
+                console.log(xmlusers)
+                console.log(domainusers)
+                console.log(domaingroups)
+              }
+              this.loading = false
+              this.$bvModal.show('modal-ok')
+            })
           }
-
-          this.loading = false
-          this.$bvModal.show('modal-ok')
         })
       }
       reader.readAsText(this.xmlFile)

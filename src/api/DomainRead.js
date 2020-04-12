@@ -155,7 +155,7 @@ const getDomainUsers = (callback) => {
     if (err) return callback(err, null)
 
     getAllDomainUsers(null, null, (err, users) => {
-      if (err) return callback(err, null)
+      if (err) return callback(err, null, null)
 
       let userWithoutCode = 0
       users.forEach(user => {
@@ -197,7 +197,7 @@ const getDomainUsers = (callback) => {
       })
 
       // Retornam domainUsers
-      callback(null, domainUsers)
+      callback(null, domainUsers, groups)
     })
   })
 }

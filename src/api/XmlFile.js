@@ -244,12 +244,8 @@ const readXmlFile = (xmlfile, callback) => {
     if (err) return callback(err, null)
 
     let {xmlgroups, xmltutors} = readXmlGroups(xmldata)
-    console.log(xmlgroups)
-    console.log(xmltutors)
     let xmltimetable = readXmlTimeTable(xmldata, xmlgroups)
-    console.log(xmltimetable)
-    let xmlusers = readXmlUsers(xmldata, xmlgroups,
-      xmltutors, xmltimetable)
+    let xmlusers = readXmlUsers(xmldata, xmlgroups, xmltutors, xmltimetable)
     callback(null, xmlusers)
   })
 }
