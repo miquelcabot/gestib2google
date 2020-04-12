@@ -3,6 +3,18 @@ import * as config from '../config.json'
 
 const parseString = require('xml2js').parseString
 
+/**
+ * Enumeració de tipus d'usuaris
+ */
+const USERTYPE = {
+  student: 0,
+  teacher: 1,
+  tutor: 2
+}
+
+/**
+ * Retorna l'string capitalitzat (mb_convert_case() a PHP)
+ */
 const titleCase = (str) => {
   let res = ''
   let word = str.split(' ')
@@ -13,79 +25,89 @@ const titleCase = (str) => {
   return res.trim()
 }
 
-const getgroupemails = (groupName, isstudent) => {
+/**
+ * A partir del nom del grup i el tipus d'usuari, retorna el mail del grup
+ */
+const getGroupEmails = (groupName, usertype) => {
   let name = groupName.toLowerCase()
   let email = []
-  let curs = name.match(/\d+/) // We get the course from the numbers in the string
-  let grup = name.slice(-1) // We get the group name from the last char of the string
+  let curs = name.match(/\d+/) // Agafam el curs dels números del string
+  let grup = name.slice(-1) // Agafam el nom del grup del darrer caràcter del string
+  let groupPrefix
+
+  if (usertype === USERTYPE.student) {
+    groupPrefix = config.groupPrefixStudents
+  } else if (usertype === USERTYPE.tutor) {
+    groupPrefix = config.groupPrefixTutors
+  } else {
+    groupPrefix = config.groupPrefixTeachers
+  }
+
   if (name.includes('batx')) {
-    email.push('bat' + curs + grup)
+    email.push(groupPrefix + 'bat' + curs + grup)
   } else if (name.includes('eso')) {
-    email.push('eso' + curs + grup)
-  } else if (name.includes('ifc21')) {
-    if (grup === 'a') {
-      email.push('smx1')
-    } else if (grup === 'b') {
-      email.push('smx2')
-    } else if ((grup === 'c') && isstudent) {
-      // Si és estudiant, feim que grup C de SMX sigui de 1r i 2n
-      email.push('smx1')
-      email.push('smx2')
-    }
-  } else if (name.includes('ifc31')) {
-    if (grup === 'a') {
-      email.push('asix1')
-    } else if (grup === 'b') {
-      email.push('asix2')
-    } else if ((grup === 'c') && isstudent) {
-      // Si és estudiant, feim que grup C de ASIX sigui de 1r i 2n
-      email.push('asix1')
-      email.push('asix2')
-    }
+    email.push(groupPrefix + 'eso' + curs + grup)
+  } else {
+    // Formació Professional
+
   }
   return email
 }
 
+/**
+ * Llegeix els grups i els tutors del XML
+ */
 const readXmlGroups = (xmlfile) => {
-  console.log('Loading XML groups...')
-  let xmlgroups = {}
+  console.log('Carregant grups de l\'XML...')
+  let xmlgroups = []
   let xmltutors = []
 
+  // Per cada curs i grup...
   for (let i in xmlfile.CENTRE_EXPORT.CURSOS[0].CURS) {
     let curs = xmlfile.CENTRE_EXPORT.CURSOS[0].CURS[i].$
 
     for (let j in xmlfile.CENTRE_EXPORT.CURSOS[0].CURS[i].GRUP) {
       let grup = xmlfile.CENTRE_EXPORT.CURSOS[0].CURS[i].GRUP[j].$
 
-      xmlgroups[grup.codi] = {
-        'emailsstudents': getgroupemails(curs.descripcio + ' ' + grup.nom, true),
-        'emailsteachers': getgroupemails(curs.descripcio + ' ' + grup.nom, false),
-        'name': curs.descripcio + ' ' + grup.nom
+      // Afegim el grup a xmlgroups
+      xmlgroups[grup.codi] = curs.descripcio + ' ' + grup.nom
+
+      // Si el grup té tutor, afegim a xmltutors el nom del grup
+      if (grup.tutor) {
+        if (!xmltutors.includes(grup.tutor)) {
+          xmltutors[grup.tutor] = []
+        }
+        xmltutors[grup.tutor].push(curs.descripcio + ' ' + grup.nom)
+      } else {
+        console.log('ATENCIÓ: El grup ' + curs.descripcio + ' ' + grup.nom + ' no té tutor assignat al fitxer XML')
       }
-      xmltutors.push(grup.tutor)
+      // Si el grup té 2n tutor, afegim a xmltutors el nom del grup
       if (grup.tutor2) {
-        xmltutors.push(grup.tutor2)
+        if (!xmltutors.includes(grup.tutor2)) {
+          xmltutors[grup.tutor2] = []
+        }
+        xmltutors[grup.tutor2].push(curs.descripcio + ' ' + grup.nom)
       }
     }
   }
 
-  return {
-    xmlgroups: xmlgroups,
-    xmltutors: Array.from(new Set(xmltutors)) // Eliminam duplicats
-  }
+  return {xmlgroups, xmltutors}
 }
 
+/**
+ * A partir de l'horari del XML, emplena els grups dels professors
+ */
 const readXmlTimeTable = (xmlfile, xmlgroups) => {
-  console.log('Loading XML timetable...')
-  let xmltimetable = {}
+  console.log('Carregant horari de l\'XML...')
+  let xmltimetable = []
 
   for (let i in xmlfile.CENTRE_EXPORT.HORARIP[0].SESSIO) {
     let sessio = xmlfile.CENTRE_EXPORT.HORARIP[0].SESSIO[i].$
     let emailsTeachers = []
 
-    let xmlgroup = xmlgroups[sessio.grup]
-    if (xmlgroup != null) {
-      emailsTeachers = emailsTeachers.concat(xmlgroup['emailsteachers'])
+    let xmlgroupname = xmlgroups[sessio.grup]
+    if (xmlgroupname != null) {
+      emailsTeachers = getGroupEmails(xmlgroupname, USERTYPE.teacher)
     }
 
     let timetable = xmltimetable[sessio.professor]
@@ -101,6 +123,9 @@ const readXmlTimeTable = (xmlfile, xmlgroups) => {
   return xmltimetable
 }
 
+/**
+ * Llegeix els usuaris del XML
+ */
 const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
   console.log('Loading XML users...')
   let xmlusers = {}
@@ -115,7 +140,6 @@ const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
     }
 
     xmlusers[student.codi] = new DomainUser(
-      config.domain,
       student.codi,
       titleCase(student.nom),
       titleCase(student.ap1 + ' ' + student.ap2),
@@ -140,7 +164,6 @@ const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
     }
 
     xmlusers[teacher.codi] = new DomainUser(
-      config.domain,
       teacher.codi,
       titleCase(teacher.nom),
       titleCase(teacher.ap1 + ' ' + teacher.ap2),
@@ -157,14 +180,20 @@ const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
   return xmlusers
 }
 
+/**
+ * Llegeix el fitxer XML
+ */
 const readXmlFile = (xmlfile, callback) => {
   parseString(xmlfile, (err, xmldata) => {
     if (err) return callback(err, null)
 
-    let groupstutors = readXmlGroups(xmldata)
-    let xmltimetable = readXmlTimeTable(xmldata, groupstutors.xmlgroups)
-    let xmlusers = readXmlUsers(xmldata, groupstutors.xmlgroups,
-      groupstutors.xmltutors, xmltimetable)
+    let {xmlgroups, xmltutors} = readXmlGroups(xmldata)
+    console.log(xmlgroups)
+    console.log(xmltutors)
+    let xmltimetable = readXmlTimeTable(xmldata, xmlgroups)
+    console.log(xmltimetable)
+    let xmlusers = readXmlUsers(xmldata, xmlgroups,
+      xmltutors, xmltimetable)
     callback(null, xmlusers)
   })
 }
