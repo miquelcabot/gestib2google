@@ -128,9 +128,8 @@ const readXmlTimeTable = (xmlfile, xmlgroups) => {
     let sessio = xmlfile.CENTRE_EXPORT.HORARIP[0].SESSIO[i].$
     let emailsTeachers = []
 
-    let xmlgroupname = xmlgroups[sessio.grup]
-    if (xmlgroupname != null) {
-      emailsTeachers = getGroupEmails(xmlgroupname, USERTYPE.teacher)
+    if (xmlgroups[sessio.grup]) {
+      emailsTeachers = getGroupEmails(xmlgroups[sessio.grup], USERTYPE.teacher)
     }
 
     let timetable = xmltimetable[sessio.professor]
@@ -150,7 +149,7 @@ const readXmlTimeTable = (xmlfile, xmlgroups) => {
  * Llegeix els usuaris del XML
  */
 const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
-  console.log('Loading XML users...')
+  console.log('Carregant usuaris de l\'XML...')
   let xmlusers = {}
 
   // Afegim els alumnes
@@ -159,22 +158,32 @@ const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
 
     let emailsstudent = []
     if (xmlgroups[student.grup]) {
-      emailsstudent = xmlgroups[student.grup].emailsstudents
+      emailsstudent = getGroupEmails(xmlgroups[student.grup], USERTYPE.student)
     }
 
-    xmlusers[student.codi] = new DomainUser(
-      student.codi,
-      titleCase(student.nom),
-      titleCase(student.ap1 + ' ' + student.ap2),
-      titleCase(student.ap1),
-      titleCase(student.ap2),
-      null, // domainemail
-      false, // suspended
-      false, // teacher
-      false, // tutor
-      false, // withoutcode
-      emailsstudent // groups
-    )
+    if (emailsstudent.length) { // Si l'estudiant pertany a algún grup
+      // Hi pot haver un estudiant amb dues matrícules
+      // Si ja existeix, actualitzar
+      if (student.codi in xmlusers) {
+        xmlusers[student.codi].groups = xmlusers[student.codi].groups.concat(emailsstudent)
+      } else {
+        xmlusers[student.codi] = new DomainUser(
+          student.codi,
+          titleCase(student.nom),
+          titleCase(student.ap1 + ' ' + student.ap2),
+          titleCase(student.ap1),
+          titleCase(student.ap2),
+          null, // domainemail
+          false, // suspended
+          false, // teacher
+          false, // withoutcode
+          emailsstudent, // groups
+          student.expedient, // expedient
+          null, // organizationalUnit
+          null // lastLoginTime
+        )
+      }
+    }
   }
 
   // Afegim els professors
@@ -182,8 +191,29 @@ const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
     let teacher = xmlfile.CENTRE_EXPORT.PROFESSORS[0].PROFESSOR[i].$
 
     let emailsteacher = []
+
+    // Afegim grups educatius al professor
     if (xmltimetable[teacher.codi]) {
       emailsteacher = xmltimetable[teacher.codi]
+    }
+
+    // Afegim grup de departament al professor
+    if (teacher.departament) {
+      if (teacher.departament in config.departmentNumberToName) {
+        emailsteacher.push(config.groupPrefixDepartment + config.departmentNumberToName[teacher.departament])
+      } else {
+        console.log('ATENCIÓ: El departament ' + teacher.departament + ' no està configurat a "departmentNumberToName" al fitxer config.json')
+      }
+    } else {
+      console.log('ATENCIÓ: El professor ' + teacher.ap1 + ' ' + teacher.ap2 + ', ' + teacher.nom + ' no té departament assignat al fitxer XML')
+    }
+
+    // Si és tutor, afegim el grups dels que és tutor
+    if (teacher.codi in xmltutors) {
+      xmltutors[teacher.codi].forEach(tutorgroup => {
+        let grouptutors = getGroupEmails(tutorgroup, USERTYPE.tutor)
+        emailsteacher = emailsteacher.concat(grouptutors)
+      })
     }
 
     xmlusers[teacher.codi] = new DomainUser(
@@ -195,11 +225,14 @@ const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
       null, // domainemail
       false, // suspended
       true, // teacher
-      xmltutors.includes(teacher.codi), // tutor
       false, // withoutcode
-      emailsteacher // groups
+      emailsteacher, // groups
+      null, // expedient
+      null, // organizationalUnit
+      null // lastLoginTime
     )
   }
+
   return xmlusers
 }
 

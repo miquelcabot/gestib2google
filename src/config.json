@@ -9,6 +9,14 @@
   "organizationalUnitTeachers": "/Professorat",
   "organizationalUnitStudents": "/Alumnat",
   "longStudentsEmail": true,
+  "departmentNumberToName": {
+    "7310": "orientacio",
+    "7313": "formacioiorientaciolaboral",
+    "7314": "comercimarqueting",
+    "7312": "imatgepersonal",
+    "7315": "informatica",
+    "7311": "sanitat"
+  },
   "groupNameConversion": {
     "com21": {
       "name": "com21",
