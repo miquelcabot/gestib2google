@@ -53,6 +53,7 @@
 
 <script>
 import {getDomainGroupsStudents, getDomainUsers} from '../api/DomainRead'
+import {applyDomainChanges} from '../api/DomainOperations'
 import {readXmlFile} from '../api/XmlFile'
 
 export default {
@@ -103,9 +104,31 @@ export default {
                 console.log(xmlusers)
                 console.log(domainusers)
                 console.log(domaingroups)
+                applyDomainChanges(xmlusers, domainusers, domaingroups, this.apply, this.group, this.onlyteachers, (err, count) => {
+                  if (err) {
+                    this.error = 'Error llegint XML "' + err.message + '"'
+                    this.showError = true
+                  } else {
+                    if (this.apply) {
+                      console.log(count.deleted + ' usuaris han estat suspesos')
+                      console.log(count.created + ' usuaris han estat creats')
+                      console.log(count.activated + ' usuaris han estat activats')
+                      console.log(count.membersmodified + ' usuaris han canviat de grup/s')
+                      console.log(count.orgunitmodified + ' usuaris han canviat de \'organizational unit\'')
+                      console.log(count.groupsmodified + ' grups han estat creats')
+                    } else {
+                      console.log(count.deleted + ' usuaris seran suspesos')
+                      console.log(count.created + ' usuaris seran creats')
+                      console.log(count.activated + ' usuaris seran activats')
+                      console.log(count.membersmodified + ' usuaris canviaran de grup/s')
+                      console.log(count.orgunitmodified + ' usuaris canviaran de \'organizational unit\'')
+                      console.log(count.groupsmodified + ' grups seran creats')
+                    }
+                    this.loading = false
+                    this.$bvModal.show('modal-ok')
+                  }
+                })
               }
-              this.loading = false
-              this.$bvModal.show('modal-ok')
             })
           }
         })
