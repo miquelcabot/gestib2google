@@ -161,8 +161,8 @@ const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
       emailsstudent = getGroupEmails(xmlgroups[student.grup], USERTYPE.student)
     }
 
-    if (emailsstudent.length) { // Si l'estudiant pertany a algún grup
-      // Hi pot haver un estudiant amb dues matrícules
+    if (emailsstudent.length) { // Si l'alumne pertany a algún grup
+      // Hi pot haver un alumne amb dues matrícules
       // Si ja existeix, actualitzar
       if (student.codi in xmlusers) {
         xmlusers[student.codi].groups = xmlusers[student.codi].groups.concat(emailsstudent)

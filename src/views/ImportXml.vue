@@ -98,7 +98,7 @@ export default {
           } else {
             getDomainUsers((err, domainusers, domaingroups) => {
               if (err) {
-                this.error = 'Error llegint XML "' + err.message + '"'
+                this.error = 'Error llegint els usuaris del domini "' + err.message + '"'
                 this.showError = true
               } else {
                 console.log(xmlusers)
@@ -106,7 +106,7 @@ export default {
                 console.log(domaingroups)
                 applyDomainChanges(xmlusers, domainusers, domaingroups, this.apply, this.group, this.onlyteachers, (err, count) => {
                   if (err) {
-                    this.error = 'Error llegint XML "' + err.message + '"'
+                    this.error = 'Error aplicant els canvis al domini "' + err.message + '"'
                     this.showError = true
                   } else {
                     if (this.apply) {
@@ -114,15 +114,15 @@ export default {
                       console.log(count.created + ' usuaris han estat creats')
                       console.log(count.activated + ' usuaris han estat activats')
                       console.log(count.membersmodified + ' usuaris han canviat de grup/s')
-                      console.log(count.orgunitmodified + ' usuaris han canviat de \'organizational unit\'')
-                      console.log(count.groupsmodified + ' grups han estat creats')
+                      console.log(count.orgunitmodified + ' usuaris han canviat d\'unitat organitzativa')
+                      console.log(count.groupscreated + ' grups han estat creats')
                     } else {
                       console.log(count.deleted + ' usuaris seran suspesos')
                       console.log(count.created + ' usuaris seran creats')
                       console.log(count.activated + ' usuaris seran activats')
                       console.log(count.membersmodified + ' usuaris canviaran de grup/s')
-                      console.log(count.orgunitmodified + ' usuaris canviaran de \'organizational unit\'')
-                      console.log(count.groupsmodified + ' grups seran creats')
+                      console.log(count.orgunitmodified + ' usuaris canviaran d\'unitat organitzativa')
+                      console.log(count.groupscreated + ' grups seran creats')
                     }
                     this.loading = false
                     this.$bvModal.show('modal-ok')
