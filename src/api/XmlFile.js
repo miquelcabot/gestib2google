@@ -97,7 +97,7 @@ const readXmlGroups = (xmlfile) => {
 
       // Si el grup té tutor, afegim a xmltutors el nom del grup
       if (grup.tutor) {
-        if (!xmltutors.includes(grup.tutor)) {
+        if (!xmltutors[grup.tutor]) {
           xmltutors[grup.tutor] = []
         }
         xmltutors[grup.tutor].push(curs.descripcio + ' ' + grup.nom)
@@ -106,7 +106,7 @@ const readXmlGroups = (xmlfile) => {
       }
       // Si el grup té 2n tutor, afegim a xmltutors el nom del grup
       if (grup.tutor2) {
-        if (!xmltutors.includes(grup.tutor2)) {
+        if (!xmltutors[grup.tutor2]) {
           xmltutors[grup.tutor2] = []
         }
         xmltutors[grup.tutor2].push(curs.descripcio + ' ' + grup.nom)
