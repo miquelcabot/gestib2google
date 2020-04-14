@@ -72,6 +72,16 @@ const createGroups = (apply, groups, domainGroups) => {
       if (apply) {
         // kkk TODO: afegir grup al domini
         // kkk fer de forma asincrona. primer crear grup, despre, el q faci falta...
+        /*
+        $groupObj = new Google_Service_Directory_Group(
+            array(
+                'email' => $gr."@".DOMAIN
+            )
+        );
+        $service->groups->insert($groupObj);
+        $domaingroupsmembers[$gr] = [];
+        sleep(1);
+        */
       }
     }
   })
@@ -79,13 +89,11 @@ const createGroups = (apply, groups, domainGroups) => {
 }
 
 /**
- * Cream l'usuari del XML que no està al domini
+ * Estableix el nou email de l'usuari que hem de crear
  */
-const createDomainUser = (apply, xmlUser, domainUsers) => {
+const getNewDomainEmail = (xmlUser, domainUsers) => {
   // kkkk TODO: pendent
-  let countCreated = 1
-  console.log('CREAR USUARI --> ' + xmlUser.toString())
-  // Email pot ser repetit, comprovar-ho!!
+  let newEmail = null
   if (!xmlUser.teacher) {
     for (let dUser in domainUsers) {
       // Si hi ha un usuari del domini amb les 3 primeres lletres iguals
@@ -94,11 +102,27 @@ const createDomainUser = (apply, xmlUser, domainUsers) => {
         let nEmailXml = parseInt(xmlUser.email().substring(3, 5))
         if (nEmailDom >= nEmailXml) {
           let nEmail = nEmailDom + 1
-          xmlUser.domainemail = xmlUser.email().substring(0, 3) + pad(nEmail, 2) + '@' + config.domain
+          newEmail = xmlUser.email().substring(0, 3) + pad(nEmail, 2) + '@' + config.domain
         }
       }
     }
   }
+  return newEmail
+}
+
+/**
+ * Cream l'usuari del XML que no està al domini
+ */
+const createDomainUser = (apply, xmlUser, domainUsers) => {
+  let countCreated = 1
+  console.log('CREAR USUARI --> ' + xmlUser.toString())
+
+  // Email pot ser repetit, comprovar-ho!!
+  let newEmail = getNewDomainEmail(xmlUser, domainUsers)
+  if (newEmail) {
+    xmlUser.domainemail = newEmail
+  }
+
   // Afegim l'usuari que cream al diccionari de usuaris del domini
   domainUsers[xmlUser.id] = new DomainUser(
     xmlUser.id,
@@ -123,12 +147,12 @@ const createDomainUser = (apply, xmlUser, domainUsers) => {
       resource: {
         primaryEmail: xmlUser.email(),
         name: { givenName: xmlUser.name, familyName: xmlUser.surname },
-        orgUnitPath: (xmlUser.teacher ? '/Professorat' : '/Alumnat'),
+        orgUnitPath: (xmlUser.teacher ? config.organizationalUnitTeachers : config.organizationalUnitStudents),
         externalIds: [{ type: 'organization', value: xmlUser.id }],
         suspended: false,
         changePasswordAtNextLogin: true,
-        password: '12345678'
-      } // Default password
+        password: config.defaultPassword // Default password
+      }
     }, (err) => { if (err) console.log('The API returned an error: ' + err) })
     // Insert all 'ee.',  'alumnat.' and 'tutors' groups
     for (let gr in xmlUser.groupsWithPrefixAdded()) {
@@ -196,7 +220,7 @@ const updateMemberDomainUser = (apply, creategroups, deletegroups, domainUser) =
         // https://developers.google.com/admin-sdk/directory/v1/reference/members/insert
         oauth2ClientService().members.insert({
           groupKey: creategroups[gr] + '@' + config.domain,
-          body: {
+          resource: {
             email: domainUser.email()
           }
         }, (err) => { if (err) console.log('The API returned an error: ' + err) })
