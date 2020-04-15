@@ -74,7 +74,7 @@ export default {
           this.showError = true
         } else {
           // Array amb informació a exportar al CSV
-          let sheetusers = []
+          let csvUsers = []
           // Per cada usuari del domini...
           Object.keys(users).forEach(user => {
             if (!users[user].suspended) {
@@ -91,7 +91,7 @@ export default {
                     })
                   }
                   if (usergroup) {
-                    sheetusers.push([
+                    csvUsers.push([
                       users[user].domainemail,
                       config.defaultPassword,
                       usergroup,
@@ -103,12 +103,12 @@ export default {
             }
           })
           // Ordenam per la primera columna de l'array
-          sheetusers.sort((a, b) => { return (a[0] < b[0] ? -1 : 1) })
+          csvUsers.sort((a, b) => { return (a[0] < b[0] ? -1 : 1) })
 
           // Exportar a fitxer CSV
           let fileName = 'resetpasswords' + (new Date()).toLocaleString() + '.csv'
 
-          let csvContent = sheetusers.map(e => e.join(',')).join('\r\n')
+          let csvContent = csvUsers.map(e => e.join(',')).join('\r\n')
           let csfFile = new Blob([csvContent], { type: 'data:text/csv;charset=utf-8' })
           saveAs(csfFile, fileName)
         }
