@@ -100,7 +100,7 @@ class DomainUser {
 
   toString () {
     // toString override added to prototype of DomainUser class
-    return (this.teacher ? 'PROFESSOR: ' : 'ALUMNE: ') +
+    return (this.teacher ? 'PROFESSOR ' : 'ALUMNE ') +
       this.surname + ', ' +
       this.name + ' (' +
       this.email() + ') [' +
