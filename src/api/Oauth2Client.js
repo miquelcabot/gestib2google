@@ -1,5 +1,4 @@
 import * as clientSecret from '../client_secret.json'
-import * as config from '../config.json'
 
 const {google} = require('googleapis')
 
@@ -12,7 +11,12 @@ const SCOPES = [
 
 /* eslint-disable camelcase */
 const {client_secret, client_id} = clientSecret.web
-const redirect_url = config.redirectUrl
+
+// window.location.origin només agafa protocol, servidor i port
+// Per exemple: http://localhost:8080 o https://gestib2google.github.io
+// NO FUNCIONA si posam l'aplicació a una subcarpeta. Hauriem d'afegir
+// window.location.pathname
+const redirect_url = window.location.origin
 
 const oauth2Client = () => {
   const oauth2Client = new google.auth.OAuth2(
