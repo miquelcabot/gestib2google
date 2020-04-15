@@ -147,7 +147,7 @@ export default {
     showUsers () {
       this.loading = true
       this.users = []
-      getDomainUsers((err, users) => {
+      getDomainUsers(null, (err, users) => {
         if (err) {
           this.error = 'Error llegint usuaris "' + err.message + '"'
           this.showError = true

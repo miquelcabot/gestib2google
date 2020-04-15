@@ -99,12 +99,21 @@ const getDomainMembers = (groupId, callback) => {
 /**
  * Retorna tots els grups d'usuaris del domini, amb els seus membres
  */
-const getDomainGroupsMembers = (callback) => {
+const getDomainGroupsMembers = (logs, callback) => {
+  if (logs) {
+    logs.push('Carregant grups del domini...')
+  }
+
   getDomainGroups(null, null, (err, groups) => {
     if (err) return callback(err, null)
 
     let membersok = 0
     Object.keys(groups).forEach((group) => {
+      /*
+      if (logs) {
+        logs.push('Carregant membres del grup "' + groups[group].email + '"...')
+      }
+      */
       // We read the members of this group
       getDomainMembers(groups[group].id, (err, res) => {
         if (err) return callback(err, null)
@@ -112,6 +121,9 @@ const getDomainGroupsMembers = (callback) => {
         membersok++
         groups[group].members = res
         if (membersok >= Object.keys(groups).length) {
+          if (logs) {
+            logs.push(Object.keys(groups).length + ' grups carregats')
+          }
           return callback(null, groups)
         }
       })
@@ -148,11 +160,15 @@ const getAllDomainUsers = (users, nextPageToken, callback) => {
 /**
  * Retorna tots els usuaris del domini, amb informació extra
  */
-const getDomainUsers = (callback) => {
+const getDomainUsers = (logs, callback) => {
   let domainUsers = {}
 
-  getDomainGroupsMembers((err, groups) => {
+  getDomainGroupsMembers(logs, (err, groups) => {
     if (err) return callback(err, null)
+
+    if (logs) {
+      logs.push('Carregant usuaris del domini...')
+    }
 
     getAllDomainUsers(null, null, (err, users) => {
       if (err) return callback(err, null, null)
@@ -197,6 +213,9 @@ const getDomainUsers = (callback) => {
       })
 
       // Retornam domainUsers
+      if (logs) {
+        logs.push(Object.keys(domainUsers).length + ' usuaris carregats')
+      }
       callback(null, domainUsers, groups)
     })
   })

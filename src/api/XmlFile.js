@@ -28,7 +28,7 @@ const titleCase = (str) => {
 /**
  * A partir del nom del grup i el tipus d'usuari, retorna el mail del grup
  */
-const getGroupEmails = (groupName, usertype) => {
+const getGroupEmails = (logs, groupName, usertype) => {
   let name = groupName.toLowerCase()
   let email = []
   let curs = name.match(/\d+/) // Agafam el curs dels números del string
@@ -68,10 +68,10 @@ const getGroupEmails = (groupName, usertype) => {
           }
         })
       } else {
-        console.log('ATENCIÓ: El grup ' + fpName + '-' + grup + ' no està configurat a "groupNameConversion" al fitxer config.json')
+        logs.push('ATENCIÓ: El grup ' + fpName + '-' + grup + ' no està configurat a "groupNameConversion" al fitxer config.json')
       }
     } else {
-      console.log('ATENCIÓ: El grup ' + fpName + ' no està configurat a "groupNameConversion" al fitxer config.json')
+      logs.push('ATENCIÓ: El grup ' + fpName + ' no està configurat a "groupNameConversion" al fitxer config.json')
     }
   }
   return email
@@ -80,8 +80,8 @@ const getGroupEmails = (groupName, usertype) => {
 /**
  * Llegeix els grups i els tutors del XML
  */
-const readXmlGroups = (xmlfile) => {
-  console.log('Carregant grups de l\'XML...')
+const readXmlGroups = (logs, xmlfile) => {
+  logs.push('Carregant grups de l\'XML...')
   let xmlgroups = []
   let xmltutors = []
 
@@ -102,7 +102,7 @@ const readXmlGroups = (xmlfile) => {
         }
         xmltutors[grup.tutor].push(curs.descripcio + ' ' + grup.nom)
       } else {
-        console.log('ATENCIÓ: El grup ' + curs.descripcio + ' ' + grup.nom + ' no té tutor assignat al fitxer XML')
+        logs.push('ATENCIÓ: El grup ' + curs.descripcio + ' ' + grup.nom + ' no té tutor assignat al fitxer XML')
       }
       // Si el grup té 2n tutor, afegim a xmltutors el nom del grup
       if (grup.tutor2) {
@@ -120,8 +120,8 @@ const readXmlGroups = (xmlfile) => {
 /**
  * A partir de l'horari del XML, emplena els grups dels professors
  */
-const readXmlTimeTable = (xmlfile, xmlgroups) => {
-  console.log('Carregant horari de l\'XML...')
+const readXmlTimeTable = (logs, xmlfile, xmlgroups) => {
+  logs.push('Carregant horari de l\'XML...')
   let xmltimetable = []
 
   for (let i in xmlfile.CENTRE_EXPORT.HORARIP[0].SESSIO) {
@@ -129,7 +129,7 @@ const readXmlTimeTable = (xmlfile, xmlgroups) => {
     let emailsTeachers = []
 
     if (xmlgroups[sessio.grup]) {
-      emailsTeachers = getGroupEmails(xmlgroups[sessio.grup], USERTYPE.teacher)
+      emailsTeachers = getGroupEmails(logs, xmlgroups[sessio.grup], USERTYPE.teacher)
     }
 
     let timetable = xmltimetable[sessio.professor]
@@ -148,8 +148,8 @@ const readXmlTimeTable = (xmlfile, xmlgroups) => {
 /**
  * Llegeix els usuaris del XML
  */
-const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
-  console.log('Carregant usuaris de l\'XML...')
+const readXmlUsers = (logs, xmlfile, xmlgroups, xmltutors, xmltimetable) => {
+  logs.push('Carregant usuaris de l\'XML...')
   let xmlusers = {}
 
   // Afegim els alumnes
@@ -158,7 +158,7 @@ const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
 
     let emailsstudent = []
     if (xmlgroups[student.grup]) {
-      emailsstudent = getGroupEmails(xmlgroups[student.grup], USERTYPE.student)
+      emailsstudent = getGroupEmails(logs, xmlgroups[student.grup], USERTYPE.student)
     }
 
     if (emailsstudent.length) { // Si l'alumne pertany a algún grup
@@ -202,16 +202,16 @@ const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
       if (teacher.departament in config.departmentNumberToName) {
         emailsteacher.push(config.groupPrefixDepartment + config.departmentNumberToName[teacher.departament])
       } else {
-        console.log('ATENCIÓ: El departament ' + teacher.departament + ' no està configurat a "departmentNumberToName" al fitxer config.json')
+        logs.push('ATENCIÓ: El departament ' + teacher.departament + ' no està configurat a "departmentNumberToName" al fitxer config.json')
       }
     } else {
-      console.log('ATENCIÓ: El professor ' + teacher.ap1 + ' ' + teacher.ap2 + ', ' + teacher.nom + ' no té departament assignat al fitxer XML')
+      logs.push('ATENCIÓ: El professor ' + teacher.ap1 + ' ' + teacher.ap2 + ', ' + teacher.nom + ' no té departament assignat al fitxer XML')
     }
 
     // Si és tutor, afegim el grups dels que és tutor
     if (teacher.codi in xmltutors) {
       xmltutors[teacher.codi].forEach(tutorgroup => {
-        let grouptutors = getGroupEmails(tutorgroup, USERTYPE.tutor)
+        let grouptutors = getGroupEmails(logs, tutorgroup, USERTYPE.tutor)
         emailsteacher = emailsteacher.concat(grouptutors)
       })
     }
@@ -239,13 +239,13 @@ const readXmlUsers = (xmlfile, xmlgroups, xmltutors, xmltimetable) => {
 /**
  * Llegeix el fitxer XML
  */
-const readXmlFile = (xmlfile, callback) => {
+const readXmlFile = (xmlfile, logs, callback) => {
   parseString(xmlfile, (err, xmldata) => {
     if (err) return callback(err, null)
 
-    let {xmlgroups, xmltutors} = readXmlGroups(xmldata)
-    let xmltimetable = readXmlTimeTable(xmldata, xmlgroups)
-    let xmlusers = readXmlUsers(xmldata, xmlgroups, xmltutors, xmltimetable)
+    let {xmlgroups, xmltutors} = readXmlGroups(logs, xmldata)
+    let xmltimetable = readXmlTimeTable(logs, xmldata, xmlgroups)
+    let xmlusers = readXmlUsers(logs, xmldata, xmlgroups, xmltutors, xmltimetable)
     callback(null, xmlusers)
   })
 }
