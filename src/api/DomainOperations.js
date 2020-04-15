@@ -42,7 +42,7 @@ const deleteDomainUsers = (logs, xmlUsers, domainUsers, apply, selectedGroup, on
             if (['/', config.organizationalUnitTeachers, config.organizationalUnitStudents].includes(domainUser.organizationalUnit)) {
               // No eliminam professors del @iesfbmoll.org
               if (!(['/', config.organizationalUnitTeachers].includes(domainUser.organizationalUnit) && (domainUser.email().indexOf('@iesfbmoll.org') >= 0))) {
-                logs.push('SUSPENDRE --> ' + domainUser.toString())
+                logs.push('SUSPENDRE: ' + domainUser.toString())
                 countDeleted++
                 if (apply) {
                   // Si hem d'aplicar els canvis...
@@ -66,7 +66,7 @@ const createGroups = (logs, apply, groups, domainGroups) => {
   groups.forEach(gr => {
     // Si el grup no existeix, el cream
     if (!(gr in domainGroups)) {
-      logs.push('CREAR GRUP --> ' + gr + '@' + config.domain)
+      logs.push('CREAR GRUP: ' + gr + '@' + config.domain)
       countGroupsCreated++
       domainGroups[gr] = { email: gr + '@' + config.domain }
       if (apply) {
@@ -118,7 +118,7 @@ const getNewDomainEmail = (xmlUser, domainUsers) => {
  */
 const createDomainUser = (logs, apply, xmlUser, domainUsers) => {
   let countCreated = 1
-  logs.push('CREAR USUARI --> ' + xmlUser.toString())
+  logs.push('CREAR USUARI: ' + xmlUser.toString())
 
   // Email pot ser repetit, comprovar-ho!!
   let newEmail = getNewDomainEmail(xmlUser, domainUsers)
@@ -177,7 +177,7 @@ const createDomainUser = (logs, apply, xmlUser, domainUsers) => {
 const updateActivateDomainUser = (logs, apply, xmlUser, domainUser) => {
   let countActivated = 0
   if (domainUser.suspended) {
-    logs.push('ACTIVAR --> ' + xmlUser.toString())
+    logs.push('ACTIVAR: ' + xmlUser.toString())
     countActivated++
     if (apply) {
       // Suspend domain user
@@ -202,10 +202,10 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
   // groupPrefixStudents i groupPrefixTutors
   if (((creategroups.length > 0) || (deletegroups.length > 0)) && (!domainUser.suspended)) {
     if (deletegroups.length > 0) {
-      logs.push('ESBORRAR MEMBRE --> ' + domainUser.surname + ', ' + domainUser.name + ' (' + domainUser.email() + ') [' + deletegroups + ']')
+      logs.push('ESBORRAR MEMBRE: ' + domainUser.surname + ', ' + domainUser.name + ' (' + domainUser.email() + ') [' + deletegroups + ']')
     }
     if (creategroups.length > 0) {
-      logs.push('AFEGIR MEMBRE --> ' + domainUser.surname + ', ' + domainUser.name + ' (' + domainUser.email() + ') [' + creategroups + ']')
+      logs.push('AFEGIR MEMBRE: ' + domainUser.surname + ', ' + domainUser.name + ' (' + domainUser.email() + ') [' + creategroups + ']')
     }
     countMembersModified++
     if (apply) {
@@ -239,7 +239,7 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
 const updateOrgunitDomainUser = (logs, apply, xmlUser, domainUser) => {
   let countOrgunitModified = 0
   if (domainUser.organizationalUnit !== (xmlUser.teacher ? config.organizationalUnitTeachers : config.organizationalUnitStudents)) {
-    logs.push('CANVIAR UNITAT ORGANITZATIVA --> ' +
+    logs.push('CANVIAR UNITAT ORGANITZATIVA: ' +
       domainUser.surname + ', ' + domainUser.name + ' (' +
       domainUser.email() + ') [' +
       (xmlUser.teacher ? config.organizationalUnitTeachers : config.organizationalUnitStudents) + ']')
@@ -266,7 +266,7 @@ const addDomainUsers = (logs, xmlUsers, domainUsers, domainGroups, apply, select
   let countMembersModified = 0
   let countOrgunitModified = 0
   let countGroupsCreated = 0
-  logs.push('Afegint usuaris al domini...')
+  logs.push('Actualitzant usuaris del domini...')
   for (let userid in xmlUsers) { // Per cada usuari de l'XML
     let xmlUser = xmlUsers[userid]
     if (!(userid in domainUsers)) {

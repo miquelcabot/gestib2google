@@ -17,11 +17,10 @@ const USERTYPE = {
  */
 const titleCase = (str) => {
   let res = ''
-  let word = str.split(' ')
-  for (let i = 0; i < word.length; i++) {
-    res = res.concat(word[i].charAt(0).toUpperCase() + word[i].slice(1).toLowerCase() + ' ')
-  }
-
+  let words = str.split(' ')
+  words.forEach(word => {
+    res = res.concat(word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() + ' ')
+  })
   return res.trim()
 }
 

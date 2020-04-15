@@ -22,12 +22,11 @@ const normalizedName = (name) => {
   const especialTokens = ['da', 'de', 'di', 'do', 'del', 'la', 'las', 'le', 'los',
     'mac', 'mc', 'van', 'von', 'y', 'i', 'san', 'santa', 'al', 'el']
 
-  for (let i = 0; i < tokens.length; i++) {
-    let token = tokens[i]
+  tokens.forEach(token => {
     if (especialTokens.indexOf(token) < 0) { // If token not in especialTokens
       names.push(token)
     }
-  }
+  })
 
   if (names.length >= 1) { // If name exists (with name or surname)
     return names[0]
@@ -77,22 +76,21 @@ class DomainUser {
 
   groupsWithDomain () {
     let gr = []
-    // kkk TODO: substituir per forEach()
-    for (let i = 0; i < this.groups.length; i++) {
-      let group = this.groups[i]
+    this.groups.forEach(group => {
       gr.push(group + '@' + config.domain)
-    }
+    })
+
     return gr
   }
 
   groupsWithPrefix () {
     let gr = []
-    for (let i = 0; i < this.groups.length; i++) {
-      let group = this.groups[i]
+    this.groups.forEach(group => {
       if (group.startsWith(config.groupPrefixStudents) || group.startsWith(config.groupPrefixTeachers) || group.startsWith(config.groupPrefixTutors) || group.startsWith(config.groupPrefixDepartment)) {
         gr.push(group)
       }
-    }
+    })
+
     return gr
   }
 
