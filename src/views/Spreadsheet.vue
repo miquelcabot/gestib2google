@@ -1,8 +1,5 @@
 <template>
   <div>
-    <b-alert v-model="showError" variant="danger" dismissible>
-      <strong>ERROR: </strong>{{error}}
-    </b-alert>
     <!-- Form full de càlcul -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
@@ -20,6 +17,15 @@
       </div>
     </div>
     <!-- Fi form full de càlcul -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" v-for="(error, index) in errors" v-bind:key="index">
+      <strong>ERROR: </strong>{{error}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <b-modal id="modal-ok" title="GestIB2Google" ok-only>
+      <p class="my-4">Procés finalitzat!</p>
+    </b-modal>
   </div>
 </template>
 
@@ -32,8 +38,7 @@ export default {
   name: 'Spreadsheet',
   data () {
     return {
-      showError: false,
-      error: '',
+      errors: [],
       loading: false
     }
   },
@@ -42,8 +47,8 @@ export default {
       this.loading = true
       getDomainUsers(null, (err, users) => {
         if (err) {
-          this.error = 'Error llegint usuaris "' + err.message + '"'
-          this.showError = true
+          this.errors.push('Error llegint usuaris "' + err.message + '"')
+          this.loading = false
         } else {
           // Array amb informació a exportar al full de càlcul
           let sheetUsers = []
@@ -81,7 +86,7 @@ export default {
             sheetUsersOrdered[key] = sheetUsers[key]
           })
 
-          // Cream el full de càlcul
+          // Cream el full de càlcul a Google Drive
           // https://developers.google.com/sheets/api/guides/create#nodejs
           oauth2ClientServiceSheets().spreadsheets.create({
             resource: {
@@ -92,15 +97,16 @@ export default {
             fields: 'spreadsheetId'
           }, (err, spreadsheet) => {
             if (err) {
-              this.error = 'Error creant el full de càlcul "' + err.message + '"'
-              this.showError = true
+              this.errors.push('Error creant el full de càlcul "' + err.message + '"')
+              this.loading = false
             } else {
               // Si s'ha creat correctament el full de càlcul...
               let spreadsheetId = spreadsheet.data.spreadsheetId
 
-              let groupsCreated = 0
               // Per cada grup...
-              Object.keys(sheetUsersOrdered).forEach(group => {
+              Object.keys(sheetUsersOrdered).forEach((group, indexgroup) => {
+                console.log(indexgroup + group)
+
                 // Ordenam alfabèticament els membres del grup
                 sheetUsersOrdered[group].sort((a, b) => { return (a[0] < b[0] ? -1 : 1) })
                 // Afegim capçalera
@@ -120,8 +126,7 @@ export default {
                   }
                 }, (err, response) => {
                   if (err) {
-                    this.error = 'Error creant el full de càlcul "' + err.message + '"'
-                    this.showError = true
+                    this.errors.push('Error afegint el grup "' + group + '" al full de càlcul "' + err.message + '"')
                   } else {
                     // Afegim valors (membres del grup) al full
                     oauth2ClientServiceSheets().spreadsheets.values.update({
@@ -133,38 +138,36 @@ export default {
                       }
                     }, (err, response) => {
                       if (err) {
-                        this.error = 'Error creant el full de càlcul "' + err.message + '"'
-                        this.showError = true
-                      } else {
-                        groupsCreated++
-                        console.log(groupsCreated + ' de ' + sheetUsersOrdered.length)
-                        if (groupsCreated === sheetUsersOrdered.length) {
-                          // Esborram el primer full (sense nom)
-                          oauth2ClientServiceSheets().spreadsheets.batchUpdate({
-                            spreadsheetId,
-                            resource: {
-                              requests: {
-                                deleteSheet: {
-                                  sheetId: 0
-                                }
-                              }
-                            }
-                          }, (err) => {
-                            if (err) {
-                              this.error = 'Error creant el full de càlcul "' + err.message + '"'
-                              this.showError = true
-                            }
-                          })
-                        }
+                        this.errors.push('Error afegint les dades del grup "' + group + '" al full de càlcul "' + err.message + '"')
                       }
                     })
+                    // Esborram el primer full (sense nom)
+                    console.log((indexgroup + 1) + ' de ' + Object.keys(sheetUsersOrdered).length)
+                    if (indexgroup === (Object.keys(sheetUsersOrdered).length - 1)) {
+                      oauth2ClientServiceSheets().spreadsheets.batchUpdate({
+                        spreadsheetId,
+                        resource: {
+                          requests: {
+                            deleteSheet: {
+                              sheetId: 0
+                            }
+                          }
+                        }
+                      }, (err) => {
+                        if (err) {
+                          this.errors.push('Error esborrant les pàgines buides del full de càlcul "' + err.message + '"')
+                        } else {
+                          this.loading = false
+                          this.$bvModal.show('modal-ok')
+                        }
+                      })
+                    }
                   }
                 })
               })
             }
           })
         }
-        this.loading = false
       })
     }
   }
