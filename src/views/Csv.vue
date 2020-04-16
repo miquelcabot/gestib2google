@@ -1,8 +1,6 @@
 <template>
   <div>
-    <b-alert v-model="showError" variant="danger" dismissible>
-      <strong>ERROR: </strong>{{error}}
-    </b-alert>
+    <!-- Form CSV -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">Exportar a CSV</h6>
@@ -35,6 +33,13 @@
         </form>
       </div>
     </div>
+    <!-- Fi form CSV -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" v-for="(error, index) in errors" v-bind:key="index">
+      <strong>ERROR: </strong>{{error}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -49,8 +54,7 @@ export default {
     return {
       group: '',
       onlyteachers: false,
-      showError: false,
-      error: '',
+      errors: [],
       loading: false,
       groups: []
     }
@@ -58,8 +62,7 @@ export default {
   mounted () {
     getDomainGroupsStudents(null, null, (err, groups) => {
       if (err) {
-        this.error = 'Error emplentant el desplegable Grups "' + err.message + '"'
-        this.showError = true
+        this.errors.push('Error emplentant el desplegable Grups "' + err.message + '"')
       }
 
       this.groups = groups
@@ -70,8 +73,7 @@ export default {
       this.loading = true
       getDomainUsers(null, (err, users) => {
         if (err) {
-          this.error = 'Error llegint usuaris "' + err.message + '"'
-          this.showError = true
+          this.errors.push('Error llegint usuaris "' + err.message + '"')
         } else {
           // Array amb informació a exportar al CSV
           let csvUsers = []

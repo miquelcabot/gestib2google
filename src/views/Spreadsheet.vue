@@ -44,6 +44,7 @@ export default {
   },
   methods: {
     spreadsheet () {
+      // KKK TODO: Arreglar errors exportació a full de càlcul
       this.loading = true
       getDomainUsers(null, (err, users) => {
         if (err) {

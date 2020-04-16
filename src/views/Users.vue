@@ -1,11 +1,5 @@
 <template>
   <div>
-    <b-alert v-model="showError" variant="danger" dismissible>
-      <strong>ERROR: </strong>{{error}}
-    </b-alert>
-    <b-modal id="modal-ok" title="GestIB2Google" ok-only>
-      <p class="my-4">Procés finalitzat!</p>
-    </b-modal>
     <!-- Form mostrar usuaris -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
@@ -68,6 +62,15 @@
       </div>
     </div>
     <!-- Fi form mostrar usuaris -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" v-for="(error, index) in errors" v-bind:key="index">
+      <strong>ERROR: </strong>{{error}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <b-modal id="modal-ok" title="GestIB2Google" ok-only>
+      <p class="my-4">Procés finalitzat!</p>
+    </b-modal>
     <!-- Taula mostrar usuaris -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
@@ -126,8 +129,7 @@ export default {
       onlywithoutcode: false,
       onlynotsession: false,
       onlywithoutorgunit: false,
-      showError: false,
-      error: '',
+      errors: [],
       loading: false,
       groups: [],
       users: []
@@ -136,8 +138,7 @@ export default {
   mounted () {
     getDomainGroupsStudents(null, null, (err, groups) => {
       if (err) {
-        this.error = 'Error emplentant el desplegable Grups "' + err.message + '"'
-        this.showError = true
+        this.errors.push('Error emplentant el desplegable Grups "' + err.message + '"')
       }
 
       this.groups = groups
@@ -149,8 +150,7 @@ export default {
       this.users = []
       getDomainUsers(null, (err, users) => {
         if (err) {
-          this.error = 'Error llegint usuaris "' + err.message + '"'
-          this.showError = true
+          this.errors.push('Error llegint usuaris "' + err.message + '"')
         } else {
           Object.keys(users).forEach(user => {
             if (!this.onlywithoutcode || users[user].withoutcode || (users[user].id.length < 15)) {

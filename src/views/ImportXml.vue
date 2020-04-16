@@ -1,11 +1,5 @@
 <template>
   <div>
-    <b-alert v-model="showError" variant="danger" dismissible>
-      <strong>ERROR: </strong>{{error}}
-    </b-alert>
-    <b-modal id="modal-ok" title="GestIB2Google" ok-only>
-      <p class="my-4">Procés finalitzat!</p>
-    </b-modal>
     <!-- Form importar -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
@@ -50,6 +44,15 @@
       </div>
     </div>
     <!-- Fi Form importar -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" v-for="(error, index) in errors" v-bind:key="index">
+      <strong>ERROR: </strong>{{error}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <b-modal id="modal-ok" title="GestIB2Google" ok-only>
+      <p class="my-4">Procés finalitzat!</p>
+    </b-modal>
     <!-- Taula mostrar usuaris -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
@@ -93,8 +96,7 @@ export default {
       group: '',
       onlyteachers: false,
       apply: false,
-      showError: false,
-      error: '',
+      errors: [],
       loading: false,
       groups: [],
       logs: []
@@ -103,8 +105,7 @@ export default {
   mounted () {
     getDomainGroupsStudents(null, null, (err, groups) => {
       if (err) {
-        this.error = 'Error emplentant el desplegable Grups "' + err.message + '"'
-        this.showError = true
+        this.errors.push('Error emplentant el desplegable Grups "' + err.message + '"')
       }
 
       this.groups = groups
@@ -126,20 +127,20 @@ export default {
       reader.onload = (evt) => {
         readXmlFile(reader.result, this.logs, (err, xmlusers) => {
           if (err) {
-            this.error = 'Error llegint XML "' + err.message + '"'
-            this.showError = true
+            this.errors.push('Error llegint XML "' + err.message + '"')
+            this.loading = false
           } else {
             // LLegim els usuaris del domini
             getDomainUsers(this.logs, (err, domainusers, domaingroups) => {
               if (err) {
-                this.error = 'Error llegint els usuaris del domini "' + err.message + '"'
-                this.showError = true
+                this.errors.push('Error llegint els usuaris del domini "' + err.message + '"')
+                this.loading = false
               } else {
                 // Aplicam els canvis al domini
                 applyDomainChanges(this.logs, xmlusers, domainusers, domaingroups, this.apply, this.group, this.onlyteachers, (err, count) => {
                   if (err) {
-                    this.error = 'Error aplicant els canvis al domini "' + err.message + '"'
-                    this.showError = true
+                    this.errors.push('Error aplicant els canvis al domini "' + err.message + '"')
+                    this.loading = false
                   } else {
                     // Si tot ha anat bé, mostram el resum
                     if (this.apply) {
