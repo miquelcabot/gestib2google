@@ -7,46 +7,46 @@
       <form @submit.prevent>
         <div class="form-group">
           <label for="domain">Domini</label>
-          <input class="form-control" id="domain" name="domain" type="text" v-model="domain">
+          <input class="form-control" id="domain" name="domain" type="text" v-model="domain" disabled>
         </div>
         <div class="form-group">
           <label for="defaultPassword">Password per defecte dels nous usuaris</label>
-          <input class="form-control" id="defaultPassword" name="defaultPassword" type="text" v-model="defaultPassword">
+          <input class="form-control" id="defaultPassword" name="defaultPassword" type="text" v-model="defaultPassword" disabled>
         </div>
         <div class="form-group">
           <label for="groupPrefixDepartment">Prefix dels grups de departaments</label>
-          <input class="form-control" id="groupPrefixDepartment" name="groupPrefixDepartment" type="text" v-model="groupPrefixDepartment">
+          <input class="form-control" id="groupPrefixDepartment" name="groupPrefixDepartment" type="text" v-model="groupPrefixDepartment" disabled>
         </div>
         <div class="form-group">
           <label for="groupPrefixTeachers">Prefix dels grups de professors (equips educatius)</label>
-          <input class="form-control" id="groupPrefixTeachers" name="groupPrefixTeachers" type="text" v-model="groupPrefixTeachers">
+          <input class="form-control" id="groupPrefixTeachers" name="groupPrefixTeachers" type="text" v-model="groupPrefixTeachers" disabled>
         </div>
         <div class="form-group">
           <label for="groupPrefixStudents">Prefix dels grups d'estudiants</label>
-          <input class="form-control" id="groupPrefixStudents" name="groupPrefixStudents" type="text" v-model="groupPrefixStudents">
+          <input class="form-control" id="groupPrefixStudents" name="groupPrefixStudents" type="text" v-model="groupPrefixStudents" disabled>
         </div>
         <div class="form-group">
           <label for="groupPrefixTutors">Prefix dels grups de tutors</label>
-          <input class="form-control" id="groupPrefixTutors" name="groupPrefixTutors" type="text" v-model="groupPrefixTutors">
+          <input class="form-control" id="groupPrefixTutors" name="groupPrefixTutors" type="text" v-model="groupPrefixTutors" disabled>
         </div>
         <div class="form-group">
           <label for="organizationalUnitTeachers">Nom de l'Unitat Organitzativa del professorat</label>
-          <input class="form-control" id="organizationalUnitTeachers" name="organizationalUnitTeachers" type="text" v-model="organizationalUnitTeachers">
+          <input class="form-control" id="organizationalUnitTeachers" name="organizationalUnitTeachers" type="text" v-model="organizationalUnitTeachers" disabled>
         </div>
         <div class="form-group">
           <label for="organizationalUnitStudents">Nom de l'Unitat Organitzativa de l'alumnat</label>
-          <input class="form-control" id="organizationalUnitStudents" name="organizationalUnitStudents" type="text" v-model="organizationalUnitStudents">
+          <input class="form-control" id="organizationalUnitStudents" name="organizationalUnitStudents" type="text" v-model="organizationalUnitStudents" disabled>
         </div>
         <div class="form-group">
           <label for="longStudentsEmail">Format de l'email de l'alumnat</label>
-          <select class="form-control" id="longStudentsEmail" name="longStudentsEmail" v-model="longStudentsEmail">
+          <select class="form-control" id="longStudentsEmail" name="longStudentsEmail" v-model="longStudentsEmail" disabled>
             <option v-bind:value="false">Format curs (apl01@domini)</option>
             <option v-bind:value="true">Format llart (aperez@domini)</option>
           </select>
         </div>
         <div class="form-group">
-          <button class="btn btn-secondary" v-on:click="spreadsheet()">Restablir</button>
-          <button class="btn btn-primary" v-on:click="spreadsheet()">Guardar</button>
+          <button class="btn btn-secondary" v-on:click="spreadsheet()" disabled>Restablir</button>
+          <button class="btn btn-primary" v-on:click="spreadsheet()" disabled>Guardar</button>
         </div>
       </form>
     </div>
@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     spreadsheet () {
-      alert('executar')
+      alert('...')
     }
   }
 }
