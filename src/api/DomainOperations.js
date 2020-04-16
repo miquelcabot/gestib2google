@@ -71,7 +71,7 @@ const createGroups = (logs, apply, groups, domainGroups) => {
       domainGroups[gr] = { email: gr + '@' + config.domain }
       if (apply) {
         // kkk TODO: afegir grup al domini
-        // kkk fer de forma asincrona. primer crear grup, despre, el q faci falta...
+        // kkk TODO: fer de forma asincrona. primer crear grup, despre, el q faci falta...
         /*
         $groupObj = new Google_Service_Directory_Group(
             array(
