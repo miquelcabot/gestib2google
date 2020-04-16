@@ -1,4 +1,4 @@
-import {oauth2ClientService} from './Oauth2Client'
+import {oauth2ClientServiceAdmin} from './Oauth2Client'
 import {DomainUser} from './DomainUser'
 
 /**
@@ -10,7 +10,7 @@ const getDomainGroupsStudents = (domainGroups, nextPageToken, callback) => {
   }
 
   // Carregam els grups 200 a 200, que és el valor màxim de maxResults, paginant la resta
-  oauth2ClientService().groups.list({
+  oauth2ClientServiceAdmin().groups.list({
     customer: 'my_customer',
     maxResults: 200,
     pageToken: nextPageToken,
@@ -47,7 +47,7 @@ const getDomainGroups = (domainGroups, nextPageToken, callback) => {
   }
 
   // Carregam els grups 200 a 200, que és el valor màxim de maxResults, paginant la resta
-  oauth2ClientService().groups.list({
+  oauth2ClientServiceAdmin().groups.list({
     customer: 'my_customer',
     maxResults: 200,
     pageToken: nextPageToken,
@@ -78,7 +78,7 @@ const getDomainGroups = (domainGroups, nextPageToken, callback) => {
 const getDomainMembers = (groupId, callback) => {
   let membersgroup = []
 
-  oauth2ClientService().members.list({
+  oauth2ClientServiceAdmin().members.list({
     customer: 'my_customer',
     groupKey: groupId,
     maxResults: 100000
@@ -140,7 +140,7 @@ const getAllDomainUsers = (users, nextPageToken, callback) => {
   }
 
   // Carregam els usuaris de 500 en 500, que és el valor màxim de maxResults, paginant la resta
-  oauth2ClientService().users.list({
+  oauth2ClientServiceAdmin().users.list({
     customer: 'my_customer',
     maxResults: 500,
     pageToken: nextPageToken,

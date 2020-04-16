@@ -1,4 +1,4 @@
-import {oauth2ClientService} from './Oauth2Client'
+import {oauth2ClientServiceAdmin} from './Oauth2Client'
 import {DomainUser, pad} from './DomainUser'
 import * as config from '../config.json'
 
@@ -7,7 +7,7 @@ import * as config from '../config.json'
  */
 const applyDeletedomainUser = (logs, domainUser) => {
   // Suspendre l'usuari del domini
-  oauth2ClientService().users.update({
+  oauth2ClientServiceAdmin().users.update({
     userKey: domainUser.email(),
     resource: {
       suspended: true
@@ -17,7 +17,7 @@ const applyDeletedomainUser = (logs, domainUser) => {
   let groupsWithDomain = domainUser.groupsWithDomain()
   for (let i in groupsWithDomain) {
     // https://developers.google.com/admin-sdk/directory/v1/reference/members/delete
-    oauth2ClientService().members.delete({
+    oauth2ClientServiceAdmin().members.delete({
       groupKey: groupsWithDomain[i],
       memberKey: domainUser.email()
     }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
@@ -146,7 +146,7 @@ const createDomainUser = (logs, apply, xmlUser, domainUsers) => {
   if (apply) {
     // Create domain user
     // https://developers.google.com/admin-sdk/reseller/v1/codelab/end-to-end
-    oauth2ClientService().users.insert({
+    oauth2ClientServiceAdmin().users.insert({
       resource: {
         primaryEmail: xmlUser.email(),
         name: { givenName: xmlUser.name, familyName: xmlUser.surname },
@@ -160,7 +160,7 @@ const createDomainUser = (logs, apply, xmlUser, domainUsers) => {
     // Insert all 'ee.',  'alumnat.' and 'tutors' groups
     for (let gr in xmlUser.groupsWithPrefixAdded()) {
       // https://developers.google.com/admin-sdk/directory/v1/reference/members/insert
-      oauth2ClientService().members.insert({
+      oauth2ClientServiceAdmin().members.insert({
         groupKey: xmlUser.groupsWithPrefixAdded()[gr] + '@' + config.domain,
         resource: {
           email: xmlUser.email()
@@ -181,7 +181,7 @@ const updateActivateDomainUser = (logs, apply, xmlUser, domainUser) => {
     countActivated++
     if (apply) {
       // Suspend domain user
-      oauth2ClientService().users.update({
+      oauth2ClientServiceAdmin().users.update({
         userKey: domainUser.email(),
         resource: {
           suspended: true
@@ -212,7 +212,7 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
       // Actualitzam els grups de l'usuari
       for (let gr in deletegroups) {
         // https://developers.google.com/admin-sdk/directory/v1/reference/members/delete
-        oauth2ClientService().members.delete({
+        oauth2ClientServiceAdmin().members.delete({
           groupKey: deletegroups[gr] + '@' + config.domain,
           resource: {
             email: domainUser.email()
@@ -221,7 +221,7 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
       }
       for (let gr in creategroups) {
         // https://developers.google.com/admin-sdk/directory/v1/reference/members/insert
-        oauth2ClientService().members.insert({
+        oauth2ClientServiceAdmin().members.insert({
           groupKey: creategroups[gr] + '@' + config.domain,
           resource: {
             email: domainUser.email()
@@ -246,7 +246,7 @@ const updateOrgunitDomainUser = (logs, apply, xmlUser, domainUser) => {
     countOrgunitModified++
     if (apply) {
       // Actualitzar unitat organtizativa de l'usuari del domini
-      oauth2ClientService().users.update({
+      oauth2ClientServiceAdmin().users.update({
         userKey: domainUser.email(),
         resource: {
           orgUnitPath: (xmlUser.teacher ? config.organizationalUnitTeachers : config.organizationalUnitStudents)

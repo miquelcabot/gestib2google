@@ -36,9 +36,20 @@ const oauth2ClientGenerateAuthUrl = () => {
   })
 }
 
-const oauth2ClientService = () => {
+const oauth2ClientServiceAdmin = () => {
   const auth = oauth2Client()
   return google.admin({version: 'directory_v1', auth})
 }
 
-export {oauth2Client, oauth2ClientGenerateAuthUrl, oauth2ClientService}
+const oauth2ClientServiceSheets = () => {
+  // https://developers.google.com/sheets/api/quickstart/nodejs
+  const auth = oauth2Client()
+  return google.sheets({version: 'v4', auth})
+}
+
+export {
+  oauth2Client,
+  oauth2ClientGenerateAuthUrl,
+  oauth2ClientServiceAdmin,
+  oauth2ClientServiceSheets
+}

@@ -25,7 +25,7 @@
 
 <script>
 import {getDomainUsers} from '../api/DomainRead'
-import {oauth2ClientService} from '../api/Oauth2Client'
+import {oauth2ClientServiceSheets} from '../api/Oauth2Client'
 import * as config from '../config.json'
 
 export default {
@@ -81,13 +81,87 @@ export default {
             sheetUsersOrdered[key] = sheetUsers[key]
           })
 
-          // Per cada grup...
-          Object.keys(sheetUsersOrdered).forEach(group => {
-            // Ordenam alfabèticament els membres del grup
-            sheetUsersOrdered[group].sort((a, b) => { return (a[0] < b[0] ? -1 : 1) })
-            // Afegim capçalera
-            sheetUsersOrdered[group].unshift(['Nom', 'Email'])
-            console.log(sheetUsersOrdered[group])
+          // Cream el full de càlcul
+          // https://developers.google.com/sheets/api/guides/create#nodejs
+          oauth2ClientServiceSheets().spreadsheets.create({
+            resource: {
+              properties: {
+                title: 'Usuaris domini ' + (new Date()).toLocaleString()
+              }
+            },
+            fields: 'spreadsheetId'
+          }, (err, spreadsheet) => {
+            if (err) {
+              this.error = 'Error creant el full de càlcul "' + err.message + '"'
+              this.showError = true
+            } else {
+              // Si s'ha creat correctament el full de càlcul...
+              let spreadsheetId = spreadsheet.data.spreadsheetId
+
+              let groupsCreated = 0
+              // Per cada grup...
+              Object.keys(sheetUsersOrdered).forEach(group => {
+                // Ordenam alfabèticament els membres del grup
+                sheetUsersOrdered[group].sort((a, b) => { return (a[0] < b[0] ? -1 : 1) })
+                // Afegim capçalera
+                sheetUsersOrdered[group].unshift(['Nom', 'Email'])
+
+                // Afegim un nou full per cada grup
+                oauth2ClientServiceSheets().spreadsheets.batchUpdate({
+                  spreadsheetId: spreadsheetId,
+                  resource: {
+                    requests: {
+                      addSheet: {
+                        properties: {
+                          title: group
+                        }
+                      }
+                    }
+                  }
+                }, (err, response) => {
+                  if (err) {
+                    this.error = 'Error creant el full de càlcul "' + err.message + '"'
+                    this.showError = true
+                  } else {
+                    // Afegim valors (membres del grup) al full
+                    oauth2ClientServiceSheets().spreadsheets.values.update({
+                      spreadsheetId: spreadsheetId,
+                      range: group + '!A1',
+                      valueInputOption: 'USER_ENTERED',
+                      resource: {
+                        values: sheetUsersOrdered[group]
+                      }
+                    }, (err, response) => {
+                      if (err) {
+                        this.error = 'Error creant el full de càlcul "' + err.message + '"'
+                        this.showError = true
+                      } else {
+                        groupsCreated++
+                        console.log(groupsCreated + ' de ' + sheetUsersOrdered.length)
+                        if (groupsCreated === sheetUsersOrdered.length) {
+                          // Esborram el primer full (sense nom)
+                          oauth2ClientServiceSheets().spreadsheets.batchUpdate({
+                            spreadsheetId,
+                            resource: {
+                              requests: {
+                                deleteSheet: {
+                                  sheetId: 0
+                                }
+                              }
+                            }
+                          }, (err) => {
+                            if (err) {
+                              this.error = 'Error creant el full de càlcul "' + err.message + '"'
+                              this.showError = true
+                            }
+                          })
+                        }
+                      }
+                    })
+                  }
+                })
+              })
+            }
           })
         }
         this.loading = false
