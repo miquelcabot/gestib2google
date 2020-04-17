@@ -85,6 +85,7 @@ export default {
   methods: {
     spreadsheet () {
       alert('...')
+      // kkkk TODO: guardar configuració
     }
   }
 }
