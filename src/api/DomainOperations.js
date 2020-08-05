@@ -109,6 +109,7 @@ const getNewDomainEmail = (xmlUser, domainUsers) => {
     }
   } else {
     // EMAIL LLARG 'mcabot@'
+    // EMAIL 2surmanes 'm.cabotnadal@', només per alumnes (IES Madina Mayurqa)
   }
   return newEmail
 }

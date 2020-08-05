@@ -59,9 +59,15 @@ class DomainUser {
   email () {
     if (this.domainemail) {
       return this.domainemail
-    } else if (this.teacher || config.longStudentsEmail) {
+    } else if (this.teacher || (config.longStudentsEmail===true)) {
       let email = normalizedName(this.name.substring(0, 1)) + normalizedName(this.surname1)
       return email + '@' + config.domain
+    } else if (config.longStudentsEmail==='2surnames') {  // Email amb dos llinatges (m.cabotnadal@)
+      let email = normalizedName(this.name.substring(0, 1)) +
+        "." +
+        normalizedname(this.surname1) +
+        normalizedname(this.surname2);
+      return email + "@" + config.domain;
     } else {
       let email = normalizedName(this.name.substring(0, 1)) +
         normalizedName(this.surname1.substring(0, 1)) +
