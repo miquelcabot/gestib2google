@@ -9,7 +9,7 @@
         <form @submit.prevent>
           <div class="form-group">
             <div class="custom-file">
-              <input type="file" id="xmlfile" name="xmlfile"  class="custom-file-input" placeholder="Fitxer XML de GestIB" @change="loadXmlFile" :disabled="loading">
+              <input type="file" id="xmlfile" name="xmlfile"  class="custom-file-input" required="required" placeholder="Fitxer XML de GestIB" @change="loadXmlFile" :disabled="loading">
               <label class="custom-file-label" for="xmlfile">{{ xmlFile ? xmlFile.name: 'Fitxer XML de GestIB' }}</label>
             </div>
           </div>
