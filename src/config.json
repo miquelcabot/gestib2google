@@ -55,7 +55,7 @@
       "groups": {
         "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
         "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": [], "description": ""},
+        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
         "d": {"teacher": ["dist"], "student": ["fct"], "description": "Distància"},
         "e": {"teacher": [], "student": ["fct"], "description": "FCT"},
         "f": {"teacher": [], "student": [], "description": ""},
