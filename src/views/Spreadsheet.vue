@@ -24,7 +24,7 @@
       </button>
     </div>
     <b-modal id="modal-ok" title="GestIB2Google" ok-only>
-      <p class="my-4">Procés finalitzat!</p>
+      <p class="my-4">Procés finalitzat!<br>Fitxer guardat a 'La meva unitat' de Google Drive amb el nom '{{ filename }}'.</p>
     </b-modal>
   </div>
 </template>
@@ -39,7 +39,8 @@ export default {
   data () {
     return {
       errors: [],
-      loading: false
+      loading: false,
+      filename: ''
     }
   },
   methods: {
@@ -80,19 +81,19 @@ export default {
               })
             }
           })
-
           // Ordenam per grup
           let sheetUsersOrdered = []
           Object.keys(sheetUsers).sort().forEach(key => {
             sheetUsersOrdered[key] = sheetUsers[key]
           })
 
+          this.filename = 'Usuaris domini ' + (new Date()).toLocaleString()
           // Cream el full de càlcul a Google Drive
           // https://developers.google.com/sheets/api/guides/create#nodejs
           oauth2ClientServiceSheets().spreadsheets.create({
             resource: {
               properties: {
-                title: 'Usuaris domini ' + (new Date()).toLocaleString()
+                title: this.filename
               }
             },
             fields: 'spreadsheetId'
