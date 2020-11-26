@@ -1,14 +1,14 @@
 # gestib2google
 
-> GestIB to Google XML conversion with VueJS
+> Conversió XML de GestIB a Google amb VueJS
 
-## Requirements
+## Requisits
 
-Requirements: 
+Requisits: 
 * [Node.js](https://nodejs.org/).
-* A browser with compatibility with URLSearchParams object ([reference](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams))
+* Un navegador amb compatibilitat amb l'objecte URLSearchParams ([referència](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams))
 
-## Build Setup
+## Configuració de la compilació
 
 ``` bash
 # install dependencies
@@ -34,8 +34,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ## Crear credencials d'autorització 
 
-Crear credencials d'autorització(authorization credentials) seguint [aquest enllaç](https://console.developers.google.com) i copiar el fitxer generat **client_secret.json** a la carpeta arrel de l'aplicació.
+Crear credencials d'autorització(authorization credentials) seguint [aquest enllaç](https://console.developers.google.com) i copiar el fitxer generat **client_secret.json** a la carpeta arrel de l'aplicació (`.\src`).
 
-## Credits
+## Crèdits
 
-Based on Start Bootstrap SB Admin 2 theme. [Link](https://github.com/BlackrockDigital/startbootstrap-sb-admin-2)
+Basat en el tema Start Bootstrap SB Admin 2. [Enllaç](https://github.com/BlackrockDigital/startbootstrap-sb-admin-2)
