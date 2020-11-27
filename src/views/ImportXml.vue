@@ -17,7 +17,8 @@
             <label for="group" class="col-sm-2 col-form-label">Grups</label>
             <div class="col-sm-10">
               <select class="form-control" id="group" name="group" v-model="group" :disabled="loading">
-                <option value="">Tots</option>
+                <option v-if="loadingGroups" value="">Carregant...</option>
+                <option v-if="!loadingGroups" value="">Tots</option>
                 <option v-for="group in groups" v-bind:key="group.email" v-bind:value="group.email">
                   {{ group.name.replace('Alumnat', '') }}
                 </option>
@@ -98,17 +99,20 @@ export default {
       apply: false,
       errors: [],
       loading: false,
+      loadingGroups: false,
       groups: [],
       logs: []
     }
   },
   mounted () {
+    this.loadingGroups = true
     getDomainGroupsStudents(null, null, (err, groups) => {
       if (err) {
         this.errors.push('Error emplentant el desplegable Grups "' + err.message + '"')
       }
 
       this.groups = groups
+      this.loadingGroups = false
     })
   },
   methods: {
