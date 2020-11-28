@@ -1,0 +1,14 @@
+  
+version: '3'
+
+services:
+  gestib2google:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: gestib2google
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
