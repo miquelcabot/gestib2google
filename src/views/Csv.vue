@@ -98,10 +98,10 @@ export default {
                   }
                   if (usergroup) {
                     csvUsers.push([
+                      users[user].surname,
+                      users[user].name,
                       users[user].domainemail,
-                      config.defaultPassword,
-                      usergroup,
-                      'YES'
+                      usergroup
                     ])
                   }
                 }
@@ -112,7 +112,7 @@ export default {
           csvUsers.sort((a, b) => { return (a[0] < b[0] ? -1 : 1) })
 
           // Exportar a fitxer CSV
-          let fileName = 'resetpasswords' + (new Date()).toLocaleString() + '.csv'
+          let fileName = 'domainusers' + (new Date()).toLocaleString() + '.csv'
 
           let csvContent = csvUsers.map(e => e.join(',')).join('\r\n')
           let csfFile = new Blob([csvContent], { type: 'data:text/csv;charset=utf-8' })
