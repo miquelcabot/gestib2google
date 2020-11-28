@@ -1,8 +1,9 @@
 import {oauth2ClientServiceAdmin} from './Oauth2Client'
 import {DomainUser} from './DomainUser'
+import * as config from '../config.json'
 
 /**
- * Retorna els grups d'usuaris "alumnat." del domini
+ * Retorna els grups d'usuaris "groupPrefixStudents" del domini
  */
 const getDomainGroupsStudents = (domainGroups, nextPageToken, callback) => {
   if (!domainGroups) {
@@ -21,11 +22,12 @@ const getDomainGroupsStudents = (domainGroups, nextPageToken, callback) => {
     const groups = res.data.groups
     groups.forEach((group) => {
       // Carregam nomes grups d'alumnat
-      if (group.email.startsWith('alumnat.')) {
+      if (group.email.startsWith(config.groupPrefixStudents)) {
         domainGroups[group.email.replace('@cifpfbmoll.eu', '')] = {
           'email': group.email.replace('@cifpfbmoll.eu', ''),
           'id': group.id,
-          'name': group.name
+          'name': group.name,
+          'nameWithEmail': group.email.replace('@cifpfbmoll.eu', '').replace(config.groupPrefixStudents, '') + ' - ' + group.name.replace('Alumnat', '')
         }
       }
     })

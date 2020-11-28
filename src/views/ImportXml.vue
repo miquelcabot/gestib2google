@@ -20,7 +20,7 @@
                 <option v-if="loadingGroups" value="">Carregant...</option>
                 <option v-if="!loadingGroups" value="">Tots</option>
                 <option v-for="group in groups" v-bind:key="group.email" v-bind:value="group.email">
-                  {{ group.name.replace('Alumnat', '') }}
+                  {{ group.nameWithEmail }}
                 </option>
               </select>
             </div>
