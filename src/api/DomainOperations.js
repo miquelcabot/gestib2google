@@ -158,7 +158,7 @@ const createDomainUser = (logs, apply, xmlUser, domainUsers) => {
         password: config.defaultPassword // Default password
       }
     }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
-    // Insert all 'ee.',  'alumnat.' and 'tutors' groups
+    // Insert all groupPrefixTeachers, groupPrefixStudents and groupPrefixTutors groups
     for (let gr in xmlUser.groupsWithPrefixAdded()) {
       // https://developers.google.com/admin-sdk/directory/v1/reference/members/insert
       oauth2ClientServiceAdmin().members.insert({
