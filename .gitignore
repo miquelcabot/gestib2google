@@ -17,3 +17,4 @@ yarn-error.log*
 client_secret.json
 exportacioDadesCentre.xml
 config.json
+package-lock.json
