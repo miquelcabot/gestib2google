@@ -4,7 +4,7 @@
 
 ## Requisits generals
 * Un navegador amb compatibilitat amb l'objecte URLSearchParams ([referència](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams))
-* Crear credencials d'autorització(authorization credentials) seguint [aquest enllaç](https://console.developers.google.com) i copiar el fitxer generat **client_secret.json** a la carpeta arrel de l'aplicació (`.\src`)
+* Crear credencials d'autorització(authorization credentials) de tipus "IDs de client de OAuth 2.0" seguint [aquest enllaç](https://console.developers.google.com/apis/credentials) i copiar el fitxer generat **client_secret.json** a la carpeta arrel de l'aplicació (`.\src`)
 * Crear un fitxer `config.json` a la carpeta `.\src` (n'hi ha d'exemple a la pròpia carpeta `.\src`)
 
 ## Executar amb NodeJS
