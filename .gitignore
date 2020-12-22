@@ -14,7 +14,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 
-.env
+gestib2google.env.js
 exportacioDadesCentre.xml
 config.json
 package-lock.json

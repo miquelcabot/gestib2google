@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const {google} = require('googleapis')
 
 // If modifying these scopes, delete token.json.
@@ -11,8 +9,7 @@ const SCOPES = [
 
 /* eslint-disable camelcase */
 const client_secret = process.env.CLIENT_SECRET
-const client_id = process.env.client_id
-console.log(client_secret)
+const client_id = process.env.CLIENT_ID
 
 // window.location.origin només agafa protocol, servidor i port
 // Per exemple: http://localhost:8080 o https://gestib2google.github.io
