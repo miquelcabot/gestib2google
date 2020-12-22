@@ -40,14 +40,16 @@
         <div class="form-group">
           <label for="longStudentsEmail">Format de l'email de l'alumnat</label>
           <select class="form-control" id="longStudentsEmail" name="longStudentsEmail" v-model="longStudentsEmail" disabled>
-            <option v-bind:value="false">Format curs (apl01@domini)</option>
-            <option v-bind:value="true">Format llart (aperez@domini)</option>
+            <option v-bind:value="false">Format curt (apl01@domini)</option>
+            <option v-bind:value="true">Format llarg (apalou@domini)</option>
           </select>
         </div>
+        <!--
         <div class="form-group">
           <button class="btn btn-secondary" v-on:click="spreadsheet()" disabled>Restablir</button>
           <button class="btn btn-primary" v-on:click="spreadsheet()" disabled>Guardar</button>
         </div>
+        -->
       </form>
     </div>
   </div>
