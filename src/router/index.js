@@ -48,11 +48,11 @@ router.beforeEach(async (to, from, next) => {
   // Si retornam del login de Google, capturam el paràmetre 'code'
   const code = (new URL(window.location.href)).searchParams.get('code')
 
-  let token = localStorage.getItem('token')
+  let token = sessionStorage.getItem('token')
   let expiryDate = null
   if (token) {
     // Si ha expirat el token de Google Oauth2, eliminam el token per forçar un altre login
-    expiryDate = new Date(JSON.parse(localStorage.getItem('token')).expiry_date)
+    expiryDate = new Date(JSON.parse(sessionStorage.getItem('token')).expiry_date)
     if (expiryDate < Date.now()) {
       token = null
     }
@@ -66,7 +66,7 @@ router.beforeEach(async (to, from, next) => {
     // Ha fet el login amb Google, llegim 'code' retornat
     oauth2Client().getToken(code, (err, token) => {
       if (err) return alert('Error retrieving access token' + err)
-      localStorage.setItem('token', JSON.stringify(token))
+      sessionStorage.setItem('token', JSON.stringify(token))
       next()
     })
   } else {

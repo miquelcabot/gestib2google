@@ -22,7 +22,7 @@ const oauth2Client = () => {
   const oauth2Client = new google.auth.OAuth2(
     client_id, client_secret, redirect_url)
 
-  let token = JSON.parse(localStorage.getItem('token'))
+  let token = JSON.parse(sessionStorage.getItem('token'))
   if (token != null) {
     oauth2Client.setCredentials(token)
   }
@@ -47,9 +47,28 @@ const oauth2ClientServiceSheets = () => {
   return google.sheets({version: 'v4', auth})
 }
 
+const oauth2UserInfo = () => {
+  console.log(sessionStorage.getItem('token'))
+  const auth = oauth2Client()
+  const oauth2 = google.oauth2({
+    auth: auth,
+    version: 'v2'
+  })
+  oauth2.userinfo.get(
+    function (err, res) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log(res)
+      }
+    }
+  )
+}
+
 export {
   oauth2Client,
   oauth2ClientGenerateAuthUrl,
   oauth2ClientServiceAdmin,
-  oauth2ClientServiceSheets
+  oauth2ClientServiceSheets,
+  oauth2UserInfo
 }
