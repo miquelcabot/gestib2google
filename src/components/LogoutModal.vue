@@ -11,7 +11,7 @@
         <div class="modal-body">Pitgi "Sortir" si vol finalitzar la sessió actual.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel·lar</button>
-          <a class="btn btn-primary" href="logout.html">Sortir</a>
+          <a class="btn btn-primary" :href="logoutUrl" >Sortir</a>
         </div>
       </div>
     </div>
@@ -20,7 +20,12 @@
 
 <script>
 export default {
-  name: 'LogoutModal'
+  name: 'LogoutModal',
+  data () {
+    return {
+      logoutUrl: 'https://accounts.google.com/o/oauth2/revoke?token=' + JSON.parse(sessionStorage.getItem('token')).access_token
+    }
+  }
 }
 </script>
 
