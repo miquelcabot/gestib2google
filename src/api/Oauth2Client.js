@@ -8,8 +8,8 @@ const SCOPES = [
   'https://www.googleapis.com/auth/spreadsheets']
 
 /* eslint-disable camelcase */
-const client_secret = process.env.CLIENT_SECRET
-const client_id = process.env.CLIENT_ID
+const client_secret = process.env.client_secret
+const client_id = process.env.client_id
 
 // window.location.origin només agafa protocol, servidor i port
 // Per exemple: http://localhost:8080 o https://gestib2google.github.io

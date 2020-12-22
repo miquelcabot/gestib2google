@@ -1,6 +1,6 @@
 'use strict'
 
 module.exports = {
-  CLIENT_ID: '"YOUR_CLIENT_ID"',
-  CLIENT_SECRET: '"YOUR_CLIENT_SECRET"'
+  client_id: '"YOUR_CLIENT_ID"',
+  client_secret: '"YOUR_CLIENT_SECRET"'
 }
