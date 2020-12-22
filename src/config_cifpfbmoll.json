@@ -37,6 +37,13 @@
         "f": {"teacher": [], "student": [], "description": ""}
       }
     },
+    "ifc11": {
+      "name": "ifc11",
+      "description": "FPB Informàtica i Comunicacions",
+      "groups": {
+        "a": {"teacher": ["a"], "student": ["a"], "description": "1rA"}
+      }
+    },
     "ifc21": {
       "name": "ifc21",
       "description": "GM Sistemes Microinformàtics i Xarxes",
