@@ -23,11 +23,11 @@ const getDomainGroupsStudents = (domainGroups, nextPageToken, callback) => {
     groups.forEach((group) => {
       // Carregam nomes grups d'alumnat
       if (group.email.startsWith(config.groupPrefixStudents)) {
-        domainGroups[group.email.replace(config.domain, '')] = {
-          'email': group.email.replace(config.domain, ''),
+        domainGroups[group.email.replace('@' + config.domain, '')] = {
+          'email': group.email.replace('@' + config.domain, ''),
           'id': group.id,
           'name': group.name,
-          'nameWithEmail': group.email.replace(config.domain, '').replace(config.groupPrefixStudents, '') + ' - ' + group.name.replace('Alumnat', '')
+          'nameWithEmail': group.email.replace('@' + config.domain, '').replace(config.groupPrefixStudents, '') + ' - ' + group.name.replace('Alumnat', '')
         }
       }
     })
@@ -59,8 +59,8 @@ const getDomainGroups = (domainGroups, nextPageToken, callback) => {
 
     const groups = res.data.groups
     groups.forEach((group) => {
-      domainGroups[group.email.replace(config.domain, '')] = {
-        'email': group.email.replace(config.domain, ''),
+      domainGroups[group.email.replace('@' + config.domain, '')] = {
+        'email': group.email.replace('@' + config.domain, ''),
         'id': group.id,
         'name': group.name
       }
