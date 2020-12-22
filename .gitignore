@@ -14,7 +14,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 
-client_secret.json
+.env
 exportacioDadesCentre.xml
 config.json
 package-lock.json

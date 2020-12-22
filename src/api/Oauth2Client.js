@@ -1,4 +1,4 @@
-import * as clientSecret from '../client_secret.json'
+require('dotenv').config()
 
 const {google} = require('googleapis')
 
@@ -10,7 +10,9 @@ const SCOPES = [
   'https://www.googleapis.com/auth/spreadsheets']
 
 /* eslint-disable camelcase */
-const {client_secret, client_id} = clientSecret.web
+const client_secret = process.env.CLIENT_SECRET
+const client_id = process.env.client_id
+console.log(client_secret)
 
 // window.location.origin només agafa protocol, servidor i port
 // Per exemple: http://localhost:8080 o https://gestib2google.github.io
