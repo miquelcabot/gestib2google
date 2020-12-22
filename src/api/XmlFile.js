@@ -67,10 +67,12 @@ const getGroupEmails = (logs, groupName, usertype) => {
           }
         })
       } else {
-        logs.push('ATENCIÓ: El grup ' + fpName + '-' + grup + ' no està configurat a "groupNameConversion" al fitxer config.json')
+        let msg = 'ATENCIÓ: El grup ' + fpName + '-' + grup + ' no està configurat a "groupNameConversion" al fitxer config.json'
+        if (logs.indexOf(msg) === -1) { logs.push(msg) }
       }
     } else {
-      logs.push('ATENCIÓ: El grup ' + fpName + ' no està configurat a "groupNameConversion" al fitxer config.json')
+      let msg = 'ATENCIÓ: El grup ' + fpName + ' no està configurat a "groupNameConversion" al fitxer config.json'
+      if (logs.indexOf(msg) === -1) { logs.push(msg) }
     }
   }
   return email
@@ -101,7 +103,8 @@ const readXmlGroups = (logs, xmlfile) => {
         }
         xmltutors[grup.tutor].push(curs.descripcio + ' ' + grup.nom)
       } else {
-        logs.push('ATENCIÓ: El grup ' + curs.descripcio + ' ' + grup.nom + ' no té tutor assignat al fitxer XML')
+        let msg = 'ATENCIÓ: El grup ' + curs.descripcio + ' ' + grup.nom + ' no té tutor assignat al fitxer XML'
+        if (logs.indexOf(msg) === -1) { logs.push(msg) }
       }
       // Si el grup té 2n tutor, afegim a xmltutors el nom del grup
       if (grup.tutor2) {
@@ -201,10 +204,12 @@ const readXmlUsers = (logs, xmlfile, xmlgroups, xmltutors, xmltimetable) => {
       if (teacher.departament in config.departmentNumberToName) {
         emailsteacher.push(config.groupPrefixDepartment + config.departmentNumberToName[teacher.departament])
       } else {
-        logs.push('ATENCIÓ: El departament ' + teacher.departament + ' no està configurat a "departmentNumberToName" al fitxer config.json')
+        let msg = 'ATENCIÓ: El departament ' + teacher.departament + ' no està configurat a "departmentNumberToName" al fitxer config.json'
+        if (logs.indexOf(msg) === -1) { logs.push(msg) }
       }
     } else {
-      logs.push('ATENCIÓ: El professor ' + teacher.ap1 + ' ' + teacher.ap2 + ', ' + teacher.nom + ' no té departament assignat al fitxer XML')
+      let msg = 'ATENCIÓ: El professor ' + teacher.ap1 + ' ' + teacher.ap2 + ', ' + teacher.nom + ' no té departament assignat al fitxer XML'
+      if (logs.indexOf(msg) === -1) { logs.push(msg) }
     }
 
     // Si és tutor, afegim el grups dels que és tutor
