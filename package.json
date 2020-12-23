@@ -34,7 +34,6 @@
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.8.0",
     "core-js": "^3.6.4",
-    "dotenv": "^8.2.0",
     "file-saver": "^2.0.2",
     "googleapis": "^48.0.0",
     "vue": "^2.5.2",
