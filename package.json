@@ -24,12 +24,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miquelcabot/gestib2google_vuejs.git"
+    "url": "git+https://github.com/miquelcabot/gestib2google.git"
   },
   "bugs": {
-    "url": "https://github.com/miquelcabot/gestib2google_vuejs/issues"
+    "url": "https://github.com/miquelcabot/gestib2google/issues"
   },
-  "homepage": "https://github.com/miquelcabot/gestib2google_vuejs#readme",
+  "homepage": "https://github.com/miquelcabot/gestib2google#readme",
   "dependencies": {
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.8.0",
