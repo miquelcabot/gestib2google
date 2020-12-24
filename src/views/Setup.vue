@@ -46,8 +46,8 @@
         </div>
         <!--
         <div class="form-group">
-          <button class="btn btn-secondary" v-on:click="spreadsheet()" disabled>Restablir</button>
-          <button class="btn btn-primary" v-on:click="spreadsheet()" disabled>Guardar</button>
+          <button class="btn btn-secondary" v-on:click="saveConfig()" disabled>Restablir</button>
+          <button class="btn btn-primary" v-on:click="saveConfig()" disabled>Guardar</button>
         </div>
         -->
       </form>
@@ -85,7 +85,7 @@ export default {
     this.longStudentsEmail = config.longStudentsEmail
   },
   methods: {
-    spreadsheet () {
+    saveConfig () {
       alert('...')
       // kkkk TODO: guardar configuració
     }

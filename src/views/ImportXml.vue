@@ -31,15 +31,9 @@
               <input class="form-check-input" id="onlyteachers" name="onlyteachers" type="checkbox" v-model="onlyteachers" :disabled="loading"> Només professorat</label>
             </div>
           </div>
-          <div class="form-group">
-            <div class="form-check">
-              <label class="form-check-label">
-              <input class="form-check-input" id="apply" name="apply" type="checkbox"  v-model="apply" :disabled="loading"> Aplicar canvis</label>
-            </div>
-          </div>
-          <button class="btn btn-primary" v-on:click="importGestib()" :disabled="loading">
-            <span v-if="loading" class="spinner-border spinner-border-sm"></span>
-            {{ loading ? 'Important ...' : 'Importar' }}
+          <button class="btn btn-primary" v-on:click="importGestib(false)" :disabled="loading">
+            <span v-if="loading && !importing" class="spinner-border spinner-border-sm"></span>
+            {{ loading && !importing ? 'Simulant importació ...' : 'Simular importació' }}
           </button>
         </form>
       </div>
@@ -74,8 +68,12 @@
             </tbody>
           </table>
         </div>
-        <button class="btn btn-primary" v-on:click="saveLog()" v-if="logs.length && !loading">
-          Guardar informació d'importació
+        <button class="btn btn-primary" v-on:click="importGestib(true)" :disabled="loading || !logs.length">
+          <span v-if="loading && importing" class="spinner-border spinner-border-sm"></span>
+          {{ loading && importing ? 'Important ...' : 'Importar' }}
+        </button>
+        <button class="btn btn-primary" v-on:click="saveLog()" :disabled="loading || !logs.length">
+          Guardar informació d'importació a fitxer de text
         </button>
       </div>
     </div>
@@ -96,10 +94,10 @@ export default {
       xmlFile: null,
       group: '',
       onlyteachers: false,
-      apply: false,
       errors: [],
       loading: false,
       loadingGroups: false,
+      importing: false,
       groups: [],
       logs: []
     }
@@ -120,58 +118,63 @@ export default {
       // Guardam la informació del fitxer que hem de carregar a xmlFile
       this.xmlFile = event.target.files[0]
     },
-    importGestib () {
-      this.loading = true
-      this.logs = []
+    importGestib (apply) {
+      // Comprovar que hem posat un fitxer al <input>
+      if (this.xmlFile) {
+        this.loading = true
+        this.importing = apply
+        this.logs = []
 
-      // Comporovar que hem posat un fitxer al <input>
-
-      // Llegim el fitxer XML com a text
-      const reader = new FileReader()
-      reader.onload = (evt) => {
-        readXmlFile(reader.result, this.logs, (err, xmlusers) => {
-          if (err) {
-            this.errors.push('Error llegint XML "' + err.message + '"')
-            this.loading = false
-          } else {
-            // LLegim els usuaris del domini
-            getDomainUsers(this.logs, (err, domainusers, domaingroups) => {
-              if (err) {
-                this.errors.push('Error llegint els usuaris del domini "' + err.message + '"')
-                this.loading = false
-              } else {
-                // Aplicam els canvis al domini
-                applyDomainChanges(this.logs, xmlusers, domainusers, domaingroups, this.apply, this.group, this.onlyteachers, (err, count) => {
-                  if (err) {
-                    this.errors.push('Error aplicant els canvis al domini "' + err.message + '"')
-                    this.loading = false
-                  } else {
-                    // Si tot ha anat bé, mostram el resum
-                    if (this.apply) {
-                      this.logs.push(count.deleted + ' usuaris han estat suspesos')
-                      this.logs.push(count.created + ' usuaris han estat creats')
-                      this.logs.push(count.activated + ' usuaris han estat activats')
-                      this.logs.push(count.membersmodified + ' usuaris han canviat de grup/s')
-                      this.logs.push(count.orgunitmodified + ' usuaris han canviat d\'unitat organitzativa')
-                      this.logs.push(count.groupscreated + ' grups han estat creats')
+        // Llegim el fitxer XML com a text
+        const reader = new FileReader()
+        reader.onload = (evt) => {
+          readXmlFile(reader.result, this.logs, (err, xmlusers) => {
+            if (err) {
+              this.errors.push('Error llegint XML "' + err.message + '"')
+              this.loading = false
+            } else {
+              // LLegim els usuaris del domini
+              getDomainUsers(this.logs, (err, domainusers, domaingroups) => {
+                if (err) {
+                  this.errors.push('Error llegint els usuaris del domini "' + err.message + '"')
+                  this.loading = false
+                } else {
+                  // Aplicam els canvis al domini
+                  applyDomainChanges(this.logs, xmlusers, domainusers, domaingroups, apply, this.group, this.onlyteachers, (err, count) => {
+                    if (err) {
+                      this.errors.push('Error aplicant els canvis al domini "' + err.message + '"')
+                      this.loading = false
                     } else {
-                      this.logs.push(count.deleted + ' usuaris seran suspesos')
-                      this.logs.push(count.created + ' usuaris seran creats')
-                      this.logs.push(count.activated + ' usuaris seran activats')
-                      this.logs.push(count.membersmodified + ' usuaris canviaran de grup/s')
-                      this.logs.push(count.orgunitmodified + ' usuaris canviaran d\'unitat organitzativa')
-                      this.logs.push(count.groupscreated + ' grups seran creats')
+                      // Si tot ha anat bé, mostram el resum
+                      if (apply) {
+                        this.logs.push(count.deleted + ' usuaris han estat suspesos')
+                        this.logs.push(count.created + ' usuaris han estat creats')
+                        this.logs.push(count.activated + ' usuaris han estat activats')
+                        this.logs.push(count.membersmodified + ' usuaris han canviat de grup/s')
+                        this.logs.push(count.orgunitmodified + ' usuaris han canviat d\'unitat organitzativa')
+                        this.logs.push(count.groupscreated + ' grups han estat creats')
+                      } else {
+                        this.logs.push(count.deleted + ' usuaris seran suspesos')
+                        this.logs.push(count.created + ' usuaris seran creats')
+                        this.logs.push(count.activated + ' usuaris seran activats')
+                        this.logs.push(count.membersmodified + ' usuaris canviaran de grup/s')
+                        this.logs.push(count.orgunitmodified + ' usuaris canviaran d\'unitat organitzativa')
+                        this.logs.push(count.groupscreated + ' grups seran creats')
+                      }
+                      this.loading = false
+                      this.$bvModal.show('modal-ok')
                     }
-                    this.loading = false
-                    this.$bvModal.show('modal-ok')
-                  }
-                })
-              }
-            })
-          }
-        })
+                  })
+                }
+              })
+            }
+          })
+        }
+        reader.readAsText(this.xmlFile)
+      } else {
+        // No hem posat un fitxer al <input>
+        this.errors.push('Heu d\'especificar el fitxer XML de GestIB')
       }
-      reader.readAsText(this.xmlFile)
     },
     saveLog () {
       let blob = new Blob([this.logs.join('\r\n')], { type: 'text/plain;charset=utf-8' })
