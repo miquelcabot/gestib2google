@@ -1,6 +1,6 @@
 # gestib2google
 
-> Conversió de fitxer XML del GestIB al domini de Google amb VueJS
+> Conversió del fitxer XML del GestIB al domini de Google
 
 ## Requisits generals
 * Un navegador amb compatibilitat amb l'objecte URLSearchParams ([referència](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams))

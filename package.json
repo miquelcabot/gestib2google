@@ -1,7 +1,7 @@
 {
   "name": "gestib2google",
   "version": "1.0.0",
-  "description": "Conversió de fitxer XML del GestIB al domini de Google amb VueJS",
+  "description": "Conversió del fitxer XML del GestIB al domini de Google",
   "author": "Miquel A. Cabot <miquel.cabot@gmail.com>",
   "license": "MIT",
   "private": true,
