@@ -67,7 +67,7 @@ const getGroupEmails = (logs, groupName, usertype) => {
           }
         })
       } else {
-        let msg = 'ATENCIÓ: El grup ' + fpName + '-' + grup + ' no està configurat a "groupNameConversion" al fitxer config.json'
+        let msg = 'ATENCIÓ: El grup ' + fpName + grup + ' no està configurat a "groupNameConversion" al fitxer config.json'
         if (logs.indexOf(msg) === -1) { logs.push(msg) }
       }
     } else {

@@ -41,7 +41,8 @@
       "name": "ifc11",
       "description": "FPB Informàtica i Comunicacions",
       "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1rA"}
+        "a": {"teacher": ["a"], "student": ["a"], "description": "1rA"},
+        "d": {"teacher": ["d"], "student": ["d"], "description": ""}
       }
     },
     "ifc21": {
@@ -110,8 +111,9 @@
         "b": {"teacher": ["b"], "student": ["b"], "description": "1r Tarda"},
         "c": {"teacher": ["c"], "student": ["c"], "description": "2n Matí"},
         "d": {"teacher": ["d"], "student": ["d"], "description": "2n Tarda"},
-        "e": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": ["fct"], "description": "FCT"}
+        "e": {"teacher": [], "student": ["fct.mati"], "description": "FCT"},
+        "f": {"teacher": [], "student": ["fct"], "description": "FCT"},
+        "g": {"teacher": ["g"], "student": ["g"], "description": ""}
       }
     },
     "imp22": {
@@ -153,7 +155,8 @@
         "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
         "d": {"teacher": ["dist"], "student": [], "description": "Distància"},
         "e": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""}
+        "f": {"teacher": [], "student": [], "description": ""},
+        "g": {"teacher": ["g"], "student": ["g"], "description": ""}
       }
     },
     "san23": {
