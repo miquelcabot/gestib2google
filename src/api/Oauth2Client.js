@@ -5,7 +5,8 @@ const SCOPES = [
   'https://www.googleapis.com/auth/admin.directory.user',
   'https://www.googleapis.com/auth/admin.directory.group',
   'https://www.googleapis.com/auth/admin.directory.orgunit',
-  'https://www.googleapis.com/auth/spreadsheets']
+  'https://www.googleapis.com/auth/spreadsheets',
+  'https://www.googleapis.com/auth/userinfo.profile']
 
 /* eslint-disable camelcase */
 const client_secret = process.env.client_secret
@@ -46,20 +47,12 @@ const oauth2ClientServiceSheets = () => {
   return google.sheets({version: 'v4', auth})
 }
 
-const oauth2UserInfo = () => {
-  console.log(sessionStorage.getItem('token'))
+const oauth2UserInfo = (callback) => {
   const auth = oauth2Client()
-  const oauth2 = google.oauth2({
-    auth: auth,
-    version: 'v2'
-  })
-  oauth2.userinfo.get(
-    function (err, res) {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log(res)
-      }
+  google.oauth2('v2').userinfo.v2.me.get(
+    {auth: auth},
+    (err, profile) => {
+      callback(err, profile)
     }
   )
 }
