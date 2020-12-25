@@ -65,9 +65,14 @@ router.beforeEach(async (to, from, next) => {
   } else if ((code) && (!token)) {
     // Ha fet el login amb Google, llegim 'code' retornat
     oauth2Client().getToken(code, (err, token) => {
-      if (err) return alert('Error retrieving access token' + err)
-      sessionStorage.setItem('token', JSON.stringify(token))
-      next()
+      if (err) {
+        alert('Error retrieving access token' + err)
+        const authUrl = oauth2ClientGenerateAuthUrl()
+        window.location = authUrl
+      } else {
+        sessionStorage.setItem('token', JSON.stringify(token))
+        next()
+      }
     })
   } else {
     // Ja ha fet login amb Google. Podem continuar
