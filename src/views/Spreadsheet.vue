@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import {getDomainUsers} from '../api/DomainRead'
-import {oauth2ClientServiceSheets} from '../api/Oauth2Client'
-import * as config from '../config.json'
+import {getDomainUsers} from '@/api/DomainRead'
+import {oauth2ClientServiceSheets} from '@/api/Oauth2Client'
+import * as config from '@/config.json'
 
 export default {
   name: 'Spreadsheet',

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import {oauth2UserInfo} from '../api/Oauth2Client'
+import {oauth2UserInfo} from '@/api/Oauth2Client'
 
 export default {
   name: 'Topbar',

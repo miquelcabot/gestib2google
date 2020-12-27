@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/Home'
-import {oauth2Client, oauth2ClientGenerateAuthUrl} from '../api/Oauth2Client'
+import {oauth2Client, oauth2ClientGenerateAuthUrl} from '@/api/Oauth2Client'
 
 Vue.use(Router)
 

@@ -1,4 +1,4 @@
-import * as config from '../config.json'
+import * as config from '@/config.json'
 
 const pad = (num, size) => {
   let s = num + ''

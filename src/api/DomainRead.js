@@ -1,6 +1,6 @@
-import {oauth2ClientServiceAdmin} from './Oauth2Client'
-import {DomainUser} from './DomainUser'
-import * as config from '../config.json'
+import {oauth2ClientServiceAdmin} from '@/api/Oauth2Client'
+import {DomainUser} from '@/api/DomainUser'
+import * as config from '@/config.json'
 
 /**
  * Retorna els grups d'usuaris "groupPrefixStudents" del domini
