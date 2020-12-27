@@ -105,19 +105,24 @@ export default {
               // Si s'ha creat correctament el full de càlcul...
 
               // Per cada grup...
+              let sheetUsersWithGroup = []
               Object.keys(sheetUsersOrdered).forEach((group, indexgroup) => {
                 // Ordenam alfabèticament els membres del grup
                 sheetUsersOrdered[group].sort((a, b) => { return (a[0] < b[0] ? -1 : 1) })
+                sheetUsersOrdered[group].forEach((index, userArray) => {
+                  sheetUsersWithGroup.push([group, sheetUsersOrdered[group][userArray][0], sheetUsersOrdered[group][userArray][1]])
+                })
               })
               let spreadsheetId = spreadsheet.data.spreadsheetId
-              console.log(sheetUsersOrdered['professorat'])
+              console.log(sheetUsersWithGroup)
+              sheetUsersWithGroup = ['1', '132']
               // Afegim valors (membres del grup) al full
               oauth2ClientServiceSheets().spreadsheets.values.update({
                 spreadsheetId: spreadsheetId,
                 range: 'A1',
                 valueInputOption: 'USER_ENTERED',
                 resource: {
-                  values: sheetUsersOrdered['ifc21a']
+                  values: sheetUsersWithGroup
                 }
               }, (err, response) => {
                 if (err) {

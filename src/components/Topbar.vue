@@ -44,7 +44,7 @@ export default {
   mounted () {
     oauth2UserInfo((err, profile) => {
       if (err) {
-        alert(err)
+        // alert(err)
       } else {
         this.name = profile.data.name
         this.picture = profile.data.picture
