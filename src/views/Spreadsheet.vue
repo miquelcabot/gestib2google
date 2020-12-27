@@ -103,6 +103,95 @@ export default {
               this.loading = false
             } else {
               // Si s'ha creat correctament el full de càlcul...
+
+              // Per cada grup...
+              Object.keys(sheetUsersOrdered).forEach((group, indexgroup) => {
+                // Ordenam alfabèticament els membres del grup
+                sheetUsersOrdered[group].sort((a, b) => { return (a[0] < b[0] ? -1 : 1) })
+              })
+              let spreadsheetId = spreadsheet.data.spreadsheetId
+              console.log(sheetUsersOrdered['professorat'])
+              // Afegim valors (membres del grup) al full
+              oauth2ClientServiceSheets().spreadsheets.values.update({
+                spreadsheetId: spreadsheetId,
+                range: 'A1',
+                valueInputOption: 'USER_ENTERED',
+                resource: {
+                  values: sheetUsersOrdered['ifc21a']
+                }
+              }, (err, response) => {
+                if (err) {
+                  this.errors.push('Error afegint les dades al full de càlcul "' + err.message + '"')
+                } else {
+                  this.loading = false
+                  this.$bvModal.show('modal-ok')
+                }
+              })
+            }
+          })
+        }
+      })
+    }
+  }
+  /*
+  spreadsheet () {
+      this.loading = true
+      getDomainUsers(null, (err, users) => {
+        if (err) {
+          this.errors.push('Error llegint usuaris "' + err.message + '"')
+          this.loading = false
+        } else {
+          // Array amb informació a exportar al full de càlcul
+          let sheetUsers = []
+          // Per cada usuari del domini...
+          Object.keys(users).forEach(user => {
+            if (!users[user].suspended) {
+              // Grup professorat
+              if (users[user].teacher) {
+                if (!sheetUsers['Professorat']) {
+                  sheetUsers['Professorat'] = []
+                }
+                sheetUsers['Professorat'].push([
+                  users[user].surname + ', ' + users[user].name,
+                  users[user].domainemail]
+                )
+              }
+              // Grups alumnes
+              users[user].groups.forEach(group => {
+                if (group.includes(config.groupPrefixStudents)) {
+                  if (!sheetUsers[group]) {
+                    sheetUsers[group] = []
+                  }
+                  sheetUsers[group].push([
+                    users[user].surname + ', ' + users[user].name,
+                    users[user].domainemail]
+                  )
+                }
+              })
+            }
+          })
+          // Ordenam per grup
+          let sheetUsersOrdered = []
+          Object.keys(sheetUsers).sort().forEach(key => {
+            sheetUsersOrdered[key] = sheetUsers[key]
+          })
+
+          this.filename = 'Usuaris domini ' + (new Date()).toLocaleString()
+          // Cream el full de càlcul a Google Drive
+          // https://developers.google.com/sheets/api/guides/create#nodejs
+          oauth2ClientServiceSheets().spreadsheets.create({
+            resource: {
+              properties: {
+                title: this.filename
+              }
+            },
+            fields: 'spreadsheetId'
+          }, (err, spreadsheet) => {
+            if (err) {
+              this.errors.push('Error creant el full de càlcul "' + err.message + '"')
+              this.loading = false
+            } else {
+              // Si s'ha creat correctament el full de càlcul...
               let spreadsheetId = spreadsheet.data.spreadsheetId
 
               // Per cada grup...
@@ -173,6 +262,7 @@ export default {
       })
     }
   }
+  */
 }
 </script>
 
