@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import * as config from '../config.json'
+import * as config from '@/config.json'
 
 export default {
   name: 'Home',

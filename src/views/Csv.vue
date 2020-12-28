@@ -46,8 +46,8 @@
 
 <script>
 import { saveAs } from 'file-saver'
-import {getDomainGroupsStudents, getDomainUsers} from '../api/DomainRead'
-import * as config from '../config.json'
+import {getDomainGroupsStudents, getDomainUsers} from '@/api/DomainRead'
+import * as config from '@/config.json'
 
 export default {
   name: 'Csv',

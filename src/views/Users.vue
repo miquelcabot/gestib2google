@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import {getDomainGroupsStudents, getDomainUsers} from '../api/DomainRead'
+import {getDomainGroupsStudents, getDomainUsers} from '@/api/DomainRead'
 
 export default {
   name: 'Users',

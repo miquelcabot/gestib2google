@@ -83,9 +83,9 @@
 
 <script>
 import { saveAs } from 'file-saver'
-import {getDomainGroupsStudents, getDomainUsers} from '../api/DomainRead'
-import {applyDomainChanges} from '../api/DomainOperations'
-import {readXmlFile} from '../api/XmlFile'
+import {getDomainGroupsStudents, getDomainUsers} from '@/api/DomainRead'
+import {applyDomainChanges} from '@/api/DomainOperations'
+import {readXmlFile} from '@/api/XmlFile'
 
 export default {
   name: 'ImportXml',
