@@ -6,6 +6,12 @@
           <h6 class="m-0 font-weight-bold text-primary">Exportar a un full de càlcul</h6>
       </div>
       <div class="card-body">
+        <div class="alert alert-warning" role="alert">
+          ATENCIÓ: No es poden exportar més de 30 grups, degut a que hi ha un límit de 60 escriptures
+          als fulls de càlcul de Google per minut. Ho podeu consultar a
+          <a href="https://developers.google.com/analytics/devguides/config/mgmt/v3/limits-quotas">"Límites y cuotas en las solicitudes a API"</a> i a
+          <a href="https://developers.google.com/sheets/api/limits">"Usage Limits"</a>
+        </div>
         <form @submit.prevent>
           <div class="form-group">
             <button class="btn btn-primary" v-on:click="spreadsheet()" :disabled="loading">
