@@ -44,7 +44,7 @@ export default {
     }
   },
   methods: {
-    spreadsheet () {
+  /*  spreadsheet () {
       // KKK TODO: Arreglar errors exportació a full de càlcul
       this.loading = true
       getDomainUsers(null, (err, users) => {
@@ -132,9 +132,8 @@ export default {
         }
       })
     }
-  }
-  /*
-  spreadsheet () {
+  } */
+    spreadsheet () {
       this.loading = true
       getDomainUsers(null, (err, users) => {
         if (err) {
@@ -262,7 +261,6 @@ export default {
       })
     }
   }
-  */
 }
 </script>
 
