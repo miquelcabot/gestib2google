@@ -22,7 +22,7 @@
           <input class="form-control" id="groupPrefixTeachers" name="groupPrefixTeachers" type="text" v-model="groupPrefixTeachers" disabled>
         </div>
         <div class="form-group">
-          <label for="groupPrefixStudents">Prefix dels grups d'estudiants</label>
+          <label for="groupPrefixStudents">Prefix dels grups d'alumnes</label>
           <input class="form-control" id="groupPrefixStudents" name="groupPrefixStudents" type="text" v-model="groupPrefixStudents" disabled>
         </div>
         <div class="form-group">
@@ -86,8 +86,7 @@ export default {
   },
   methods: {
     saveConfig () {
-      alert('...')
-      // kkkk TODO: guardar configuració
+      // Guardar configuració
     }
   }
 }

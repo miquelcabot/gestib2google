@@ -14,7 +14,7 @@
         </div>
         <form @submit.prevent>
           <div class="form-group">
-            <label for="groupsdomainuserscsv" class="col-sm-2 col-form-label">Grups</label>
+            <label for="groupsdomainuserscsv" class="col-sm-2 col-form-label">Grup d'alumnes</label>
             <div class="col-sm-10">
               <select class="form-control" id="group" name="group" v-model="group" :disabled="loading">
                 <option v-if="loadingGroups" value="">Carregant...</option>
