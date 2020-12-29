@@ -6,7 +6,8 @@ const SCOPES = [
   'https://www.googleapis.com/auth/admin.directory.group',
   'https://www.googleapis.com/auth/admin.directory.orgunit',
   'https://www.googleapis.com/auth/spreadsheets',
-  'https://www.googleapis.com/auth/userinfo.profile']
+  'https://www.googleapis.com/auth/userinfo.profile',
+  'https://www.googleapis.com/auth/userinfo.email']
 
 /* eslint-disable camelcase */
 const client_secret = process.env.client_secret
@@ -47,10 +48,10 @@ const oauth2ClientServiceSheets = () => {
   return google.sheets({version: 'v4', auth})
 }
 
-const oauth2UserInfo = (callback) => {
+const oauth2UserProfile = (callback) => {
+  // https://stackoverflow.com/questions/43644853/how-to-get-email-and-profile-information-from-oauth2-google-api
   const auth = oauth2Client()
-  google.oauth2('v2').userinfo.v2.me.get(
-    {auth: auth},
+  google.oauth2({auth: auth, version: 'v2'}).userinfo.get(
     (err, profile) => {
       callback(err, profile)
     }
@@ -62,5 +63,5 @@ export {
   oauth2ClientGenerateAuthUrl,
   oauth2ClientServiceAdmin,
   oauth2ClientServiceSheets,
-  oauth2UserInfo
+  oauth2UserProfile
 }

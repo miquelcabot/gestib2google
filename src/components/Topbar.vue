@@ -13,7 +13,7 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ name }}</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ name }} ({{ email }})</span>
                 <img class="img-profile rounded-circle"
                     :src="picture">
             </a>
@@ -31,21 +31,24 @@
 </template>
 
 <script>
-import {oauth2UserInfo} from '@/api/Oauth2Client'
+import {oauth2UserProfile} from '@/api/Oauth2Client'
 
 export default {
   name: 'Topbar',
   data () {
     return {
       name: '',
+      email: '',
       picture: '../../static/img/profile.jpg'
     }
   },
   mounted () {
-    oauth2UserInfo((err, profile) => {
+    oauth2UserProfile((err, profile) => {
       if (!err) {
         this.name = profile.data.name
+        this.email = profile.data.email
         this.picture = profile.data.picture
+        alert(profile.data.hd)
       }
     })
   }
