@@ -1,7 +1,9 @@
 import * as configJson from './config.json'
 
 const config = () => {
-  return configJson[sessionStorage.getItem('domain')]
+  const config = configJson[sessionStorage.getItem('domain')]
+  config.domain = sessionStorage.getItem('domain')
+  return config
 }
 
 export {config}
