@@ -1,5 +1,5 @@
 import {DomainUser} from '@/api/DomainUser'
-import * as config from '@/config.json'
+import config from '@/config'
 
 const parseString = require('xml2js').parseString
 

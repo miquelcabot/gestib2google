@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import * as config from '@/config.json'
+import config from '@/config'
 
 export default {
   name: 'Setup',

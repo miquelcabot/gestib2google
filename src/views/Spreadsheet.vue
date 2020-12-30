@@ -14,7 +14,7 @@
         </div>
         <form @submit.prevent>
           <div class="form-group">
-            <label for="groupsdomainuserscsv" class="col-sm-2 col-form-label">Grup d'alumnes</label>
+            <label for="groupsdomainuserscsv" class="col-sm col-form-label">Grup d'alumnes</label>
             <div class="col-sm-10">
               <select class="form-control" id="group" name="group" v-model="group" :disabled="loading">
                 <option v-if="loadingGroups" value="">Carregant...</option>
@@ -54,9 +54,9 @@
 </template>
 
 <script>
-import {getDomainGroupsStudents, getDomainUsers} from '../api/DomainRead'
-import {oauth2ClientServiceSheets} from '../api/Oauth2Client'
-import * as config from '../config.json'
+import {getDomainGroupsStudents, getDomainUsers} from '@/api/DomainRead'
+import {oauth2ClientServiceSheets} from '@/api/Oauth2Client'
+import config from '@/config'
 
 export default {
   name: 'Spreadsheet',

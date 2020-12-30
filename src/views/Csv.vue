@@ -8,7 +8,7 @@
       <div class="card-body">
         <form @submit.prevent>
           <div class="form-group">
-            <label for="groupsdomainuserscsv" class="col-sm-2 col-form-label">Grup d'alumnes</label>
+            <label for="groupsdomainuserscsv" class="col-sm col-form-label">Grup d'alumnes</label>
             <div class="col-sm-10">
               <select class="form-control" id="group" name="group" v-model="group" :disabled="loading">
                 <option v-if="loadingGroups" value="">Carregant...</option>
@@ -47,7 +47,7 @@
 <script>
 import { saveAs } from 'file-saver'
 import {getDomainGroupsStudents, getDomainUsers} from '@/api/DomainRead'
-import * as config from '@/config.json'
+import config from '@/config'
 
 export default {
   name: 'Csv',

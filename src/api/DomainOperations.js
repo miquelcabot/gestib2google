@@ -1,6 +1,6 @@
 import {oauth2ClientServiceAdmin} from '@/api/Oauth2Client'
 import {DomainUser, pad} from '@/api/DomainUser'
-import * as config from '@/config.json'
+import config from '@/config'
 
 /**
  * Aplicar al domini l'eliminació d'un usuari
