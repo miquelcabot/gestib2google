@@ -47,7 +47,7 @@
 <script>
 import { saveAs } from 'file-saver'
 import {getDomainGroupsStudents, getDomainUsers} from '@/api/DomainRead'
-import config from '@/config'
+import {config} from '@/config'
 
 export default {
   name: 'Csv',
@@ -91,8 +91,8 @@ export default {
                     usergroup = 'Professorat'
                   } else {
                     users[user].groups.forEach(group => {
-                      if (group.includes(config.groupPrefixStudents)) {
-                        usergroup = group.substr(config.groupPrefixStudents.length)
+                      if (group.includes(config().groupPrefixStudents)) {
+                        usergroup = group.substr(config().groupPrefixStudents.length)
                       }
                     })
                   }

@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import config from '@/config'
+import {config} from '@/config'
 
 export default {
   name: 'Setup',
@@ -74,15 +74,15 @@ export default {
     }
   },
   mounted () {
-    this.domain = config.domain
-    this.defaultPassword = config.defaultPassword
-    this.groupPrefixDepartment = config.groupPrefixDepartment
-    this.groupPrefixTeachers = config.groupPrefixTeachers
-    this.groupPrefixStudents = config.groupPrefixStudents
-    this.groupPrefixTutors = config.groupPrefixTutors
-    this.organizationalUnitTeachers = config.organizationalUnitTeachers
-    this.organizationalUnitStudents = config.organizationalUnitStudents
-    this.longStudentsEmail = config.longStudentsEmail
+    this.domain = config().domain
+    this.defaultPassword = config().defaultPassword
+    this.groupPrefixDepartment = config().groupPrefixDepartment
+    this.groupPrefixTeachers = config().groupPrefixTeachers
+    this.groupPrefixStudents = config().groupPrefixStudents
+    this.groupPrefixTutors = config().groupPrefixTutors
+    this.organizationalUnitTeachers = config().organizationalUnitTeachers
+    this.organizationalUnitStudents = config().organizationalUnitStudents
+    this.longStudentsEmail = config().longStudentsEmail
   },
   methods: {
     saveConfig () {

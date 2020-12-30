@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import config from '@/config'
+import {config} from '@/config'
 
 export default {
   name: 'Home',
@@ -27,10 +27,10 @@ export default {
     }
   },
   mounted () {
-    this.domain = config.domain
-    this.organizationalUnitTeachers = config.organizationalUnitTeachers
-    this.organizationalUnitStudents = config.organizationalUnitStudents
-    this.defaultPassword = config.defaultPassword
+    this.domain = config().domain
+    this.organizationalUnitTeachers = config().organizationalUnitTeachers
+    this.organizationalUnitStudents = config().organizationalUnitStudents
+    this.defaultPassword = config().defaultPassword
   }
 }
 </script>

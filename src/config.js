@@ -1,3 +1,7 @@
 import * as configJson from './config.json'
 
-export default configJson[sessionStorage.getItem('domain')]
+const config = () => {
+  return configJson[sessionStorage.getItem('domain')]
+}
+
+export {config}

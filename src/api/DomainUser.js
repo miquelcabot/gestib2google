@@ -1,4 +1,4 @@
-import config from '@/config'
+import {config} from '@/config'
 
 const pad = (num, size) => {
   let s = num + ''
@@ -59,31 +59,31 @@ class DomainUser {
   email () {
     if (this.domainemail) {
       return this.domainemail
-    } else if (this.teacher || (config.longStudentsEmail === true)) {
+    } else if (this.teacher || (config().longStudentsEmail === true)) {
       let email = normalizedName(this.name.substring(0, 1)) + normalizedName(this.surname1)
-      return email + '@' + config.domain
-    } else if (config.longStudentsEmail === '2surnames') { // Email amb dos llinatges (m.cabotnadal@)
+      return email + '@' + config().domain
+    } else if (config().longStudentsEmail === '2surnames') { // Email amb dos llinatges (m.cabotnadal@)
       let email = normalizedName(this.name.substring(0, 1)) +
         '.' +
         normalizedName(this.surname1) +
         normalizedName(this.surname2)
-      return email + '@' + config.domain
+      return email + '@' + config().domain
     } else {
       let email = normalizedName(this.name.substring(0, 1)) +
         normalizedName(this.surname1.substring(0, 1)) +
         normalizedName(this.surname2.substring(0, 1))
-      return email + pad(0, 2) + '@' + config.domain
+      return email + pad(0, 2) + '@' + config().domain
     }
   }
 
   user () {
-    return this.email().replace('@' + config.domain, '')
+    return this.email().replace('@' + config().domain, '')
   }
 
   groupsWithDomain () {
     let gr = []
     this.groups.forEach(group => {
-      gr.push(group + '@' + config.domain)
+      gr.push(group + '@' + config().domain)
     })
 
     return gr
@@ -92,7 +92,7 @@ class DomainUser {
   groupsWithPrefix () {
     let gr = []
     this.groups.forEach(group => {
-      if (group.startsWith(config.groupPrefixStudents) || group.startsWith(config.groupPrefixTeachers) || group.startsWith(config.groupPrefixTutors) || group.startsWith(config.groupPrefixDepartment)) {
+      if (group.startsWith(config().groupPrefixStudents) || group.startsWith(config().groupPrefixTeachers) || group.startsWith(config().groupPrefixTutors) || group.startsWith(config().groupPrefixDepartment)) {
         gr.push(group)
       }
     })

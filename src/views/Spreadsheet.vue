@@ -56,7 +56,7 @@
 <script>
 import {getDomainGroupsStudents, getDomainUsers} from '@/api/DomainRead'
 import {oauth2ClientServiceSheets} from '@/api/Oauth2Client'
-import config from '@/config'
+import {config} from '@/config'
 
 export default {
   name: 'Spreadsheet',

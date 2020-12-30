@@ -1,6 +1,6 @@
 import {oauth2ClientServiceAdmin} from '@/api/Oauth2Client'
 import {DomainUser, pad} from '@/api/DomainUser'
-import config from '@/config'
+import {config} from '@/config'
 
 /**
  * Aplicar al domini l'eliminació d'un usuari
@@ -39,9 +39,9 @@ const deleteDomainUsers = (logs, xmlUsers, domainUsers, apply, selectedGroup, on
           // Si només hem escollit professors...
           if (!onlyTeachers || domainUser.teacher) {
             // Aplicar només les unitats organitzatives 'Professorat', 'Alumnat' i '/'
-            if (['/', config.organizationalUnitTeachers, config.organizationalUnitStudents].includes(domainUser.organizationalUnit)) {
+            if (['/', config().organizationalUnitTeachers, config().organizationalUnitStudents].includes(domainUser.organizationalUnit)) {
               // No eliminam professors del @iesfbmoll.org
-              if (!(['/', config.organizationalUnitTeachers].includes(domainUser.organizationalUnit) && (domainUser.email().indexOf('@iesfbmoll.org') >= 0))) {
+              if (!(['/', config().organizationalUnitTeachers].includes(domainUser.organizationalUnit) && (domainUser.email().indexOf('@iesfbmoll.org') >= 0))) {
                 logs.push('SUSPENDRE: ' + domainUser.toString())
                 countDeleted++
                 if (apply) {
@@ -66,9 +66,9 @@ const createGroups = (logs, apply, groups, domainGroups) => {
   groups.forEach(gr => {
     // Si el grup no existeix, el cream
     if (!(gr in domainGroups)) {
-      logs.push('CREAR GRUP: ' + gr + '@' + config.domain)
+      logs.push('CREAR GRUP: ' + gr + '@' + config().domain)
       countGroupsCreated++
-      domainGroups[gr] = { email: gr + '@' + config.domain }
+      domainGroups[gr] = { email: gr + '@' + config().domain }
       if (apply) {
         // kkk TODO: afegir grup al domini
         // kkk TODO: fer de forma asincrona. primer crear grup, despre, el q faci falta...
@@ -94,7 +94,7 @@ const createGroups = (logs, apply, groups, domainGroups) => {
 const getNewDomainEmail = (xmlUser, domainUsers) => {
   // kkkk TODO: pendent
   let newEmail = null
-  if (!xmlUser.teacher && !config.longStudentsEmail) {
+  if (!xmlUser.teacher && !config().longStudentsEmail) {
     // EMAIL CURT 'mcn00@'
     for (let dUser in domainUsers) {
       // Si hi ha un usuari del domini amb les 3 primeres lletres iguals
@@ -103,7 +103,7 @@ const getNewDomainEmail = (xmlUser, domainUsers) => {
         let nEmailXml = parseInt(xmlUser.email().substring(3, 5))
         if (nEmailDom >= nEmailXml) {
           let nEmail = nEmailDom + 1
-          newEmail = xmlUser.email().substring(0, 3) + pad(nEmail, 2) + '@' + config.domain
+          newEmail = xmlUser.email().substring(0, 3) + pad(nEmail, 2) + '@' + config().domain
         }
       }
     }
@@ -151,18 +151,18 @@ const createDomainUser = (logs, apply, xmlUser, domainUsers) => {
       resource: {
         primaryEmail: xmlUser.email(),
         name: { givenName: xmlUser.name, familyName: xmlUser.surname },
-        orgUnitPath: (xmlUser.teacher ? config.organizationalUnitTeachers : config.organizationalUnitStudents),
+        orgUnitPath: (xmlUser.teacher ? config().organizationalUnitTeachers : config().organizationalUnitStudents),
         externalIds: [{ type: 'organization', value: xmlUser.id }],
         suspended: false,
         changePasswordAtNextLogin: true,
-        password: config.defaultPassword // Default password
+        password: config().defaultPassword // Default password
       }
     }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
     // Insert all groupPrefixTeachers, groupPrefixStudents and groupPrefixTutors groups
     for (let gr in xmlUser.groupsWithPrefixAdded()) {
       // https://developers.google.com/admin-sdk/directory/v1/reference/members/insert
       oauth2ClientServiceAdmin().members.insert({
-        groupKey: xmlUser.groupsWithPrefixAdded()[gr] + '@' + config.domain,
+        groupKey: xmlUser.groupsWithPrefixAdded()[gr] + '@' + config().domain,
         resource: {
           email: xmlUser.email()
         }
@@ -214,7 +214,7 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
       for (let gr in deletegroups) {
         // https://developers.google.com/admin-sdk/directory/v1/reference/members/delete
         oauth2ClientServiceAdmin().members.delete({
-          groupKey: deletegroups[gr] + '@' + config.domain,
+          groupKey: deletegroups[gr] + '@' + config().domain,
           resource: {
             email: domainUser.email()
           }
@@ -223,7 +223,7 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
       for (let gr in creategroups) {
         // https://developers.google.com/admin-sdk/directory/v1/reference/members/insert
         oauth2ClientServiceAdmin().members.insert({
-          groupKey: creategroups[gr] + '@' + config.domain,
+          groupKey: creategroups[gr] + '@' + config().domain,
           resource: {
             email: domainUser.email()
           }
@@ -239,18 +239,18 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
  */
 const updateOrgunitDomainUser = (logs, apply, xmlUser, domainUser) => {
   let countOrgunitModified = 0
-  if (domainUser.organizationalUnit !== (xmlUser.teacher ? config.organizationalUnitTeachers : config.organizationalUnitStudents)) {
+  if (domainUser.organizationalUnit !== (xmlUser.teacher ? config().organizationalUnitTeachers : config().organizationalUnitStudents)) {
     logs.push('CANVIAR UNITAT ORGANITZATIVA: ' +
       domainUser.surname + ', ' + domainUser.name + ' (' +
       domainUser.email() + ') [' +
-      (xmlUser.teacher ? config.organizationalUnitTeachers : config.organizationalUnitStudents) + ']')
+      (xmlUser.teacher ? config().organizationalUnitTeachers : config().organizationalUnitStudents) + ']')
     countOrgunitModified++
     if (apply) {
       // Actualitzar unitat organtizativa de l'usuari del domini
       oauth2ClientServiceAdmin().users.update({
         userKey: domainUser.email(),
         resource: {
-          orgUnitPath: (xmlUser.teacher ? config.organizationalUnitTeachers : config.organizationalUnitStudents)
+          orgUnitPath: (xmlUser.teacher ? config().organizationalUnitTeachers : config().organizationalUnitStudents)
         }
       }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
     }
@@ -290,7 +290,7 @@ const addDomainUsers = (logs, xmlUsers, domainUsers, domainGroups, apply, select
         // Si només hem escollit professors...
         if (!onlyTeachers || xmlUser.teacher || domainUser.teacher) {
           // Aplicar només les unitats organitzatives 'Professorat', 'Alumnat' i '/'
-          if (['/', config.organizationalUnitTeachers, config.organizationalUnitStudents].includes(domainUser.organizationalUnit)) {
+          if (['/', config().organizationalUnitTeachers, config().organizationalUnitStudents].includes(domainUser.organizationalUnit)) {
             // Actualitzam el seu estat de 'activat'
             countActivated = countActivated + updateActivateDomainUser(logs, apply, xmlUser, domainUser)
             let creategroups = xmlUser.groupsWithPrefixAdded().filter(

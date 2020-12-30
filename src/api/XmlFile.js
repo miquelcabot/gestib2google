@@ -1,5 +1,5 @@
 import {DomainUser} from '@/api/DomainUser'
-import config from '@/config'
+import {config} from '@/config'
 
 const parseString = require('xml2js').parseString
 
@@ -35,11 +35,11 @@ const getGroupEmails = (logs, groupName, usertype) => {
   let groupPrefix
 
   if (usertype === USERTYPE.student) {
-    groupPrefix = config.groupPrefixStudents
+    groupPrefix = config().groupPrefixStudents
   } else if (usertype === USERTYPE.tutor) {
-    groupPrefix = config.groupPrefixTutors
+    groupPrefix = config().groupPrefixTutors
   } else {
-    groupPrefix = config.groupPrefixTeachers
+    groupPrefix = config().groupPrefixTeachers
   }
 
   if (name.includes('batx')) {
@@ -51,14 +51,14 @@ const getGroupEmails = (logs, groupName, usertype) => {
   } else {
     // Formació Professional
     let fpName = name.split(' ')[0]
-    if (fpName in config.groupNameConversion) {
-      if (grup in config.groupNameConversion[fpName].groups) {
-        let fpConvertedName = config.groupNameConversion[fpName].name
+    if (fpName in config().groupNameConversion) {
+      if (grup in config().groupNameConversion[fpName].groups) {
+        let fpConvertedName = config().groupNameConversion[fpName].name
         let groupNames = []
         if (usertype === USERTYPE.student) {
-          groupNames = config.groupNameConversion[fpName].groups[grup].student
+          groupNames = config().groupNameConversion[fpName].groups[grup].student
         } else {
-          groupNames = config.groupNameConversion[fpName].groups[grup].teacher
+          groupNames = config().groupNameConversion[fpName].groups[grup].teacher
         }
         groupNames.forEach(groupName => {
           if (groupName) {
@@ -67,11 +67,11 @@ const getGroupEmails = (logs, groupName, usertype) => {
           }
         })
       } else {
-        let msg = 'ATENCIÓ: El grup ' + fpName + grup + ' no està configurat a "groupNameConversion" al fitxer config.json'
+        let msg = 'ATENCIÓ: El grup ' + fpName + grup + ' no està configurat a "groupNameConversion" al fitxer config().json'
         if (logs.indexOf(msg) === -1) { logs.push(msg) }
       }
     } else {
-      let msg = 'ATENCIÓ: El grup ' + fpName + ' no està configurat a "groupNameConversion" al fitxer config.json'
+      let msg = 'ATENCIÓ: El grup ' + fpName + ' no està configurat a "groupNameConversion" al fitxer config().json'
       if (logs.indexOf(msg) === -1) { logs.push(msg) }
     }
   }
@@ -201,10 +201,10 @@ const readXmlUsers = (logs, xmlfile, xmlgroups, xmltutors, xmltimetable) => {
 
     // Afegim grup de departament al professor
     if (teacher.departament) {
-      if (teacher.departament in config.departmentNumberToName) {
-        emailsteacher.push(config.groupPrefixDepartment + config.departmentNumberToName[teacher.departament])
+      if (teacher.departament in config().departmentNumberToName) {
+        emailsteacher.push(config().groupPrefixDepartment + config().departmentNumberToName[teacher.departament])
       } else {
-        let msg = 'ATENCIÓ: El departament ' + teacher.departament + ' no està configurat a "departmentNumberToName" al fitxer config.json'
+        let msg = 'ATENCIÓ: El departament ' + teacher.departament + ' no està configurat a "departmentNumberToName" al fitxer config().json'
         if (logs.indexOf(msg) === -1) { logs.push(msg) }
       }
     } else {
