@@ -84,7 +84,7 @@
               <tr>
                 <th>Nom</th>
                 <th>Email</th>
-                <th>Professor</th>
+                <th>Professor/Alumne</th>
                 <th>Grups</th>
                 <th>Unitat</th>
               </tr>
@@ -104,7 +104,7 @@
               <tr v-for="user in users" v-bind:key="user.id">
                 <td>{{ user.surname + ', ' + user.name }}</td>
                 <td>{{ user.domainemail }}</td>
-                <td>{{ user.teacher ? 'TEACHER' : '' }}</td>
+                <td>{{ user.teacher ? 'PROFESSOR' : 'Alumne' }}</td>
                 <td>{{ user.groups.join(', ') }}</td>
                 <td>{{ user.organizationalUnit }}</td>
               </tr>
@@ -126,7 +126,7 @@ export default {
     return {
       group: '',
       onlyteachers: false,
-      onlyactive: false,
+      onlyactive: true,
       onlywithoutcode: false,
       onlynotsession: false,
       onlywithoutorgunit: false,
