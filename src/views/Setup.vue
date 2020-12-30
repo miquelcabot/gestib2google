@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     saveConfig () {
-      // Guardar configuració
+      // kkk TODO: Guardar configuració
     }
   }
 }

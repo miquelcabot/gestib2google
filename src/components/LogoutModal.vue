@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       logoutUrl: 'https://accounts.google.com/o/oauth2/revoke?token=' + JSON.parse(sessionStorage.getItem('token')).access_token
-      // O https://accounts.google.com/logout ??
+      // kkk TODO: O https://accounts.google.com/logout ??
     }
   }
 }

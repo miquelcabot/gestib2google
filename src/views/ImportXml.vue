@@ -180,6 +180,7 @@ export default {
       let blob = new Blob([this.logs.join('\r\n')], { type: 'text/plain;charset=utf-8' })
       let fileName = 'import' + (new Date()).toLocaleString() + '.txt'
       saveAs(blob, fileName)
+      // kkk TODO: afegir automàticament log d'importacions
     }
   }
 }
