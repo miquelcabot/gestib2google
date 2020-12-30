@@ -8,6 +8,12 @@
     "organizationalUnitTeachers": "/Professorat",
     "organizationalUnitStudents": "/Alumnat",
     "longStudentsEmail": true,
+    "teachersEmailPrefix": "",
+    "teachersEmailFormat": "n111",
+    "teachersEmailCustomDomain": "",
+    "studentsEmailPrefix": "",
+    "studentsEmailFormat": "n111222",
+    "studentsEmailCustomDomain": "",
     "departmentNumberToName": {
       "7310": "orientacio",
       "7313": "formacioiorientaciolaboral",
