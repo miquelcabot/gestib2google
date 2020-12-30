@@ -10,7 +10,7 @@
           <div class="form-group">
             <label for="group" class="col-sm col-form-label">Grup d'alumnes</label>
             <div class="col-sm-10">
-              <select class="form-control" id="group" name="group" v-model="group" :disabled="loading">
+              <select class="form-control" id="group" name="group" v-model="group" :disabled="loading || loadingGroups">
                 <option v-if="loadingGroups" value="">Carregant...</option>
                 <option v-if="!loadingGroups" value="">Tots</option>
                 <option v-for="group in groups" v-bind:key="group.email" v-bind:value="group.email">
