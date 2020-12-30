@@ -51,6 +51,7 @@
 
 <script>
 // @ is an alias to /src
+import * as config from '@/config.json'
 import Sidebar from '@/components/Sidebar'
 import Topbar from '@/components/Topbar'
 import Footer from '@/components/Footer'
@@ -118,11 +119,17 @@ export default {
           alert('Error carregant informació de l\'usuari: ' + err)
           const authUrl = oauth2ClientGenerateAuthUrl()
           window.location = authUrl
+        } else if (!config[profile.data.hd]) {
+          // El domini no està configurat a config.json
+          alert('El domini ' + profile.data.hd + ' no es pot utilitzar en aquesta aplicació')
+          const authUrl = oauth2ClientGenerateAuthUrl()
+          window.location = authUrl
         } else {
           this.name = profile.data.name
           this.email = profile.data.email
           this.picture = profile.data.picture
           this.domain = profile.data.hd
+          sessionStorage.setItem('domain', profile.data.hd)
           this.correctDomain = true
         }
       })

@@ -1,213 +1,214 @@
 {
-  "domain": "cifpfbmoll.eu",
-  "defaultPassword": "Curs202021",
-  "groupPrefixDepartment": "dept.",
-  "groupPrefixTeachers": "professorat.",
-  "groupPrefixStudents": "alumnat.",
-  "groupPrefixTutors": "tutor.",
-  "organizationalUnitTeachers": "/Professorat",
-  "organizationalUnitStudents": "/Alumnat",
-  "longStudentsEmail": true,
-  "departmentNumberToName": {
-    "7310": "orientacio",
-    "7313": "formacioiorientaciolaboral",
-    "7314": "comercimarqueting",
-    "7312": "imatgepersonal",
-    "7315": "informatica",
-    "7311": "sanitat"
-  },
-  "groupNameConversion": {
-    "com21": {
-      "name": "com21",
-      "description": "GM Activitats Comercials",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""}
-      }
+  "cifpfbmoll.eu": {
+    "defaultPassword": "Curs202021",
+    "groupPrefixDepartment": "dept.",
+    "groupPrefixTeachers": "professorat.",
+    "groupPrefixStudents": "alumnat.",
+    "groupPrefixTutors": "tutor.",
+    "organizationalUnitTeachers": "/Professorat",
+    "organizationalUnitStudents": "/Alumnat",
+    "longStudentsEmail": true,
+    "departmentNumberToName": {
+      "7310": "orientacio",
+      "7313": "formacioiorientaciolaboral",
+      "7314": "comercimarqueting",
+      "7312": "imatgepersonal",
+      "7315": "informatica",
+      "7311": "sanitat"
     },
-    "com34": {
-      "name": "com34",
-      "description": "GS Comerç Internacional",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": [], "description": ""},
-        "f": {"teacher": [], "student": [], "description": ""}
-      }
-    },
-    "ifc11": {
-      "name": "ifc11",
-      "description": "FPB Informàtica i Comunicacions",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1rA"},
-        "d": {"teacher": ["d"], "student": ["d"], "description": ""}
-      }
-    },
-    "ifc21": {
-      "name": "ifc21",
-      "description": "GM Sistemes Microinformàtics i Xarxes",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1rA"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "1rB"},
-        "c": {"teacher": ["c"], "student": ["c"], "description": "2n"},
-        "d": {"teacher": ["dist"], "student": [], "description": "Distància"},
-        "e": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": ["fct"], "description": "FCT"}
-      }
-    },
-    "ifc31": {
-      "name": "ifc31",
-      "description": "GS Administració de Sistemes Microinformàtics en Xarxa",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "d": {"teacher": ["dist"], "student": ["fct"], "description": "Distància"},
-        "e": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""},
-        "w": {"teacher": ["w"], "student": ["w"], "description": "1r DUAL"},
-        "x": {"teacher": ["x"], "student": ["x"], "description": "2n DUAL"}
-      }
-    },
-    "ifc32": {
-      "name": "ifc32",
-      "description": "GS Desenvolupament d'Aplicacions Multiplataforma",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""}
-      }
-    },
-    "ifc33": {
-      "name": "ifc33",
-      "description": "GS Desenvolupament d'Aplicacions Web",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""},
-        "w": {"teacher": ["w"], "student": ["w"], "description": "1r DUAL"},
-        "x": {"teacher": ["x"], "student": ["x"], "description": "2n DUAL"}
-      }
-    },
-    "imp11": {
-      "name": "imp11",
-      "description": "FPB Perruqueria i Estètica",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""}
-      }
-    },
-    "imp21": {
-      "name": "imp21",
-      "description": "GM Estètica i Bellesa",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r Matí"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "1r Tarda"},
-        "c": {"teacher": ["c"], "student": ["c"], "description": "2n Matí"},
-        "d": {"teacher": ["d"], "student": ["d"], "description": "2n Tarda"},
-        "e": {"teacher": [], "student": ["fct.mati"], "description": "FCT"},
-        "f": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "g": {"teacher": ["g"], "student": ["g"], "description": ""}
-      }
-    },
-    "imp22": {
-      "name": "imp22",
-      "description": "GM Perruqueria i Cosmètica Capil·lar",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""}
-      }
-    },
-    "imp31": {
-      "name": "imp31",
-      "description": "GS Estètica Integral i Benestar",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": [], "description": ""},
-        "f": {"teacher": [], "student": [], "description": ""}
-      }
-    },
-    "imp33": {
-      "name": "imp33",
-      "description": "GS Assessoria d'Imatge Personal i Corporativa",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""}
-      }
-    },
-    "san22": {
-      "name": "san22",
-      "description": "GM Farmàcia i Parafarmàcia",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "d": {"teacher": ["dist"], "student": [], "description": "Distància"},
-        "e": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""},
-        "g": {"teacher": ["g"], "student": ["g"], "description": ""}
-      }
-    },
-    "san23": {
-      "name": "san23",
-      "description": "GM Cures Auxiliars d'Infermeria",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r A (Matí)"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "1r B (Tarda"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "d": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""}
-      }
-    },
-    "san31": {
-      "name": "san31",
-      "description": "GS Anatomia Patològica i Citodiagnòstic",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": [], "description": ""},
-        "f": {"teacher": [], "student": [], "description": ""}
-      }
-    },
-    "san32": {
-      "name": "san32",
-      "description": "GS Dietètica",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""}
-      }
-    },
-    "san36": {
-      "name": "san36",
-      "description": "GS Laboratori Clínic i Biomèdic",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""}
-      }
-    },
-    "sea21": {
-      "name": "sea21",
-      "description": "GM Emergències i Protecció Civil",
-      "groups": {
-        "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
-        "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
-        "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
-        "f": {"teacher": [], "student": [], "description": ""}
+    "groupNameConversion": {
+      "com21": {
+        "name": "com21",
+        "description": "GM Activitats Comercials",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
+      },
+      "com34": {
+        "name": "com34",
+        "description": "GS Comerç Internacional",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": [], "description": ""},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
+      },
+      "ifc11": {
+        "name": "ifc11",
+        "description": "FPB Informàtica i Comunicacions",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1rA"},
+          "d": {"teacher": ["d"], "student": ["d"], "description": ""}
+        }
+      },
+      "ifc21": {
+        "name": "ifc21",
+        "description": "GM Sistemes Microinformàtics i Xarxes",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1rA"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "1rB"},
+          "c": {"teacher": ["c"], "student": ["c"], "description": "2n"},
+          "d": {"teacher": ["dist"], "student": [], "description": "Distància"},
+          "e": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": ["fct"], "description": "FCT"}
+        }
+      },
+      "ifc31": {
+        "name": "ifc31",
+        "description": "GS Administració de Sistemes Microinformàtics en Xarxa",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "d": {"teacher": ["dist"], "student": ["fct"], "description": "Distància"},
+          "e": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""},
+          "w": {"teacher": ["w"], "student": ["w"], "description": "1r DUAL"},
+          "x": {"teacher": ["x"], "student": ["x"], "description": "2n DUAL"}
+        }
+      },
+      "ifc32": {
+        "name": "ifc32",
+        "description": "GS Desenvolupament d'Aplicacions Multiplataforma",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
+      },
+      "ifc33": {
+        "name": "ifc33",
+        "description": "GS Desenvolupament d'Aplicacions Web",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""},
+          "w": {"teacher": ["w"], "student": ["w"], "description": "1r DUAL"},
+          "x": {"teacher": ["x"], "student": ["x"], "description": "2n DUAL"}
+        }
+      },
+      "imp11": {
+        "name": "imp11",
+        "description": "FPB Perruqueria i Estètica",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
+      },
+      "imp21": {
+        "name": "imp21",
+        "description": "GM Estètica i Bellesa",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r Matí"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "1r Tarda"},
+          "c": {"teacher": ["c"], "student": ["c"], "description": "2n Matí"},
+          "d": {"teacher": ["d"], "student": ["d"], "description": "2n Tarda"},
+          "e": {"teacher": [], "student": ["fct.mati"], "description": "FCT"},
+          "f": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "g": {"teacher": ["g"], "student": ["g"], "description": ""}
+        }
+      },
+      "imp22": {
+        "name": "imp22",
+        "description": "GM Perruqueria i Cosmètica Capil·lar",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
+      },
+      "imp31": {
+        "name": "imp31",
+        "description": "GS Estètica Integral i Benestar",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": [], "description": ""},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
+      },
+      "imp33": {
+        "name": "imp33",
+        "description": "GS Assessoria d'Imatge Personal i Corporativa",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
+      },
+      "san22": {
+        "name": "san22",
+        "description": "GM Farmàcia i Parafarmàcia",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "d": {"teacher": ["dist"], "student": [], "description": "Distància"},
+          "e": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""},
+          "g": {"teacher": ["g"], "student": ["g"], "description": ""}
+        }
+      },
+      "san23": {
+        "name": "san23",
+        "description": "GM Cures Auxiliars d'Infermeria",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r A (Matí)"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "1r B (Tarda"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "d": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
+      },
+      "san31": {
+        "name": "san31",
+        "description": "GS Anatomia Patològica i Citodiagnòstic",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": [], "description": ""},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
+      },
+      "san32": {
+        "name": "san32",
+        "description": "GS Dietètica",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
+      },
+      "san36": {
+        "name": "san36",
+        "description": "GS Laboratori Clínic i Biomèdic",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
+      },
+      "sea21": {
+        "name": "sea21",
+        "description": "GM Emergències i Protecció Civil",
+        "groups": {
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
+          "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
+          "f": {"teacher": [], "student": [], "description": ""}
+        }
       }
     }
   }
