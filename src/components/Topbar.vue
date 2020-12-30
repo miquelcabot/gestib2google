@@ -31,27 +31,10 @@
 </template>
 
 <script>
-import {oauth2UserProfile} from '@/api/Oauth2Client'
 
 export default {
   name: 'Topbar',
-  data () {
-    return {
-      name: '',
-      email: '',
-      picture: '../../static/img/profile.jpg'
-    }
-  },
-  mounted () {
-    oauth2UserProfile((err, profile) => {
-      if (!err) {
-        this.name = profile.data.name
-        this.email = profile.data.email
-        this.picture = profile.data.picture
-        alert(profile.data.hd)
-      }
-    })
-  }
+  props: ['name', 'email', 'picture']
 }
 </script>
 

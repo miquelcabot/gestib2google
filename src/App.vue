@@ -4,7 +4,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-      <Sidebar/>
+      <Sidebar v-if="correctDomain"/>
 
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
@@ -12,7 +12,7 @@
         <!-- Main Content -->
         <div id="content">
 
-          <Topbar/>
+          <Topbar v-if="correctDomain" :name="name" :email="email" :picture="picture"/>
 
           <!-- Begin Page Content -->
           <div class="container-fluid">
@@ -21,7 +21,7 @@
           <div class="row">
             <div class="col-lg-12 mb-4">
 
-              <router-view/>
+              <router-view v-if="correctDomain"/>
 
             </div>
           </div>
@@ -32,7 +32,7 @@
         </div>
         <!-- End of Main Content -->
 
-        <Footer/>
+        <Footer v-if="correctDomain"/>
 
       </div>
       <!-- End of Content Wrapper -->
@@ -40,7 +40,7 @@
     </div>
     <!-- End of Page Wrapper -->
 
-    <ScrollTopButton/>
+    <ScrollTopButton v-if="correctDomain"/>
 
     <LogoutModal/>
 
@@ -56,6 +56,7 @@ import Topbar from '@/components/Topbar'
 import Footer from '@/components/Footer'
 import ScrollTopButton from '@/components/ScrollTopButton'
 import LogoutModal from '@/components/LogoutModal'
+import {oauth2Client, oauth2ClientGenerateAuthUrl, oauth2UserProfile} from '@/api/Oauth2Client'
 
 export default {
   name: 'App',
@@ -68,7 +69,63 @@ export default {
   },
   data () {
     return {
-      publicPath: process.env.BASE_URL
+      correctDomain: false,
+      publicPath: process.env.BASE_URL,
+      name: '',
+      email: '',
+      picture: '../static/img/profile.jpg',
+      domain: ''
+    }
+  },
+  created () {
+    // Si retornam del login de Google, capturam el paràmetre 'code'
+    const code = (new URL(window.location.href)).searchParams.get('code')
+
+    let token = sessionStorage.getItem('token')
+    let expiryDate = null
+    if (token) {
+      // Si ha expirat el token de Google Oauth2, eliminam el token per forçar un altre login
+      expiryDate = new Date(JSON.parse(sessionStorage.getItem('token')).expiry_date)
+      if (expiryDate < Date.now()) {
+        token = null
+      }
+    }
+
+    if ((!code) && (!token)) {
+      // No ha fet login amb Google, hem d'anar a la URL de login
+      const authUrl = oauth2ClientGenerateAuthUrl()
+      window.location = authUrl
+    } else if ((code) && (!token)) {
+      // Ha fet el login amb Google, llegim 'code' retornat
+      oauth2Client().getToken(code, (err, token) => {
+        if (err) {
+          const authUrl = oauth2ClientGenerateAuthUrl()
+          window.location = authUrl
+        } else {
+          sessionStorage.setItem('token', JSON.stringify(token))
+          this.loadProfile()
+        }
+      })
+    } else {
+      this.loadProfile()
+    }
+  },
+  methods: {
+    loadProfile () {
+      // Carregam informació del perfil de Google
+      oauth2UserProfile((err, profile) => {
+        if (err) {
+          alert('Error carregant informació de l\'usuari: ' + err)
+          const authUrl = oauth2ClientGenerateAuthUrl()
+          window.location = authUrl
+        } else {
+          this.name = profile.data.name
+          this.email = profile.data.email
+          this.picture = profile.data.picture
+          this.domain = profile.data.hd
+          this.correctDomain = true
+        }
+      })
     }
   }
 }
