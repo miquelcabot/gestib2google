@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/views/Home'
 
 Vue.use(Router)
 
@@ -9,7 +8,7 @@ let router = new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: () => import('@/views/Home')
     },
     {
       path: '/users',
@@ -17,7 +16,7 @@ let router = new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ '@/views/Users')
+      component: () => import('@/views/Users')
     },
     {
       path: '/spreadsheet',

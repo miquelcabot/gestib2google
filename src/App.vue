@@ -21,7 +21,7 @@
           <div class="row">
             <div class="col-lg-12 mb-4">
 
-              <router-view v-show="correctDomain"/>
+              <router-view v-if="correctDomain"/>
 
             </div>
           </div>
