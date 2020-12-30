@@ -4,7 +4,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-      <Sidebar v-if="correctDomain"/>
+      <Sidebar v-show="correctDomain"/>
 
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
@@ -12,7 +12,7 @@
         <!-- Main Content -->
         <div id="content">
 
-          <Topbar v-if="correctDomain" :name="name" :email="email" :picture="picture"/>
+          <Topbar v-show="correctDomain" :name="name" :email="email" :picture="picture"/>
 
           <!-- Begin Page Content -->
           <div class="container-fluid">
@@ -21,7 +21,7 @@
           <div class="row">
             <div class="col-lg-12 mb-4">
 
-              <router-view v-if="correctDomain"/>
+              <router-view v-show="correctDomain"/>
 
             </div>
           </div>
@@ -32,7 +32,7 @@
         </div>
         <!-- End of Main Content -->
 
-        <Footer v-if="correctDomain"/>
+        <Footer v-show="correctDomain"/>
 
       </div>
       <!-- End of Content Wrapper -->
@@ -40,7 +40,7 @@
     </div>
     <!-- End of Page Wrapper -->
 
-    <ScrollTopButton v-if="correctDomain"/>
+    <ScrollTopButton v-show="correctDomain"/>
 
     <LogoutModal/>
 
