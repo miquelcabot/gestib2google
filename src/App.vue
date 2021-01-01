@@ -141,6 +141,7 @@ export default {
               this.picture = profile.data.picture
               this.domain = profile.data.hd
               this.groupsStudents = groupsStudents
+              sessionStorage.setItem('groupsStudents', JSON.stringify(groupsStudents))
               this.correctDomain = true
             }
           })

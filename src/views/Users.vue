@@ -10,10 +10,9 @@
           <div class="form-group">
             <label for="group" class="col-sm col-form-label">Grup d'alumnes</label>
             <div class="col-sm-10">
-              <select class="form-control" id="group" name="group" v-model="group" :disabled="loading || loadingGroups">
-                <option v-if="loadingGroups" value="">Carregant...</option>
-                <option v-if="!loadingGroups" value="">Tots</option>
-                <option v-for="group in groups" v-bind:key="group.email" v-bind:value="group.email">
+              <select class="form-control" id="group" name="group" v-model="group" :disabled="loading">
+                <option value="">Tots</option>
+                <option v-for="group in groupsStudents" v-bind:key="group.email" v-bind:value="group.email">
                   {{ group.nameWithEmail }}
                 </option>
               </select>
@@ -118,7 +117,7 @@
 </template>
 
 <script>
-import {getDomainGroupsStudents, getDomainUsers} from '@/api/DomainRead'
+import {getDomainUsers} from '@/api/DomainRead'
 
 export default {
   name: 'Users',
@@ -132,21 +131,12 @@ export default {
       onlywithoutorgunit: false,
       errors: [],
       loading: false,
-      loadingGroups: false,
-      groups: [],
+      groupsStudents: [],
       users: []
     }
   },
   mounted () {
-    this.loadingGroups = true
-    getDomainGroupsStudents(null, null, (err, groups) => {
-      if (err) {
-        this.errors.push('Error emplentant el desplegable Grups "' + err.message + '"')
-      }
-
-      this.groups = groups
-      this.loadingGroups = false
-    })
+    this.groupsStudents = JSON.parse(sessionStorage.groupsStudents)
   },
   methods: {
     showUsers () {
