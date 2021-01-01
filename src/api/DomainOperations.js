@@ -238,6 +238,7 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
  * Actualitzar l'unitat organitzativa de l'usuari del domini
  */
 const updateOrgunitDomainUser = (logs, apply, xmlUser, domainUser) => {
+  // kkk TODO: Actualitzar unitat organitzativa filla pels alumnes
   let countOrgunitModified = 0
   if (domainUser.organizationalUnit !== (xmlUser.teacher ? config().organizationalUnitTeachers : config().organizationalUnitStudents)) {
     logs.push('CANVIAR UNITAT ORGANITZATIVA: ' +
