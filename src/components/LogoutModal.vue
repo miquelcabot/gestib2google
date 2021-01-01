@@ -25,8 +25,7 @@ export default {
     logout () {
       const accessToken = JSON.parse(sessionStorage.getItem('token')).access_token
       sessionStorage.removeItem('token')
-      fetch('https://accounts.google.com/o/oauth2/revoke?token=' + accessToken)
-      window.location = window.location.origin
+      fetch('https://accounts.google.com/o/oauth2/revoke?token=' + accessToken).then(window.location = window.location.origin)
     }
   }
 }
