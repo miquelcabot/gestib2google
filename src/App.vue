@@ -118,7 +118,6 @@ export default {
       // Carregam informació del perfil de Google
       oauth2UserProfile((err, profile) => {
         if (err) {
-          alert('Error carregant informació de l\'usuari: ' + err)
           const authUrl = oauth2ClientGenerateAuthUrl()
           window.location = authUrl
         } else if (!config[profile.data.hd]) {
