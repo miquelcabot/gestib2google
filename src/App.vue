@@ -58,6 +58,7 @@ import Footer from '@/components/Footer'
 import ScrollTopButton from '@/components/ScrollTopButton'
 import LogoutModal from '@/components/LogoutModal'
 import {oauth2Client, oauth2ClientGenerateAuthUrl, oauth2UserProfile} from '@/api/Oauth2Client'
+import {getDomainGroupsStudents} from '@/api/DomainRead'
 
 export default {
   name: 'App',
@@ -75,7 +76,8 @@ export default {
       name: '',
       email: '',
       picture: '../static/img/profile.jpg',
-      domain: ''
+      domain: '',
+      groupsStudents: []
     }
   },
   created () {
@@ -125,12 +127,24 @@ export default {
           const authUrl = oauth2ClientGenerateAuthUrl()
           window.location = authUrl
         } else {
-          this.name = profile.data.name
-          this.email = profile.data.email
-          this.picture = profile.data.picture
-          this.domain = profile.data.hd
+          // Guardam el domini com a variable de sessió
           sessionStorage.setItem('domain', profile.data.hd)
-          this.correctDomain = true
+          // Carregam els usuaris dels grups d'estudiants per diferents pantalles
+          // I així comprovam si es tenen permisos d'administració
+          getDomainGroupsStudents(null, null, (err, groupsStudents) => {
+            if (err) {
+              alert('L\'usuari ' + profile.data.email + ' no té permisos d\'administració: ' + err)
+              const authUrl = oauth2ClientGenerateAuthUrl()
+              window.location = authUrl
+            } else {
+              this.name = profile.data.name
+              this.email = profile.data.email
+              this.picture = profile.data.picture
+              this.domain = profile.data.hd
+              this.groupsStudents = groupsStudents
+              this.correctDomain = true
+            }
+          })
         }
       })
     }
