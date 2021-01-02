@@ -12,7 +12,7 @@ const applyDeletedomainUser = (logs, domainUser) => {
     resource: {
       suspended: true
     }
-  }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
+  }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
   // Eliminar tots els grups
   let groupsWithDomain = domainUser.groupsWithDomain()
   for (let i in groupsWithDomain) {
@@ -20,7 +20,7 @@ const applyDeletedomainUser = (logs, domainUser) => {
     oauth2ClientServiceAdmin().members.delete({
       groupKey: groupsWithDomain[i],
       memberKey: domainUser.email()
-    }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
+    }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
   }
 }
 
@@ -40,14 +40,11 @@ const deleteDomainUsers = (logs, xmlUsers, domainUsers, apply, selectedGroup, on
           if (!onlyTeachers || domainUser.teacher) {
             // Aplicar només les unitats organitzatives 'Professorat', 'Alumnat' i '/'
             if (['/', config().organizationalUnitTeachers, config().organizationalUnitStudents].includes(domainUser.organizationalUnit)) {
-              // No eliminam professors del @iesfbmoll.org
-              if (!(['/', config().organizationalUnitTeachers].includes(domainUser.organizationalUnit) && (domainUser.email().indexOf('@iesfbmoll.org') >= 0))) {
-                logs.push('SUSPENDRE: ' + domainUser.toString())
-                countDeleted++
-                if (apply) {
-                  // Si hem d'aplicar els canvis...
-                  applyDeletedomainUser(logs, domainUser)
-                }
+              logs.push('SUSPENDRE: ' + domainUser.toString())
+              countDeleted++
+              if (apply) {
+                // Si hem d'aplicar els canvis...
+                applyDeletedomainUser(logs, domainUser)
               }
             }
           }
@@ -157,7 +154,7 @@ const createDomainUser = (logs, apply, xmlUser, domainUsers) => {
         changePasswordAtNextLogin: true,
         password: config().defaultPassword // Default password
       }
-    }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
+    }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
     // Insert all groupPrefixTeachers, groupPrefixStudents and groupPrefixTutors groups
     for (let gr in xmlUser.groupsWithPrefixAdded()) {
       // https://developers.google.com/admin-sdk/directory/v1/reference/members/insert
@@ -166,7 +163,7 @@ const createDomainUser = (logs, apply, xmlUser, domainUsers) => {
         resource: {
           email: xmlUser.email()
         }
-      }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
+      }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
     }
   }
   return countCreated
@@ -185,9 +182,9 @@ const updateActivateDomainUser = (logs, apply, xmlUser, domainUser) => {
       oauth2ClientServiceAdmin().users.update({
         userKey: domainUser.email(),
         resource: {
-          suspended: true
+          suspended: false
         }
-      }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
+      }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
     }
   }
   return countActivated
@@ -218,7 +215,7 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
           resource: {
             email: domainUser.email()
           }
-        }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
+        }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
       }
       for (let gr in creategroups) {
         // https://developers.google.com/admin-sdk/directory/v1/reference/members/insert
@@ -227,7 +224,7 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
           resource: {
             email: domainUser.email()
           }
-        }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
+        }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
       }
     }
   }
@@ -253,7 +250,7 @@ const updateOrgunitDomainUser = (logs, apply, xmlUser, domainUser) => {
         resource: {
           orgUnitPath: (xmlUser.teacher ? config().organizationalUnitTeachers : config().organizationalUnitStudents)
         }
-      }, (err) => { if (err) logs.push('The API returned an error: ' + err) })
+      }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
     }
   }
   return countOrgunitModified
