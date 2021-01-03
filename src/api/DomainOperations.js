@@ -12,7 +12,7 @@ const applyDeletedomainUser = (logs, domainUser) => {
     resource: {
       suspended: true
     }
-  }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
+  }, (err) => { if (err) logs.push('ERROR de l\'API de Google: ' + err) })
   // Eliminar tots els grups
   let groupsWithDomain = domainUser.groupsWithDomain()
   for (let i in groupsWithDomain) {
@@ -20,7 +20,7 @@ const applyDeletedomainUser = (logs, domainUser) => {
     oauth2ClientServiceAdmin().members.delete({
       groupKey: groupsWithDomain[i],
       memberKey: domainUser.email()
-    }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
+    }, (err) => { if (err) logs.push('ERROR de l\'API de Google: ' + err) })
   }
 }
 
@@ -56,33 +56,97 @@ const deleteDomainUsers = (logs, xmlUsers, domainUsers, apply, selectedGroup, on
 }
 
 /**
- * Cream els grups que no existeixin al domini
+ * Cream el grup que no existeixi al domini
  */
-const createGroups = (logs, apply, groups, domainGroups) => {
+const createGroupCount = (logs, gr, domainGroupsCount) => {
+  // Si el grup no existeix, el cream
+  if (!(gr in domainGroupsCount)) {
+    domainGroupsCount[gr] = { email: gr + '@' + config().domain }
+    logs.push('CREAR GRUP: ' + gr + '@' + config().domain)
+    return 1 // Retornam el nombre de grups creats
+  } else {
+    return 0 // Retornam el nombre de grups creats
+  }
+}
+
+/**
+ * Cream el grup que no existeixi al domini
+ */
+const createGroup = (logs, gr, domainGroups, callback) => {
+  // Si el grup no existeix, el cream
+  if (!(gr in domainGroups)) {
+    domainGroups[gr] = { email: gr + '@' + config().domain }
+    // Afegim grup al domini
+    // https://developers.google.com/admin-sdk/directory/reference/rest/v1/groups/insert
+    oauth2ClientServiceAdmin().groups.insert({
+      resource: {
+        email: gr + '@' + config().domain
+      }
+    }, (err) => {
+      if (err) {
+        logs.push('ERROR de l\'API de Google: ' + err)
+      }
+      callback(err)
+    })
+  } else {
+    callback(null)
+  }
+}
+
+/**
+ * Actualitzar els grups del que és membre l'usuari del domini
+ */
+const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainUser, domainGroups, domainGroupsCount) => {
+  let countMembersModified = 0
   let countGroupsCreated = 0
-  groups.forEach(gr => {
-    // Si el grup no existeix, el cream
-    if (!(gr in domainGroups)) {
-      logs.push('CREAR GRUP: ' + gr + '@' + config().domain)
-      countGroupsCreated++
-      domainGroups[gr] = { email: gr + '@' + config().domain }
-      if (apply) {
-        // kkk TODO: afegir grup al domini
-        // kkk TODO: fer de forma asincrona. primer crear grup, despre, el q faci falta...
-        /*
-        $groupObj = new Google_Service_Directory_Group(
-            array(
-                'email' => $gr."@".DOMAIN
-            )
-        );
-        $service->groups->insert($groupObj);
-        $domaingroupsmembers[$gr] = [];
-        sleep(1);
-        */
+
+  // Primer contam quants de grups es crearan
+  for (let gr in creategroups) {
+    countGroupsCreated = countGroupsCreated +
+      createGroupCount(logs, creategroups[gr], domainGroupsCount)
+  }
+
+  // Tant si estava actiu com no, existeix, i per tant, actualitzar
+  // els grups groupPrefixDepartment, groupPrefixTeachers,
+  // groupPrefixStudents i groupPrefixTutors
+  if (((creategroups.length > 0) || (deletegroups.length > 0)) && (!domainUser.suspended)) {
+    if (deletegroups.length > 0) {
+      logs.push('ESBORRAR MEMBRE: ' + domainUser.surname + ', ' + domainUser.name + ' (' + domainUser.email() + ') [' + deletegroups + ']')
+    }
+    if (creategroups.length > 0) {
+      logs.push('AFEGIR MEMBRE: ' + domainUser.surname + ', ' + domainUser.name + ' (' + domainUser.email() + ') [' + creategroups + ']')
+    }
+    countMembersModified++
+    if (apply) {
+      // Actualitzam els grups de l'usuari
+      for (let gr in deletegroups) {
+        // https://developers.google.com/admin-sdk/directory/v1/reference/members/delete
+        oauth2ClientServiceAdmin().members.delete({
+          groupKey: deletegroups[gr] + '@' + config().domain,
+          resource: {
+            email: domainUser.email()
+          }
+        }, (err) => { if (err) logs.push('ERROR de l\'API de Google: ' + err) })
+      }
+      for (let gr in creategroups) {
+        // https://developers.google.com/admin-sdk/directory/v1/reference/members/insert
+        createGroup(logs, creategroups[gr], domainGroups, (err) => {
+          if (!err) {
+            oauth2ClientServiceAdmin().members.insert({
+              groupKey: creategroups[gr] + '@' + config().domain,
+              resource: {
+                email: domainUser.email()
+              }
+            }, (err) => { if (err) logs.push('ERROR de l\'API de Google: ' + err) })
+          }
+        })
       }
     }
-  })
-  return countGroupsCreated
+  }
+  return {
+    countMembersModified: countMembersModified,
+    countGroupsCreated: countGroupsCreated
+  }
 }
 
 /**
@@ -114,8 +178,15 @@ const getNewDomainEmail = (xmlUser, domainUsers) => {
 /**
  * Cream l'usuari del XML que no està al domini
  */
-const createDomainUser = (logs, apply, xmlUser, domainUsers) => {
+const createDomainUser = (logs, apply, xmlUser, domainUsers, domainGroups, domainGroupsCount) => {
   let countCreated = 1
+  let countGroupsCreated = 0
+
+  // Primer contam quants de grups es crearan
+  for (let gr in xmlUser.groupsWithPrefixAdded()) {
+    countGroupsCreated = countGroupsCreated +
+      createGroupCount(logs, xmlUser.groupsWithPrefixAdded()[gr], domainGroupsCount)
+  }
   logs.push('CREAR USUARI: ' + xmlUser.toString())
 
   // Email pot ser repetit, comprovar-ho!!
@@ -154,19 +225,26 @@ const createDomainUser = (logs, apply, xmlUser, domainUsers) => {
         changePasswordAtNextLogin: true,
         password: config().defaultPassword // Default password
       }
-    }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
+    }, (err) => { if (err) logs.push('ERROR de l\'API de Google: ' + err) })
     // Insert all groupPrefixTeachers, groupPrefixStudents and groupPrefixTutors groups
     for (let gr in xmlUser.groupsWithPrefixAdded()) {
       // https://developers.google.com/admin-sdk/directory/v1/reference/members/insert
-      oauth2ClientServiceAdmin().members.insert({
-        groupKey: xmlUser.groupsWithPrefixAdded()[gr] + '@' + config().domain,
-        resource: {
-          email: xmlUser.email()
+      createGroup(logs, xmlUser.groupsWithPrefixAdded()[gr], domainGroups, (err) => {
+        if (!err) {
+          oauth2ClientServiceAdmin().members.insert({
+            groupKey: xmlUser.groupsWithPrefixAdded()[gr] + '@' + config().domain,
+            resource: {
+              email: xmlUser.email()
+            }
+          }, (err) => { if (err) logs.push('ERROR de l\'API de Google: ' + err) })
         }
-      }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
+      })
     }
   }
-  return countCreated
+  return {
+    countCreated: countCreated,
+    countGroupsCreated: countGroupsCreated
+  }
 }
 
 /**
@@ -184,51 +262,10 @@ const updateActivateDomainUser = (logs, apply, xmlUser, domainUser) => {
         resource: {
           suspended: false
         }
-      }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
+      }, (err) => { if (err) logs.push('ERROR de l\'API de Google: ' + err) })
     }
   }
   return countActivated
-}
-
-/**
- * Actualitzar els grups del que és membre l'usuari del domini
- */
-const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainUser) => {
-  let countMembersModified = 0
-  // Tant si estava actiu com no, existeix, i per tant, actualitzar
-  // els grups groupPrefixDepartment, groupPrefixTeachers,
-  // groupPrefixStudents i groupPrefixTutors
-  if (((creategroups.length > 0) || (deletegroups.length > 0)) && (!domainUser.suspended)) {
-    if (deletegroups.length > 0) {
-      logs.push('ESBORRAR MEMBRE: ' + domainUser.surname + ', ' + domainUser.name + ' (' + domainUser.email() + ') [' + deletegroups + ']')
-    }
-    if (creategroups.length > 0) {
-      logs.push('AFEGIR MEMBRE: ' + domainUser.surname + ', ' + domainUser.name + ' (' + domainUser.email() + ') [' + creategroups + ']')
-    }
-    countMembersModified++
-    if (apply) {
-      // Actualitzam els grups de l'usuari
-      for (let gr in deletegroups) {
-        // https://developers.google.com/admin-sdk/directory/v1/reference/members/delete
-        oauth2ClientServiceAdmin().members.delete({
-          groupKey: deletegroups[gr] + '@' + config().domain,
-          resource: {
-            email: domainUser.email()
-          }
-        }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
-      }
-      for (let gr in creategroups) {
-        // https://developers.google.com/admin-sdk/directory/v1/reference/members/insert
-        oauth2ClientServiceAdmin().members.insert({
-          groupKey: creategroups[gr] + '@' + config().domain,
-          resource: {
-            email: domainUser.email()
-          }
-        }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
-      }
-    }
-  }
-  return countMembersModified
 }
 
 /**
@@ -250,7 +287,7 @@ const updateOrgunitDomainUser = (logs, apply, xmlUser, domainUser) => {
         resource: {
           orgUnitPath: (xmlUser.teacher ? config().organizationalUnitTeachers : config().organizationalUnitStudents)
         }
-      }, (err) => { if (err) logs.push('Error de l\'API de Google: ' + err) })
+      }, (err) => { if (err) logs.push('ERROR de l\'API de Google: ' + err) })
     }
   }
   return countOrgunitModified
@@ -266,6 +303,9 @@ const addDomainUsers = (logs, xmlUsers, domainUsers, domainGroups, apply, select
   let countOrgunitModified = 0
   let countGroupsCreated = 0
   logs.push('Actualitzant usuaris del domini...')
+  // domainGroupsCount serveix per contar grups que s'han de crear
+  // domainGroups serveix per controlar els grups creats
+  let domainGroupsCount = Object.assign({}, domainGroups)
   for (let userid in xmlUsers) { // Per cada usuari de l'XML
     let xmlUser = xmlUsers[userid]
     if (!(userid in domainUsers)) {
@@ -274,10 +314,10 @@ const addDomainUsers = (logs, xmlUsers, domainUsers, domainGroups, apply, select
       if (!selectedGroup || xmlUser.groups.includes(selectedGroup)) {
         // Si només hem escollit professors...
         if (!onlyTeachers || xmlUser.teacher) {
-          // Afegim els grups que no estiguin al domini
-          countGroupsCreated = countGroupsCreated + createGroups(logs, apply, xmlUser.groupsWithPrefixAdded(), domainGroups)
           // Afegim l'usuari al domini
-          countCreated = countCreated + createDomainUser(logs, apply, xmlUser, domainUsers)
+          let countCreate = createDomainUser(logs, apply, xmlUser, domainUsers, domainGroups, domainGroupsCount)
+          countGroupsCreated = countGroupsCreated + countCreate.countGroupsCreated
+          countCreated = countCreated + countCreate.countCreated
         }
       }
     } else {
@@ -295,10 +335,10 @@ const addDomainUsers = (logs, xmlUsers, domainUsers, domainGroups, apply, select
               (x) => { return domainUser.groupsWithPrefix().indexOf(x) < 0 })
             let deletegroups = domainUser.groupsWithPrefix().filter(
               (x) => { return xmlUser.groupsWithPrefixAdded().indexOf(x) < 0 })
-            // Afegim els grups que no estiguin al domini
-            countGroupsCreated = countGroupsCreated + createGroups(logs, apply, creategroups, domainGroups)
             // Actualitzam els grups dels que és membre
-            countMembersModified = countMembersModified + updateMemberDomainUser(logs, apply, creategroups, deletegroups, domainUser)
+            let countMembers = updateMemberDomainUser(logs, apply, creategroups, deletegroups, domainUser, domainGroups, domainGroupsCount)
+            countGroupsCreated = countGroupsCreated + countMembers.countGroupsCreated
+            countMembersModified = countMembersModified + countMembers.countMembersModified
             // Actualitzam la seva unitat organitzativa
             countOrgunitModified = countOrgunitModified + updateOrgunitDomainUser(logs, apply, xmlUser, domainUser)
           }
