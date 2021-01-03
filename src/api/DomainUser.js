@@ -59,20 +59,41 @@ class DomainUser {
   email () {
     if (this.domainemail) {
       return this.domainemail
-    } else if (this.teacher || (config().longStudentsEmail === true)) {
-      let email = normalizedName(this.name.substring(0, 1)) + normalizedName(this.surname1)
-      return email + '@' + config().domain
-    } else if (config().longStudentsEmail === '2surnames') { // Email amb dos llinatges (m.cabotnadal@)
-      let email = normalizedName(this.name.substring(0, 1)) +
-        '.' +
-        normalizedName(this.surname1) +
-        normalizedName(this.surname2)
-      return email + '@' + config().domain
     } else {
-      let email = normalizedName(this.name.substring(0, 1)) +
-        normalizedName(this.surname1.substring(0, 1)) +
-        normalizedName(this.surname2.substring(0, 1))
-      return email + pad(0, 2) + '@' + config().domain
+      let email = ''
+      // Agafam format de professor o alumne
+      if (this.teacher) {
+        email = config().teachersEmailFormat
+      } else {
+        email = config().studentsEmailFormat
+      }
+      // Reemplaçam per caràcters invàlids als emails
+      // n = ©
+      // N = ¡
+      // p = ¢
+      // P = £
+      // s = ¥
+      // S = «
+      email = email.replace('n', '©').replace('N', '¡')
+      email = email.replace('p', '¢').replace('P', '£')
+      email = email.replace('s', '¥').replace('S', '«')
+      // Reemplaçam els caràcters invàlids per nom i llinatges
+      email = email.replace('©', normalizedName(this.name.substring(0, 1)))
+      email = email.replace('¡', normalizedName(this.name))
+      email = email.replace('¢', normalizedName(this.surname1.substring(0, 1)))
+      email = email.replace('£', normalizedName(this.surname1))
+      email = email.replace('¥', normalizedName(this.surname2.substring(0, 1)))
+      email = email.replace('«', normalizedName(this.surname2))
+      // Retornam email amb prefix i domini
+      if (this.teacher) {
+        return config().teachersEmailPrefix +
+          email + '@' +
+          (config().teachersEmailCustomDomain ? config().teachersEmailCustomDomain : config().domain)
+      } else {
+        return config().studentsEmailPrefix +
+          email + '@' +
+          (config().studentsEmailCustomDomain ? config().studentsEmailCustomDomain : config().domain)
+      }
     }
   }
 
