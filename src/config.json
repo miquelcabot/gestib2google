@@ -9,10 +9,10 @@
     "organizationalUnitStudents": "/Alumnat",
     "longStudentsEmail": true,
     "teachersEmailPrefix": "",
-    "teachersEmailFormat": "n111",
+    "teachersEmailFormat": "nP",
     "teachersEmailCustomDomain": "",
     "studentsEmailPrefix": "",
-    "studentsEmailFormat": "n111222",
+    "studentsEmailFormat": "nPS",
     "studentsEmailCustomDomain": "",
     "departmentNumberToName": {
       "7310": "orientacio",
