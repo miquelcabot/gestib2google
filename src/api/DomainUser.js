@@ -1,12 +1,12 @@
 import {config} from '@/config'
 
-const pad = (num, size) => {
+/* const pad = (num, size) => {
   let s = num + ''
   while (s.length < size) {
     s = '0' + s
   }
   return s
-}
+} */
 
 /*
  * Eliminar accents, ñ, ...
@@ -56,7 +56,11 @@ class DomainUser {
     this.lastLoginTime = lastLoginTime
   }
 
-  email () {
+  /**
+   * Retorna l'email de l'usuari
+   * @param numero Si no és undefined, fa que retorni el email amb número, per evitar col·lisions
+   */
+  email (numero) {
     if (this.domainemail) {
       return this.domainemail
     } else {
@@ -84,6 +88,16 @@ class DomainUser {
       email = email.replace('£', normalizedName(this.surname1))
       email = email.replace('¥', normalizedName(this.surname2.substring(0, 1)))
       email = email.replace('«', normalizedName(this.surname2))
+      if (numero) {
+        // Si hi ha numero, l'afegim a l'email per evitar col·lisions
+        if (email.includes('0')) {
+          // Si hi ha numeros a l'email (0), hem de substituir els numeros
+          email = email + numero
+        } else {
+          // Si no hi ha numeros, hem d'afegir-ne abans de @
+          email = email + numero
+        }
+      }
       // Retornam email amb prefix i domini
       if (this.teacher) {
         return config().teachersEmailPrefix +
@@ -135,4 +149,4 @@ class DomainUser {
   }
 }
 
-export {DomainUser, pad}
+export {DomainUser}

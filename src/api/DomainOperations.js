@@ -1,5 +1,5 @@
 import {oauth2ClientServiceAdmin} from '@/api/Oauth2Client'
-import {DomainUser, pad} from '@/api/DomainUser'
+import {DomainUser} from '@/api/DomainUser'
 import {config} from '@/config'
 
 /**
@@ -153,26 +153,19 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
  * Estableix el nou email de l'usuari que hem de crear
  */
 const getNewDomainEmail = (xmlUser, domainUsers) => {
-  // kkkk TODO: pendent
-  let newEmail = null
-  if (!xmlUser.teacher && !config().longStudentsEmail) {
-    // EMAIL CURT 'mcn00@'
-    for (let dUser in domainUsers) {
-      // Si hi ha un usuari del domini amb les 3 primeres lletres iguals
-      if (domainUsers[dUser].email().startsWith(xmlUser.email().substring(0, 3))) {
-        let nEmailDom = parseInt(domainUsers[dUser].email().substring(3, 5))
-        let nEmailXml = parseInt(xmlUser.email().substring(3, 5))
-        if (nEmailDom >= nEmailXml) {
-          let nEmail = nEmailDom + 1
-          newEmail = xmlUser.email().substring(0, 3) + pad(nEmail, 2) + '@' + config().domain
-        }
-      }
+  let numero
+  // Cercam el email al domini
+  for (let dUser in domainUsers) {
+    if (domainUsers[dUser].email() === xmlUser.email(numero)) {
+      // Si el trobam, afegim +1 al email
+      numero = (numero || 0) + 1
     }
-  } else {
-    // EMAIL LLARG 'mcabot@'
-    // EMAIL 2surmanes 'm.cabotnadal@', només per alumnes (IES Madina Mayurqa)
   }
-  return newEmail
+  if (numero) {
+    return xmlUser.email(numero)
+  } else {
+    return null
+  }
 }
 
 /**
@@ -187,13 +180,15 @@ const createDomainUser = (logs, apply, xmlUser, domainUsers, domainGroups, domai
     countGroupsCreated = countGroupsCreated +
       createGroupCount(logs, xmlUser.groupsWithPrefixAdded()[gr], domainGroupsCount)
   }
-  logs.push('CREAR USUARI: ' + xmlUser.toString())
 
   // Email pot ser repetit, comprovar-ho!!
+  // Si trobam un usuari amb email repetit, generam nou email i guardam
   let newEmail = getNewDomainEmail(xmlUser, domainUsers)
   if (newEmail) {
     xmlUser.domainemail = newEmail
   }
+
+  logs.push('CREAR USUARI: ' + xmlUser.toString())
 
   // Afegim l'usuari que cream al diccionari de usuaris del domini
   domainUsers[xmlUser.id] = new DomainUser(

@@ -31,7 +31,7 @@
             </div>
           </div>
           <button class="btn btn-primary" v-on:click="importGestib(false)" :disabled="loading">
-            <span v-if="loading && !importing" class="spinner-border spinner-border-sm"></span>
+            <span v-if="loading || importing" class="spinner-border spinner-border-sm"></span>
             {{ loading && !importing ? 'Simulant importació ...' : 'Simular importació' }}
           </button>
         </form>
@@ -68,7 +68,7 @@
           </table>
         </div>
         <button class="btn btn-primary" v-on:click="importGestib(true)" :disabled="loading || !logs.length">
-          <span v-if="loading && importing" class="spinner-border spinner-border-sm"></span>
+          <span v-if="loading || importing" class="spinner-border spinner-border-sm"></span>
           {{ loading && importing ? 'Important ...' : 'Importar' }}
         </button>
         <button class="btn btn-primary" v-on:click="saveLog()" :disabled="loading || !logs.length">

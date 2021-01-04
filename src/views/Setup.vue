@@ -47,7 +47,7 @@
                 <li><strong>n</strong> inicial del nom, o <strong>N</strong> nom complet</li>
                 <li><strong>p</strong> inicial del primer llinatge, o <strong>P</strong> primer llinatge complet</li>
                 <li><strong>s</strong> inicial del segon llinatge, o <strong>S</strong> segon llinatge complet</li>
-                <li><strong>0</strong> cada zero, serà un nombre aleatori</li>
+                <li><strong>0</strong> cada zero, serà un nombre (de 0 a n)</li>
                 <li><strong>. _ -</strong> altres caràcters</li>
               </ul>
             </li>
