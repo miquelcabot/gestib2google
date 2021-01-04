@@ -67,12 +67,16 @@ const getGroupEmails = (logs, groupName, usertype) => {
           }
         })
       } else {
-        let msg = 'ATENCIÓ: El grup ' + fpName + grup + ' no està configurat a "groupNameConversion" al fitxer config().json'
-        if (logs.indexOf(msg) === -1) { logs.push(msg) }
+        // Si no està configurat a "groupNameConversion", l'afegim igualment
+        email.push(groupPrefix + fpName + grup)
+        /* let msg = 'ATENCIÓ: El grup ' + fpName + grup + ' no està configurat a "groupNameConversion" al fitxer config().json'
+        if (logs.indexOf(msg) === -1) { logs.push(msg) } */
       }
     } else {
-      let msg = 'ATENCIÓ: El grup ' + fpName + ' no està configurat a "groupNameConversion" al fitxer config().json'
-      if (logs.indexOf(msg) === -1) { logs.push(msg) }
+      // Si no està configurat a "groupNameConversion", l'afegim igualment
+      email.push(groupPrefix + fpName + grup)
+      /* let msg = 'ATENCIÓ: El grup ' + fpName + ' no està configurat a "groupNameConversion" al fitxer config().json'
+      if (logs.indexOf(msg) === -1) { logs.push(msg) } */
     }
   }
   return email
