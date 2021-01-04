@@ -1,12 +1,12 @@
 import {config} from '@/config'
 
-/* const pad = (num, size) => {
+const pad = (num, size) => {
   let s = num + ''
   while (s.length < size) {
     s = '0' + s
   }
   return s
-} */
+}
 
 /*
  * Eliminar accents, ñ, ...
@@ -92,7 +92,9 @@ class DomainUser {
         // Si hi ha numero, l'afegim a l'email per evitar col·lisions
         if (email.includes('0')) {
           // Si hi ha numeros a l'email (0), hem de substituir els numeros
-          email = email + numero
+          // Contam nombre de zeros
+          let nZeros = email.match(/0/g).length
+          email = email.replace(/0+/, pad(numero, nZeros))
         } else {
           // Si no hi ha numeros, hem d'afegir-ne abans de @
           email = email + numero
