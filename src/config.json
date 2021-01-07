@@ -8,7 +8,7 @@
     "groupPrefixTutors": "tutor.",
     "organizationalUnitTeachers": "/Professorat",
     "organizationalUnitStudents": "/Alumnat",
-    "longStudentsEmail": true,
+    "organizationalUnitStudentsWithGroups": true,
     "teachersEmailPrefix": "",
     "teachersEmailFormat": "nP",
     "teachersEmailCustomDomain": "",

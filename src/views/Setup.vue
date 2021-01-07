@@ -37,6 +37,13 @@
           <label for="organizationalUnitStudents">Nom de l'Unitat Organitzativa de l'alumnat</label>
           <input class="form-control" id="organizationalUnitStudents" name="organizationalUnitStudents" type="text" v-model="organizationalUnitStudents" disabled>
         </div>
+        <div class="form-group">
+          <label for="organizationalUnitStudentsWithGroups">Configuració de les unitats organitzatives de l'alumnat</label>
+          <select class="form-control" id="organizationalUnitStudentsWithGroups" name="organizationalUnitStudentsWithGroups" v-model="organizationalUnitStudentsWithGroups" disabled>
+            <option v-bind:value="false">Sense grups d'alumnes</option>
+            <option v-bind:value="true">Amb grups d'alumnes</option>
+          </select>
+        </div>
         <hr class="separator">
         <div class="alert alert-warning" role="alert">
           Per especificar el format dels emails d'alumnat i professorat es pot especificar:
@@ -105,6 +112,7 @@ export default {
       groupPrefixTutors: '',
       organizationalUnitTeachers: '',
       organizationalUnitStudents: '',
+      organizationalUnitStudentsWithGroups: false,
       teachersEmailPrefix: '',
       teachersEmailFormat: '',
       teachersEmailCustomDomain: '',
@@ -122,6 +130,7 @@ export default {
     this.groupPrefixTutors = config().groupPrefixTutors
     this.organizationalUnitTeachers = config().organizationalUnitTeachers
     this.organizationalUnitStudents = config().organizationalUnitStudents
+    this.organizationalUnitStudentsWithGroups = config().organizationalUnitStudentsWithGroups
     this.teachersEmailPrefix = config().teachersEmailPrefix
     this.teachersEmailFormat = config().teachersEmailFormat
     this.teachersEmailCustomDomain = config().teachersCustomDomain
