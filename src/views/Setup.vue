@@ -131,7 +131,7 @@ export default {
   },
   methods: {
     saveConfig () {
-      // kkk TODO: Guardar configuració
+      // TODO: Guardar configuració
     }
   }
 }
