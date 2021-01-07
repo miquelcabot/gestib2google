@@ -251,6 +251,7 @@ const readXmlFile = (xmlfile, logs, callback) => {
   parseString(xmlfile, (err, xmldata) => {
     if (err) return callback(err, null)
 
+    // kkkkk TODO: Comprovar codi del centre
     let {xmlgroups, xmltutors} = readXmlGroups(logs, xmldata)
     let xmltimetable = readXmlTimeTable(logs, xmldata, xmlgroups)
     let xmlusers = readXmlUsers(logs, xmldata, xmlgroups, xmltutors, xmltimetable)
