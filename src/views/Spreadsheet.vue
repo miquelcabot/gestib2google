@@ -99,7 +99,7 @@ export default {
                   }
                   // Grups alumnes
                   users[user].groups.forEach(group => {
-                    if (group.includes(config.groupPrefixStudents)) {
+                    if (group.includes(config().groupPrefixStudents)) {
                       if (!sheetUsers[group]) {
                         sheetUsers[group] = []
                       }
