@@ -20,6 +20,14 @@
         </router-link>
     </li>
 
+    <!-- Nav Item - Importar XML -->
+    <li class="nav-item">
+        <router-link to="/importxml" class="nav-link">
+          <i class="fas fa-fw fa-upload"></i>
+          <span>Importar XML</span>
+        </router-link>
+    </li>
+
     <!-- Nav Item - Usuaris -->
     <li class="nav-item">
         <router-link to="/users" class="nav-link">
@@ -41,14 +49,6 @@
         <router-link to="/csv" class="nav-link">
           <i class="fas fa-fw fa-file"></i>
           <span>Exportar a CSV</span>
-        </router-link>
-    </li>
-
-    <!-- Nav Item - Importar XML -->
-    <li class="nav-item">
-        <router-link to="/importxml" class="nav-link">
-          <i class="fas fa-fw fa-upload"></i>
-          <span>Importar XML</span>
         </router-link>
     </li>
 
