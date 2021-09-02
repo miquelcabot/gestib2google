@@ -1,7 +1,7 @@
 {
   "cifpfbmoll.eu": {
     "centerCode": "07015884",
-    "defaultPassword": "Curs202021",
+    "defaultPassword": "Curs202122",
     "groupPrefixDepartment": "dept.",
     "groupPrefixTeachers": "professorat.",
     "groupPrefixStudents": "alumnat.",
@@ -48,7 +48,8 @@
         "name": "ifc11",
         "description": "FPB Informàtica i Comunicacions",
         "groups": {
-          "a": {"teacher": ["a"], "student": ["a"], "description": "1rA"},
+          "a": {"teacher": ["a"], "student": ["a"], "description": "1r"},
+          "b": {"teacher": ["b"], "student": ["b"], "description": "2n"},
           "d": {"teacher": ["d"], "student": ["d"], "description": ""}
         }
       },
