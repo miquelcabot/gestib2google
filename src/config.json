@@ -217,6 +217,13 @@
           "c": {"teacher": [], "student": ["fct"], "description": "FCT"},
           "f": {"teacher": [], "student": [], "description": ""}
         }
+      },
+      "ciberseguretat": {
+        "name": "ciber",
+        "description": "CE Ciberseguretat",
+        "groups": {
+          "a": {"teacher": ["seguretat"], "student": ["seguretat"], "description": "1r"}
+        }
       }
     }
   }
