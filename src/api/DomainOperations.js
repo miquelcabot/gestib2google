@@ -123,9 +123,7 @@ const updateMemberDomainUser = (logs, apply, creategroups, deletegroups, domainU
         // https://developers.google.com/admin-sdk/directory/v1/reference/members/delete
         oauth2ClientServiceAdmin().members.delete({
           groupKey: deletegroups[gr] + '@' + config().domain,
-          resource: {
-            email: domainUser.email()
-          }
+          memberKey: domainUser.email()
         }, (err) => { if (err) logs.push('ERROR de l\'API de Google: ' + err) })
       }
       for (let gr in creategroups) {
